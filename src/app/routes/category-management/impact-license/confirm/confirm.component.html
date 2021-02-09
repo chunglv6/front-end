@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>
+  {{data.title}}
+</h1>
+
+<div mat-dialog-content>
+  <mat-label>{{data.messageFirst}} <br> <b>{{data.messageBold}}</b>
+    <span>{{'category.of-customer-type' | translate}}</span>
+    <b>{{data.messageSecond}}</b>
+    {{data.messageLast}}</mat-label>
+</div>
+
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="secondary" style="margin-bottom: 5px;margin-left: 0px !important;margin-right: 8px;"
+    (click)="onDismiss()">{{ 'common.button.cancel' | translate}}</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()"
+    style="margin-bottom: 5px;margin-right: 8px;">{{data.nameButtonConfirm}}</button>
+</div>

@@ -1,0 +1,32 @@
+<a class="close-popup" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{ 'common.button.confirm' | translate }}</h2>
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.lt-sm="100">
+    <form [formGroup]=" formSearch" class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="100" fxFlex.lt-sm="100" class="description-text-area">
+          <mat-form-field appearance="outline" class="common-field">
+            <mat-label>{{ 'customer-management.errorMessage.reason' | translate }}
+              <span class="required">*</span>
+            </mat-label>
+            <textarea matInput style="resize: none;" formControlName="reason" [maxlength]="1000" rows="15"
+              style="width: 100%"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div>
+        <button mat-raised-button mat-dialog-close color="secondary" style="margin-right: 8px;">
+          {{ 'common.button.close' | translate }}
+        </button>
+        <button mat-raised-button [disabled]="formSearch.invalid" (click)="clickDenial()" color="primary"
+          style="margin-right: 8px;" type="submit">
+          {{ 'briefcase.denial' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

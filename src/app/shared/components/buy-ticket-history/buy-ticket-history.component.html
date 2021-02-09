@@ -1,0 +1,112 @@
+<a class="close-popup" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{ 'buyTicket.title_list_bought_ticket' | translate }}</h2>
+<mat-dialog-content>
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.lt-sm="100">
+      <form [formGroup]="formSearch" (keyup.enter)="onSearch();$event.stopPropagation();">
+        <div class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.station_type' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <mat-select formControlName="station_type" (selectionChange)="onChangeStationType($event)">
+                  <ng-container *ngFor="let item of stationTypeOptions">
+                    <mat-option [value]="item.code">{{ item.val }}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <button *ngIf="formSearch.controls.station_type.value" matSuffix mat-icon-button type="button"
+                  class="btn-clear-drop"
+                  (click)="formSearch.controls.station_type.setValue(null); $event.stopPropagation();">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="formSearch.get('station_type').errors?.required">
+                  {{ 'buyTicket.station_typeEr' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'exchangeHistory.distance' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <mtx-select formControlName="distance" [notFoundText]="'common.noRecord' | translate"
+                  [items]="stagestationOpions" bindLabel="name" bindValue="id" [multiple]="false"
+                  [searchable]="stagestationOpions?.length>10">
+                </mtx-select>
+                <mat-error *ngIf="formSearch.get('distance').errors?.required">
+                  {{ 'buyTicket.distance_typeEr' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'exchangeHistory.type_ticket' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <mat-select formControlName="servicePlanTypeId">
+                  <ng-container *ngFor="let item of ticketTypeOptions">
+                    <mat-option [value]="item.code">{{ item.val }}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <button *ngIf="formSearch.controls.servicePlanTypeId.value" matSuffix mat-icon-button type="button"
+                  class="btn-clear-drop"
+                  (click)="formSearch.controls.servicePlanTypeId.setValue(null); $event.stopPropagation();">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="formSearch.get('servicePlanTypeId').errors?.required">
+                  {{ 'buyTicket.ticketEr' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
+        <div>
+          <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="formSearch.invalid"
+            style="margin-bottom: 8px;margin-right: 10px;">
+            {{ 'common.button.search' | translate }}
+          </button>
+        </div>
+      </div>
+      <mat-accordion>
+        <mat-card appearance="outline">
+          <common-list [headerTable]="'buyTicket.title_list_bought_ticket'" [dataSource]="dataModel.dataSource"
+            [columns]="columns" [totalRecord]="totalRecord" [isLoading]="isLoading" [isPaging]="true"
+            [showHeader]="true" [pageIndex]="pageIndex" (page)="onPageChange($event)"
+            [startRecord]="formSearch.value.startrecord">
+          </common-list>
+          <div class="form-field-full readonly" style="margin-top:10px">
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.total_ticket' | translate }}</mat-label>
+                  <input matInput [ngModel]="totalRecord" readonly />
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.total_money' | translate }}</mat-label>
+                  <input matInput [ngModel]="totalMoney" readonly />
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+        </mat-card>
+      </mat-accordion>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" style="margin-right: 8px; width: 100%;">
+    <button mat-raised-button type="button" color="secondary" mat-dialog-close style="float: right;">
+      {{ 'common.button.close' | translate }}
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,46 @@
+.btn-search {
+    margin-left: 10px;
+}
+
+.btnRight {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.lbl-result {
+    position: absolute;
+    top: 20px;
+}
+
+.lbl-profile {
+    position: relative;
+    bottom: 5px;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.contract-infor,
+.customer-infor {
+    ::ng-deep .mat-form-field-appearance-outline  {
+        .mat-form-field-outline-gap,
+        .mat-form-field-outline-end,
+        .mat-form-field-outline-start {
+            border-width: 1px !important;
+            color: #e0e0e0;
+        }
+    }
+}
+
+.noRecored{
+    text-align: center;
+    padding: 10px;
+    display: block;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+    font-weight: 700;
+  }
+
+  

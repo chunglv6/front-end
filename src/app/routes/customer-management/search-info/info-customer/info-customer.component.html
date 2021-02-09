@@ -1,0 +1,74 @@
+<div fxLayout="row wrap" class=" ">
+  <div fxFlex="25" fxFlex.lt-sm="100" class=" ">
+    <mat-card>
+      <mat-card-title class="matcard__title--align">{{ 'customer.list' | translate }}
+        <hr />
+      </mat-card-title>
+      <cdk-virtual-scroll-viewport class="example-viewport" [itemSize]="18 * 10">
+        <crm-tree-component [treeData]="dataSourceTree" (selectNode)="selectNode($event)"
+          [isClickSearch]="isClickSearch"></crm-tree-component>
+      </cdk-virtual-scroll-viewport>
+    </mat-card>
+  </div>
+  <div fxFlex="75" fxFlex.lt-sm="100" class=" ">
+    <mat-tab-group animationDuration="0ms" class="heading left" (selectedTabChange)="onTabCustomerChange($event)"
+      *ngIf="dataModel.initCustomerView">
+      <mat-tab label="{{ 'customer.info' | translate }}">
+        <app-info [id]="selectedNode.custId"></app-info>
+      </mat-tab>
+      <mat-tab label="{{ 'customer.contractList' | translate }}">
+        <app-contract-list [id]="selectedNode.custId" *ngIf="dataModel.initContractList"></app-contract-list>
+      </mat-tab>
+      <mat-tab label="{{ 'customer.impactHistory' | translate }}">
+        <app-action-audit [id]="selectedNode.custId" *ngIf="dataModel.initActionAudit"></app-action-audit>
+      </mat-tab>
+      <!-- <mat-tab label="{{ 'customer.promoHistory' | translate }}"></mat-tab> -->
+    </mat-tab-group>
+    <mat-tab-group animationDuration="0ms" class="heading left" (selectedTabChange)="onTabContractChange($event)"
+      *ngIf="dataModel.initContractView">
+      <mat-tab label="{{ 'contract.info' | translate }}">
+        <app-info-contract [node]="selectedNode"></app-info-contract>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.vehicleList' | translate }}">
+        <app-contract-vehicle-list [contractId]="selectedNode.contractId" *ngIf="dataModel.initVehicleList">
+        </app-contract-vehicle-list>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.attachList' | translate }}">
+        <app-contract-attach-list [contractId]="selectedNode.contractId" *ngIf="dataModel.initAttachList">
+        </app-contract-attach-list>
+      </mat-tab>
+      <mat-tab label="{{ 'action_audit.title' | translate }}">
+        <app-contract-action-audit [dataSelect]="selectedNode" *ngIf="dataModel.initcontractActionAuditList">
+        </app-contract-action-audit>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.accountHistory' | translate }}">
+        <app-contract-account-history *ngIf="dataModel.initContractAccountHistory"></app-contract-account-history>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.billHistory' | translate }}">
+        <app-contract-billing-history *ngIf="dataModel.initContractBillingHistory" [node]="selectedNode">
+        </app-contract-billing-history>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-tab-group animationDuration="0ms" class="heading left" (selectedTabChange)="onTabVehicleChange($event)"
+      *ngIf="dataModel.initVehicleView">
+      <mat-tab label="{{ 'vehicle.info' | translate }}">
+        <app-info-vehicle [vehicleId]="selectedNode.vehicleId"></app-info-vehicle>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.attachList' | translate }}">
+        <app-vehicle-attach-list [vehicleId]="selectedNode.vehicleId" *ngIf="dataModel.initVehicleAttachList">
+        </app-vehicle-attach-list>
+      </mat-tab>
+      <mat-tab label="{{ 'action_audit.title' | translate }}">
+        <app-vehicle-action-audit [dataSelect]="selectedNode" *ngIf="dataModel.initVehicleActionAudit">
+        </app-vehicle-action-audit>
+      </mat-tab>
+      <mat-tab label="{{ 'vehicle.rfidCardHistory' | translate }}">
+        <app-vehicle-rfid-history [vehicleId]="selectedNode.vehicleId" *ngIf="dataModel.initVehicleRfidHistory">
+        </app-vehicle-rfid-history>
+      </mat-tab>
+      <mat-tab label="{{ 'vehicle.exchangeHistory' | translate }}">
+        <transaction-history [dataSelect]="selectedNode"></transaction-history>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

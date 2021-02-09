@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'styles/themes';
+@import 'styles/grid';
+@import 'styles/helpers';
+@import 'styles/plugins';
+@import 'styles/custom';
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mt-25 {
+  margin-top: 25px;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.over-hidden {
+  overflow: hidden !important;
+}
+
+.required {
+  color: red;
+}
+
+.float-right {
+  float: right;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.position-btn {
+  margin-top: 65px;
+  position: relative;
+  bottom: 45px;
+}
+
+.cursor {
+  cursor: pointer;
+}
+mat-error {
+  margin-top: 1px !important;
+}
+
+.orange-color {
+  color: #f48833;
+}
+
+.red-color {
+  color: red;
+}
+
+.green-color {
+  color: green;
+}
+th.mat-header-cell {
+  padding: 0px !important;
+  text-align: center !important;
+}
+
+.crm__table table th {
+  padding-left: 0px;
+  padding-right: 0px;
+}

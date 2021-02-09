@@ -1,0 +1,43 @@
+<a class="close" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{ 'customer-management.rfid.assign-popup' | translate }} {{listData}}</h2>
+
+<div class="form-field-full">
+  <form [formGroup]="formSearch" class="form-field-full">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="100" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'customer-management.rfid.serialFrom' | translate }}
+            <span class="required">*</span></mat-label>
+          <input matInput formControlName="serialFrom" />
+          <button mat-button *ngIf="formSearch.controls.serialFrom.value" matSuffix mat-icon-button
+            (click)="formSearch.controls.serialFrom.setValue(null); $event.stopPropagation()" class="showclear">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="!formSearch.controls.serialFrom.value">
+            {{ 'customer-management.rfid.serial_err' | translate }}
+          </mat-error>
+          <mat-error *ngIf="formSearch.get('serialFrom').errors?.maxlength">
+            {{ 'common.validate.maxlength-50' | translate }}
+          </mat-error>
+          <mat-error *ngIf="formSearch.get('serialFrom').errors?.cannotWhiteSpace">
+            {{ 'common.space_error' | translate }}
+          </mat-error>
+          <mat-error *ngIf="formSearch.get('serialFrom').errors?.pattern">
+            {{'contractNew.invalid-rfid-pattern' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class=" " fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+      style="margin-right: 8px">
+      <button mat-raised-button type="button" color="secondary" mat-dialog-close>
+        {{ 'common.button.close' | translate }}
+      </button>
+      <button mat-raised-button color="primary" (click)="onAssign()" [disabled]="formSearch.invalid" type="submit">
+        {{ 'common.link_card' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

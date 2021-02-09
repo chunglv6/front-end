@@ -1,0 +1,108 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CATEGORY_04)">
+  <page-header></page-header>
+  <form [formGroup]="formSearch">
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.lt-sm="100">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ 'contractSearch.title' | translate | uppercase }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="form-field-full">
+              <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'contractSearch.customer-type' | translate }}</mat-label>
+                    <mat-select formControlName="custTypeId">
+                      <mat-option>{{ 'common.default-select' | translate }}</mat-option>
+                      <ng-container *ngFor="let item of listOptionCustomerType">
+                        <mat-option [value]="item.code">{{item.value}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.custTypeId.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.custTypeId.setValue(null); $event.stopPropagation();">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'category.license' | translate }}</mat-label>
+                    <mtx-select [items]="listOptionLicense" bindLabel="value" bindValue="document_type_id"
+                      [multiple]="false" appendTo="body" formControlName="documentTypeId"
+                      [notFoundText]="'common.notFound' | translate" [searchable]="listOptionLicense?.length>10">
+                    </mtx-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'category.status' | translate }}</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option>{{ 'common.default-select' | translate }}</mat-option>
+                      <ng-container *ngFor="let item of listStatus">
+                        <mat-option [value]="item.code">{{item.value}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.status.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.status.setValue(null); $event.stopPropagation();">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+              fxLayoutGap.xs="0">
+              <button mat-raised-button color="primary" style="margin-right: 8px;"
+                (click)="onSearch()">{{'common.button.search' | translate}}</button>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion>
+          <mat-card>
+            <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+              fxLayoutGap.xs="0" style="margin-right: 8px !important;">
+              <button mat-raised-button color="primary"
+                (click)="addImpact()">{{'common.button.insert' | translate}}</button>
+            </div>
+            <common-list [headerTable]="'category.list-customer-impact'" [dataSource]="dataModel.dataSource"
+              [columns]="columns" [totalRecord]="totalRecord" [isLoading]="isLoading" [isPaging]="true"
+              [showHeader]="true" (page)="onPageChange($event)" [pageIndex]="pageIndex"
+              [startRecord]="searchModel.startrecord">
+              <custom-mat-column columnName='status'>
+                <ng-template let-row>
+                  <span *ngIf="row.status == status.HOATDONG"
+                    style="color:blue;">{{'common.active' | translate }}</span>
+                  <span *ngIf="row.status == status.KHONGHOATDONG"
+                    style="color:red;">{{'common.deadActive' | translate }}</span>
+                </ng-template>
+              </custom-mat-column>
+              <custom-mat-column columnName='actions'>
+                <ng-template let-row>
+                  <button mat-icon-button (click)="moveStatus(row)">
+                    <mat-icon matTooltip="{{'category.move-status-config' | translate}}">sync_alt
+                    </mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="deleteImpact(row)">
+                    <mat-icon matTooltip="{{'common.button.delete' | translate}}" color="primary">delete
+                    </mat-icon>
+                  </button>
+                </ng-template>
+              </custom-mat-column>
+            </common-list>
+          </mat-card>
+        </mat-accordion>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CATEGORY_04)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

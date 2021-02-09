@@ -1,0 +1,101 @@
+<page-header></page-header>
+<form [formGroup]="formSearch">
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.lt-sm="100">
+            <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{ 'contractSearch.title' | translate | uppercase }}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="form-field-full">
+                        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                            <div fxFlex="33.33" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>{{'search-information.topupDate' | translate}}</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+                                        <input matStartDate formControlName="startTime" #fromDateId maskDate
+                                            placeholder="{{ 'common.fromDate' | translate }}"
+                                            (keyup.enter)="onSearch()">
+                                        <input matEndDate formControlName="endTime" maskDate
+                                            placeholder="{{ 'common.endDate' | translate }}" #endDateId
+                                            (keyup.enter)="onSearch()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value"
+                                        class="showclearDatePopup"
+                                        (click)="formSearch.controls.startTime.setValue(null);formSearch.controls.endTime.setValue(null); $event.stopPropagation()">
+                                        <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                    <mat-error *ngIf="formSearch.controls.startTime.hasError('matStartDateInvalid')">
+                                        {{ 'customer.err_ResgiterFromDate' | translate }}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="33.33" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" class="common-field">
+                                    <mat-label>{{ 'search-information.staffName' | translate }}
+                                    </mat-label>
+                                    <input matInput formControlName="staffName" />
+                                    <button mat-button *ngIf="formSearch.controls.staffName.value" class="showclear"
+                                        matSuffix mat-icon-button
+                                        (click)="formSearch.controls.staffName.setValue(''); $event.stopPropagation()"
+                                        type="button">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="33.33" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" class="common-field">
+                                    <mat-label>{{ 'search-information.contractId' | translate }}
+                                    </mat-label>
+                                    <input matInput formControlName="contractId" />
+                                    <button mat-button *ngIf="formSearch.controls.contractId.value" class="showclear"
+                                        matSuffix mat-icon-button
+                                        (click)="formSearch.controls.contractId.setValue(''); $event.stopPropagation()"
+                                        type="button">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="33.33" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" class="common-field">
+                                    <mat-label>{{ 'search-information.orderId' | translate }}
+                                    </mat-label>
+                                    <input matInput formControlName="saleOrderId" />
+                                    <button mat-button *ngIf="formSearch.controls.saleOrderId.value" class="showclear"
+                                        matSuffix mat-icon-button
+                                        (click)="formSearch.controls.saleOrderId.setValue(''); $event.stopPropagation()"
+                                        type="button">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="66.66" fxFlex.lt-sm="100">
+                                <span style="float: right;">
+                                    <button mat-raised-button color="primary" type="submit" (click)="onSearch()"
+                                        [disabled]="formSearch.invalid" style="margin-right: 8px;">
+                                        {{'common.button.search' | translate}}
+                                    </button>
+                                    <button mat-raised-button color="primary" (click)="exportFile()">
+                                        {{ 'policy.exportExcel' | translate }}
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion>
+                <mat-card>
+                    <common-list [headerTable]="'search-information.topupEtcList'" [dataSource]="dataModel.dataSource"
+                        [isPaging]="true" [totalRecord]="totalRecord" [columns]="columns" (page)="onPageChange($event)"
+                        [pageIndex]="pageIndex" [isLoading]="isLoading" [startRecord]="formSearch.value.startrecord">
+                    </common-list>
+                </mat-card>
+            </mat-accordion>
+        </div>
+    </div>
+</form>

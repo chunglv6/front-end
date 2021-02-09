@@ -1,0 +1,13 @@
+.package > .mat-form-field-appearance-outline {
+    height: 55px !important;
+}
+
+.radio-stl {
+    position: relative;
+    bottom: 20px;
+    left: 30px;
+}
+
+.mr-25 {
+    margin-right: 25px;
+}

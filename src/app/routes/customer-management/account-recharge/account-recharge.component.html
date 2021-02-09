@@ -1,0 +1,207 @@
+<page-header></page-header>
+<div class="form-field-full">
+  <form [formGroup]="formRecharge">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'account-recharge.title' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.code' | translate }} <span class="required">*</span></mat-label>
+              <input matInput [matAutocomplete]="auto" formControlName="contractNumber" #contractNumber
+                autoFocus="contractNumber" />
+              <button mat-button *ngIf="formRecharge.controls.contractNumber.value" matSuffix mat-icon-button
+                aria-label="Clear"
+                (click)="formRecharge.controls.contractNumber.setValue(null); $event.stopPropagation()"
+                class="showclear" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error>{{ 'buyTicket.contractOrPlate' | translate }} </mat-error>
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+              (optionSelected)="onSelectedCustomer($event)">
+              <mat-option *ngIf="isLoadingAuto">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-option>
+              <ng-container *ngIf="!isLoadingAuto">
+                <mat-option *ngFor="let state of filteredStates" [value]="state">
+                  <div innerHTML="{{
+                      state.contractNo | highlight: formRecharge.controls.contractNumber.value
+                    }}"></div>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.contract_number' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedContract.contractNo" readonly
+                [ngModelOptions]="{ standalone: true }" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.employee' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedContract.createUser" readonly
+                [ngModelOptions]="{ standalone: true }" />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.signDate' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedContract.signDate" readonly
+                [ngModelOptions]="{ standalone: true }" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.dateStart' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedContract.effDate" readonly [ngModelOptions]="{ standalone: true }" />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.signName' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedContract.signName" readonly
+                [ngModelOptions]="{ standalone: true }" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.dateEnd' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedContract.expDate" readonly [ngModelOptions]="{ standalone: true }" />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'account-recharge.customer-infor' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="32" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-name' | translate }} </mat-label>
+              <input matInput formControlName="customerName" readonly />
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="32" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-phone' | translate }} </mat-label>
+              <input matInput formControlName="customerPhone" readonly />
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="32" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-account' | translate }} </mat-label>
+              <input matInput formControlName="customerAccount" value="{{ balance | formatCurrency }}" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="4" fxFlex.lt-sm="100">
+            <button mat-icon-button class="ui-text-center" style="cursor: pointer" type="button"
+              [disabled]="formRecharge.controls.contractNumber.value"
+              matTooltip="{{ 'account-recharge.refresh' | translate }}" (click)="refreshETC()">
+              <mat-icon color="primary">autorenew</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'account-recharge.customer-payment' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-money' | translate }} </mat-label>
+              <input matInput formControlName="customerMoney" OnlyNumber formatCurrency />
+              <button mat-button *ngIf="formRecharge.controls.customerMoney.value" matSuffix mat-icon-button
+                aria-label="Clear"
+                (click)="formRecharge.controls.customerMoney.setValue(null); $event.stopPropagation()" class="showclear"
+                type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-user' | translate }} <span class="required">*</span>
+              </mat-label>
+              <input matInput formControlName="customerUser" />
+              <button mat-button *ngIf="formRecharge.controls.customerUser.value" matSuffix mat-icon-button
+                aria-label="Clear" (click)="formRecharge.controls.customerUser.setValue(null); $event.stopPropagation()"
+                class="showclear" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-day' | translate }}
+                <span class="required">*</span></mat-label>
+              <input matInput aria-label="Payment date" maskDate [matDatepicker]="pickerstartcar"
+                formControlName="customerDay" placeholder="dd/mm/yyyy" />
+              <mat-datepicker-toggle matSuffix [for]="pickerstartcar"></mat-datepicker-toggle>
+              <mat-datepicker #pickerstartcar></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'account-recharge.customer-employee' | translate }}
+                <span class="required">*</span></mat-label>
+              <input matInput formControlName="customerEmployee" readonly />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class=" " fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0">
+          <button mat-raised-button color="primary" (click)="topUpETC()" [disabled]="formRecharge.invalid">
+            {{ 'account-recharge.recharge' | translate }}
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <common-list [headerTable]="'account-recharge.history_list'" [dataSource]="accountRecharge"
+          [totalRecord]="totalRecord" #accountRechargeHistory [isLoading]="false" [isPaging]="false" [columns]="columns"
+          (page)="onPageChange($event)" [stickyHeight]="getHeight()">
+          <custom-mat-column columnName="show">
+            <ng-template let-row let-i='index'>
+
+              <button mat-icon-button class="ui-text-center" (click)="getSprintContract(row)" type="button"
+                matTooltip="{{ 'account-recharge.sprintHistory' | translate }}">
+                <mat-icon color="primary" svgIcon="ic_download"></mat-icon>
+              </button>
+
+              <button mat-icon-button class="ui-text-center" (click)="getViewContract(row)" type="button"
+                matTooltip="{{ 'account-recharge.showHistory' | translate }}">
+                <mat-icon color="primary" svgIcon="ic_xem"></mat-icon>
+              </button>
+
+            </ng-template>
+          </custom-mat-column>
+        </common-list>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>

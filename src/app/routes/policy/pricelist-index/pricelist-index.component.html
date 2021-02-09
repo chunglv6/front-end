@@ -1,0 +1,6 @@
+<div *ngIf="hasPermission(permissionApp.CRM_POLICY_03)">
+  <app-pricelist></app-pricelist>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_POLICY_03)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'"></error-code>
+</div>

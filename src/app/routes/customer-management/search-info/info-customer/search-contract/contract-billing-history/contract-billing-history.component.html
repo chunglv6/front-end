@@ -1,0 +1,59 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <div class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="100" fxFlex.lt-sm="100"></div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contract.billing.billDate' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+              <input matStartDate [formControl]="startForm" #fromDateId maskDate
+                placeholder="{{ 'common.fromDate' | translate }}">
+              <input matEndDate [formControl]="toForm" maskDate placeholder="{{ 'common.endDate' | translate }}"
+                #endDateId>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value" class="showclearDatePopup"
+              (click)="startForm.setValue(null);toForm.setValue(null); $event.stopPropagation()">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error *ngIf="startForm.hasError('matStartDateInvalid')">
+              {{ 'customer.err_ResgiterFromDate' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contract.billing.billNumber' | translate }}</mat-label>
+            <input matInput placeholder="{{ 'contract.billing.billNumber' | translate }}"
+              [(ngModel)]="searchModel.invoiceNo" (keyup.enter)="onSearch()" />
+            <button mat-button *ngIf="searchModel.invoiceNo" matSuffix mat-icon-button
+              (click)="searchModel.invoiceNo = null" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <button mat-raised-button color="primary" style="margin-right: 8px;" type="submit"
+            [disabled]="startForm.hasError('matDatepickerMax')" (click)="onSearch()">
+            {{ 'common.button.search' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+  <mat-card appearance="outline">
+    <common-list [headerTable]="'contract.billHistory'" [dataSource]="dataModel.dataSource" [isLoading]="isLoading"
+      [totalRecord]="totalRecord" [isPaging]="true" [columns]="columns" [pageIndex]="pageIndex"
+      (page)="onPageChange($event)">
+      <custom-mat-column columnName="view">
+        <ng-template let-row>
+          <button mat-icon-button color="primary" (click)="onViewInvoice(row)">
+            <mat-icon svgIcon="ic_xem"></mat-icon>
+          </button>
+        </ng-template>
+      </custom-mat-column>
+    </common-list>
+  </mat-card>
+</mat-accordion>

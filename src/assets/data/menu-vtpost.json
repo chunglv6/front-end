@@ -1,0 +1,41 @@
+{
+  "menu": [
+    {
+      "route": "register-services",
+      "name": "register-services",
+      "icon": "ic_DangKyDichVu",
+      "type": "link"
+    },
+    {
+      "route": "customer-management",
+      "name": "customer-management",
+      "type": "sub",
+      "icon": "ic_QlyKhachHang",
+      "children": [
+        {
+          "route": "customer-register",
+          "name": "customer-register",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "route": "contract-management",
+      "name": "contract-management",
+      "type": "sub",
+      "icon": "ic_QlyHopDong",
+      "children": [
+        {
+          "route": "add-contract",
+          "name": "sign-new-contract",
+          "type": "link"
+        },
+        {
+          "route": "appendix-contract",
+          "name": "sign-appendix-contract",
+          "type": "link"
+        }
+      ]
+    }
+  ]
+}

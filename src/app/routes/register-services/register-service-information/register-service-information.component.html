@@ -1,0 +1,493 @@
+<div fxLayout="row wrap" class="  mt-15 customer-infor">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.customer-info' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="customerInformationForm" class="form-field-full readonly">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.customerType' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.customerType' | translate}}"
+                  formControlName="customerType" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.customerCode' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.customerCode' | translate}}"
+                  formControlName="customerCode" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.numberPhone' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.numberPhone' | translate}}"
+                  formControlName="numberPhone" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="10px grid" *ngIf="customerTypeId == customerType.CA_NHAN">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.fullName' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.fullName' | translate}}"
+                  formControlName="fullName" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.dateOfBirth' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.dateOfBirth' | translate}}"
+                  formControlName="dateOfBirth" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.gender' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.gender' | translate}}"
+                  formControlName="gender" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="10px grid" *ngIf="customerTypeId == customerType.DOANH_NGHIEP">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.companyName' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.companyName' | translate}}"
+                  formControlName="companyName" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.taxNo' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.taxNo' | translate}}"
+                  formControlName="taxNo" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.foundingDate' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.foundingDate' | translate}}"
+                  formControlName="foundingDate" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.cardId' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.cardId' | translate}}"
+                  formControlName="cardId" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.dateRange' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.dateRange' | translate}}"
+                  formControlName="dateRange" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.placeOfIssue' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.placeOfIssue' | translate}}"
+                  formControlName="placeOfIssue" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.city' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.city' | translate}}"
+                  formControlName="city" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.district' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.district' | translate}}"
+                  formControlName="district" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.ward' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.ward' | translate}}"
+                  formControlName="ward" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.street' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.street' | translate}}"
+                  formControlName="street" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="67" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.address' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.address' | translate}}"
+                  formControlName="address" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.email' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.email' | translate}}"
+                  formControlName="email" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div fxLayout="row wrap" class="  contract-infor">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.contract-info' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="contractInformationForm" class="form-field-full readonly">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formContractInfo.contractNumber' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formContractInfo.contractNumber' | translate}}"
+                  formControlName="contractNumber" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formContractInfo.signDay' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formContractInfo.signDay' | translate}}"
+                  formControlName="signDay" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formContractInfo.signer' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formContractInfo.signer' | translate}}"
+                  formControlName="signer" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formContractInfo.staff' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formContractInfo.staff' | translate}}"
+                  formControlName="staff" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formContractInfo.effectiveDate' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formContractInfo.effectiveDate' | translate}}"
+                  formControlName="effectiveDate" readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formContractInfo.expiryDate' | translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.formContractInfo.expiryDate' | translate}}"
+                  formControlName="expiryDate" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div fxLayout="row wrap" class=" ">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.vehiclesNotRFID' | translate | uppercase }} <span
+              class="orange-color">&nbsp;({{countTableNotRFID}})</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="vehiclesNotRFIDForm" class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'buyTicket.register_Date' | translate}}</mat-label>
+                <mat-date-range-input [rangePicker]="pickeDateVehicleRegistration"
+                  (click)="pickeDateVehicleRegistration.open()">
+                  <input matStartDate maskDate formControlName="dateRegistrationStart"
+                    placeholder="{{ 'common.fromDate' | translate }}" #dateRegistrationStartId>
+                  <input matEndDate maskDate formControlName="dateRegistrationEnd"
+                    placeholder="{{ 'common.endDate' | translate }}" #dateRegistrationEndId>
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix *ngIf="dateRegistrationStartId.value || dateRegistrationEndId.value"
+                  class="showclearDatePopup"
+                  (click)="vehiclesNotRFIDForm.controls.dateRegistrationStart.setValue(null);vehiclesNotRFIDForm.controls.dateRegistrationEnd.setValue(null); $event.stopPropagation()">
+                  <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="pickeDateVehicleRegistration"></mat-datepicker-toggle>
+                <mat-date-range-picker #pickeDateVehicleRegistration></mat-date-range-picker>
+                <mat-error *ngIf="vehiclesNotRFIDForm.get('dateRegistrationStart').hasError('matStartDateInvalid')">
+                  {{'common.date-register-from-max' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <button class="btn-search" mat-button mat-raised-button (click)="onSearchNotRfid()"
+                color="primary">{{'customer-management.vehiclesNotRFIDForm.btnSearch' | translate}}</button>
+            </div>
+          </div>
+        </form>
+        <hr />
+        <div class="crm__table mt-25">
+          <table mat-table [dataSource]="listDataNotRFID" #tableNotRFID>
+            <ng-container matColumnDef="stt">
+              <th mat-header-cell *matHeaderCellDef style="width:60px;">
+                {{'customer-management.vehiclesNotRFIDTable.stt' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index"
+                style="text-align: center; padding-left: 0px !important;">
+                {{i + 1 + indexPaginatorNotRFID}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="plateNumber">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesNotRFIDTable.licensePlates' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.plateNumber}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="owner">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesNotRFIDTable.vehiclesOwner' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.owner}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="vehiclesType">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesNotRFIDTable.vehiclesType' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.vehiclesType}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cargoWeight">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesNotRFIDTable.merchandiseWeight' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.cargoWeight}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="seatNumber">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesNotRFIDTable.seatsNumber' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.seatNumber}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesNotRFIDTable.resultCheck' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                <span *ngIf="row.status == statusVehicle.KHONGHOATDONG">{{ 'common.notActive' | translate }}</span>
+                <span *ngIf="row.status == statusVehicle.HOATDONG">{{ 'common.active' | translate }}</span>
+                <!-- <span *ngIf="row.status == statusVehicle.IMPORT">{{ 'vehicle.importFile' | translate }}</span> -->
+                <span *ngIf="row.status == statusVehicle.KHOP">{{ 'vehicle.match' | translate }}</span>
+                <span *ngIf="row.status == statusVehicle.KHONGKHOP">{{ 'vehicle.notMatch' | translate }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef style="width:60px;">
+                <mat-checkbox (change)="$event ? masterToggleNotRFID() : null"
+                  [checked]="selectionNotRFID.hasValue() && isAllSelectedNotRFID()"
+                  [indeterminate]="selectionNotRFID.hasValue() && !isAllSelectedNotRFID()"
+                  [aria-label]="checkboxLabelNotRFID()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row;let i = index" class="ui-text-center" style="padding-right: 0px;">
+                <mat-checkbox [disabled]="row?.status != statusVehicle.KHOP" (click)="$event.stopPropagation()"
+                  (change)="$event ? selectionNotRFID.toggle(row) : null" [checked]="selectionNotRFID.isSelected(row)"
+                  [aria-label]="checkboxLabelNotRFID(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns_notRFID"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns_notRFID">
+            </tr>
+          </table>
+          <span class="noRecored" *ngIf="listDataNotRFID.length ==0 ">
+            {{'common.noRecord' |translate}}
+          </span>
+          <mat-paginator [pageSizeOptions]="pageSizeList" #paginatorNotRFID [pageSize]="10" [length]="countTableNotRFID"
+            showFirstLastButtons (page)="onPaginateChangeNotRFID($event)">
+          </mat-paginator>
+        </div>
+        <div class="row mt-25">
+          <div class="col-sm-12">
+            <button class="btnRight ml-20" mat-button mat-raised-button (click)="exportVehicle()"
+              color="primary">{{'customer-management.vehiclesNotRFIDForm.btnExport' | translate}}</button>
+            <button class="btnRight ml-20" mat-button mat-raised-button (click)="assignRFID()"
+              [disabled]="listSelectedNotRFID.length == 0"
+              color="primary">{{'customer-management.vehiclesNotRFIDForm.btnAssign' | translate}}</button>
+            <button class="btnRight ml-20" mat-button mat-raised-button (click)="checkVehicle()"
+              color="primary">{{'customer-management.vehiclesNotRFIDForm.btnCheck' | translate}}</button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div fxLayout="row wrap" class=" ">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.vehiclesHaveRFID' | translate | uppercase }} <span
+              class="orange-color">&nbsp;({{countTableHaveRFID}})</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="vehiclesHaveRFIDForm" class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'buyTicket.register_Date' | translate}}</mat-label>
+                <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+                  <input matStartDate maskDate formControlName="dateRegistrationStart"
+                    placeholder="{{ 'common.fromDate' | translate }}" #registrationStartId>
+                  <input matEndDate maskDate formControlName="dateRegistrationEnd"
+                    placeholder="{{ 'common.endDate' | translate }}" #registrationEndId>
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix *ngIf="registrationStartId.value || registrationEndId.value"
+                  class="showclearDatePopup"
+                  (click)="vehiclesHaveRFIDForm.controls.dateRegistrationStart.setValue(null);vehiclesNotRFIDForm.controls.dateRegistrationEnd.setValue(null); $event.stopPropagation()">
+                  <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="vehiclesHaveRFIDForm.get('dateRegistrationStart').hasError('matStartDateInvalid')">
+                  {{'common.date-register-from-max' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <button class="btn-search" mat-button mat-raised-button (click)="onSearchVehicleHaveRFID()"
+                color="primary">{{'customer-management.vehiclesHaveRFIDForm.btnSearch' | translate}}</button>
+              <button class="btnRight" mat-button mat-raised-button (click)="addVehicle()"
+                color="primary">{{'customer-management.vehiclesHaveRFIDForm.btnAdd' | translate}}</button>
+            </div>
+          </div>
+        </form>
+        <hr />
+        <div class="crm__table mt-25">
+          <table mat-table [dataSource]="listDataHaveRFID" #tableHaveRFID>
+            <ng-container matColumnDef="stt">
+              <th mat-header-cell *matHeaderCellDef style="width:60px;">
+                {{'customer-management.vehiclesHaveRFIDTable.stt' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index"
+                style="text-align: center; padding-left: 0px !important;">
+                {{i + 1 + indexPaginatorHaveRFID}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="licensePlates">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesHaveRFIDTable.licensePlates' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.licensePlates}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serialNumber">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesHaveRFIDTable.serialNumber' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.serialNumber}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="vehiclesTypeFee">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesHaveRFIDTable.vehiclesTypeFee' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{row.vehiclesTypeFee}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cardStatus">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.vehiclesHaveRFIDTable.cardStatus' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                <span *ngIf="row.activeStatus == activeStatus.CHUAKICHHOAT">{{ 'common.notActive' | translate }}</span>
+                <span *ngIf="row.activeStatus == activeStatus.HOATDONG">{{ 'common.active' | translate }}</span>
+                <span *ngIf="row.activeStatus == activeStatus.HUY">{{ 'common.cancel' | translate }}</span>
+                <span *ngIf="row.activeStatus == activeStatus.DONG">{{ 'common.button.close' | translate }}</span>
+                <span *ngIf="row.activeStatus == activeStatus.MO">{{ 'common.open' | translate }}</span>
+                <span *ngIf="row.activeStatus == activeStatus.DACHUYENNHUONG">{{ 'common.transfered' | translate
+                  }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef style="width:60px;">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selectionHaveRFID.hasValue() && isAllSelected()"
+                  [indeterminate]="selectionHaveRFID.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row;let i = index" class="ui-text-center" style="padding-right: 0px;">
+                <mat-checkbox [disabled]="row?.activeStatus != activeStatus.CHUAKICHHOAT"
+                  (click)="$event.stopPropagation()" (change)="$event ? selectionHaveRFID.toggle(row) : null"
+                  [checked]="selectionHaveRFID.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns_haveRFID"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns_haveRFID"></tr>
+          </table>
+          <span class="noRecored" *ngIf="listDataHaveRFID.length ==0 ">
+            {{'common.noRecord' |translate}}
+          </span>
+          <mat-paginator [pageSizeOptions]="pageSizeList" #paginatorHaveRFID [pageSize]="10"
+            [length]="countTableHaveRFID" showFirstLastButtons (page)="onPaginateChangeHaveRFID($event)">
+          </mat-paginator>
+        </div>
+
+        <div class="row mt-25">
+          <div class="col-sm-12">
+            <button mat-button class="float-right ml-20" mat-raised-button color="secondary"
+              (click)="backToRegister()">{{'common.button.back' | translate}}</button>
+            <button class="btnRight ml-20" mat-button mat-raised-button (click)="activeCard()" *ngIf="selectionHaveRFID.selected.length > 0"
+              color="primary">{{'common.button.activeCard' |
+              translate}}</button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

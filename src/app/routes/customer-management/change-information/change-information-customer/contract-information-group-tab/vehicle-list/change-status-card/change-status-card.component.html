@@ -1,0 +1,64 @@
+<a class="close" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{ header }}</h2>
+
+<div class="form-field-full">
+  <form [formGroup]="reasonForm">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="35" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'action_audit.reason' | translate }} <span class="required">*</span></mat-label>
+          <mtx-select [notFoundText]="'common.notFound' | translate" [items]="dataReasonType" bindLabel="name"
+            bindValue="id" formControlName="reason" [searchable]="dataReasonType?.length>10" appendTo="body">
+          </mtx-select>
+          <mat-error *ngIf="reasonForm.get('reason').invalid">
+            {{ 'action_audit.block-accountEr' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="65" fxFlex.lt-sm="100">
+        <div class="crm__table">
+          <table mat-table [dataSource]="dataModel.dataSource" #tableFee>
+            <ng-container matColumnDef="fee">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.feeType' | translate }}</th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.fee }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef style="font-weight: bold;">
+                {{ 'contract.total_fee' | translate }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef style="text-align: right !important;">
+                {{ 'contract.cost' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let row" class="ui-text-right">
+                {{ row.price | number }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef class="ui-text-right" style="font-weight: bold;">
+                {{ totalCost | number }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div fxLayout="row wrap" fxLayoutAlign="end" style="margin-top:20px">
+    <button mat-button class="ml-20" mat-raised-button color="secondary" mat-dialog-close>
+      {{ 'common.button.close' | translate }}
+    </button>
+    <button class="ml-20" mat-button mat-raised-button color="primary" (click)="onSave()"
+      [disabled]="reasonForm.invalid">
+      <span *ngIf="data.data.status === 1">{{ 'common.active-card' | translate }}</span>
+      <span *ngIf="data.data.status === 2">{{ 'common.lock-card' | translate }}</span>
+      <span *ngIf="data.data.status === 3">{{ 'common.open-card' | translate }}</span>
+      <span *ngIf="data.data.status === 4">{{ 'common.cancel-card' | translate }}</span>
+    </button>
+  </div>
+</div>

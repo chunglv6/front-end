@@ -1,0 +1,148 @@
+.ml-20 {
+  margin-left: 20px;
+}
+
+.lbl-customer {
+  padding-left: 10px;
+  color: orange;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.lbl-acc {
+  position: relative;
+  top: 15px;
+  left: 10px;
+}
+
+.btn-acc {
+  position: relative;
+  top: 10px;
+}
+
+.ml-50 {
+  margin-left: 50px;
+}
+
+.mt-25 {
+  margin-top: 25px;
+}
+
+.height-60 {
+  height: 60px;
+}
+
+.ml-78 {
+  margin-left: 78px;
+}
+
+.btn-search {
+  margin-left: 10px;
+}
+
+.lbl-profile {
+  position: relative;
+  bottom: 5px;
+}
+
+.float-right {
+  float: right;
+}
+
+.radio-stl {
+  position: absolute;
+  top: 0px;
+  left: 30px;
+}
+
+.mr-25 {
+  margin-right: 25px !important;
+}
+
+.font-register-service {
+  font-size: 12pt !important;
+}
+
+.ml-102 {
+  margin-left: 102px;
+}
+
+.ml-130 {
+  margin-left: 130px;
+}
+
+.staff,
+.signer {
+  ::ng-deep .mat-form-field-appearance-outline {
+    .mat-form-field-outline-gap,
+    .mat-form-field-outline-end,
+    .mat-form-field-outline-start {
+      border-width: 1px !important;
+      color: #e0e0e0;
+    }
+  }
+}
+
+.exitEmail {
+  margin-top: -27px;
+  margin-left: 10px;
+  font-size: 9pt;
+}
+
+.receiveNotity {
+  .mat-form-field-invalid {
+    border: #f48833 !important;
+  }
+}
+
+@media only screen and (max-width: 1250px) {
+  .ml-102 {
+    margin-left: 30px;
+  }
+
+  .ml-130 {
+    margin-left: 70px;
+  }
+}
+
+.noRecored {
+  text-align: center;
+  padding: 10px;
+  display: block;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
+  font-weight: 700;
+}
+
+.requiredNotify {
+  position: relative;
+  bottom: 20px;
+  margin-left: 10px;
+  font-size: 9pt;
+}
+
+.city,
+.district,
+.ward {
+  ::ng-deep ng-dropdown-panel {
+    ::ng-deep .ng-dropdown-panel-items,
+    .scroll-host {
+      max-height: 150px !important;
+    }
+  }
+}
+:host::ng-deep {
+  .hack-height-radio.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 70px;
+  }
+  .hack-height-checkbox.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 130px;
+  }
+}
+
+// :host::ng-deep .hack-height-radio-2.mat-form-field-appearance-outline .mat-form-field-outline {
+//   height: 70px;
+// }

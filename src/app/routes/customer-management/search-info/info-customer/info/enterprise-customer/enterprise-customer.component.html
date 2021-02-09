@@ -1,0 +1,259 @@
+<mat-tab-group class="group-representative">
+  <mat-tab label="{{ 'customer.representative' | translate | uppercase }}">
+    <div class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.fullName' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repName" matTooltip="{{ dataCustomer.repName }}"
+              [matTooltipPosition]="'above'"
+              placeholder="{{ 'customer-management.formCustomerRegister.fullName' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.dateOfBirth' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="dd/mm/yyyy" [ngModel]="dataCustomer.repBirthDate" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="34" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.gender' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repGender"
+              placeholder="{{ 'customer-management.formCustomerRegister.gender' | translate }}" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="16" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.formCustomerRegister.documentType' | translate
+            }}</mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repIdentityTypeName" placeholder="{{
+                'customer-management.formCustomerRegister.documentType' | translate
+              }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="17" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.documentNumber' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repIdentityNumber" placeholder="{{
+                'customer-management.formCustomerRegister.documentNumber' | translate
+              }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.dateRange' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="dd/mm/yyyy" [ngModel]="dataCustomer.repDateOfIssue" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="34" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.placeOfIssue' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repPlaceOfIssue" placeholder="{{
+                'customer-management.formCustomerRegister.placeOfIssue' | translate
+              }}" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.city' | translate }}
+            </mat-label>
+            <input readonly [ngModel]="dataCustomer.repCity" matInput
+              placeholder="{{ 'customer-management.formCustomerRegister.city' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.district' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repDistrict"
+              placeholder="{{ 'customer-management.formCustomerRegister.district' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="34" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.ward' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.ward' | translate }}"
+              [ngModel]="dataCustomer.repWard" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.street' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.street' | translate }}"
+              [ngModel]="dataCustomer.repStreet" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.address' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.address' | translate }}"
+              [ngModel]="dataCustomer.repAreaName" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.formCustomerRegister.numberPhone' | translate
+            }}</mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.repPhoneNumber"
+              placeholder="{{ 'customer-management.formCustomerRegister.numberPhone' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.email' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.email' | translate }}"
+              [ngModel]="dataCustomer.repEmail" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="{{ 'customer.authorizedPerson' | translate | uppercase }}">
+    <div class="form-field-full readonly">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.fullName' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authName"
+              placeholder="{{ 'customer-management.formCustomerRegister.fullName' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.dateOfBirth' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="dd/mm/yyyy" [ngModel]="dataCustomer.authBirthDate" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="34" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.gender' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authGender" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="16" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.formCustomerRegister.documentType' | translate
+            }}</mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authIdentityTypeName" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="17" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.documentNumber' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authIdentityNumber" placeholder="{{
+                'customer-management.formCustomerRegister.documentNumber' | translate
+              }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.dateRange' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="dd/mm/yyyy" [ngModel]="dataCustomer.authDateOfIssue" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="34" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.placeOfIssue' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authPlaceOfIssue" placeholder="{{
+                'customer-management.formCustomerRegister.placeOfIssue' | translate
+              }}" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.city' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.city' | translate }}"
+              [ngModel]="dataCustomer.authCity" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.district' | translate }}
+            </mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authDistrict"
+              placeholder="{{ 'customer-management.formCustomerRegister.district' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="34" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.ward' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.ward' | translate }}"
+              [ngModel]="dataCustomer.authWard" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.street' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.street' | translate }}"
+              [ngModel]="dataCustomer.authStreet" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.address' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.address' | translate }}"
+              [ngModel]="dataCustomer.authAreaName" matTooltip="{{ dataCustomer.authAreaName }}"
+              [matTooltipPosition]="'above'" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.formCustomerRegister.numberPhone' | translate
+            }}</mat-label>
+            <input readonly matInput [ngModel]="dataCustomer.authPhoneNumber"
+              placeholder="{{ 'customer-management.formCustomerRegister.numberPhone' | translate }}" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.email' | translate }}
+            </mat-label>
+            <input readonly matInput placeholder="{{ 'customer-management.formCustomerRegister.email' | translate }}"
+              [ngModel]="dataCustomer.authEmail" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

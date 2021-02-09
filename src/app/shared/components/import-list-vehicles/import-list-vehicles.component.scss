@@ -1,0 +1,36 @@
+.btn-chooseFile {
+  position: absolute;
+  bottom: 10px;
+  background-color: #ffe2cd;
+  color: black;
+  height: 30px;
+}
+
+.hr-style {
+  position: relative;
+  bottom: 15px;
+}
+
+.mt-15 {
+  margin-top: 30px !important;
+}
+
+::ng-deep ngx-file-drop {
+  .ngx-file-drop__drop-zone {
+    border: none !important;
+    position: relative !important;
+    bottom: 18px !important;
+    height: 42px !important;
+    border-radius: 5px !important;
+    color: black !important;
+  }
+
+  mat-form-field {
+    position: relative;
+    bottom: 15px !important;
+  }
+}
+.btn-close-popup {
+  float: right;
+  cursor: pointer;
+}

@@ -1,0 +1,247 @@
+<div *ngIf="hasPermission(permissionApp.CRM_SEARCH_06)">
+  <page-header></page-header>
+  <div fxLayout="row wrap" class=" ">
+    <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ 'briefcase.title' | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-field-full">
+            <form [formGroup]="formSearch">
+              <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'buyTicket.station_type' | translate }}</mat-label>
+                    <mat-select formControlName="stationType"
+                      (selectionChange)="selectionChangeStationType($event.value)">
+                      <ng-container *ngFor="let item of listStationType">
+                        <mat-option [value]="item.code">{{item.val}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{'search-information.start-date-station-input' | translate}} <span
+                        class="required">*</span>
+                    </mat-label>
+                    <mat-date-range-input [rangePicker]="picker" (click)="picker.open()" [min]="minDate"
+                      [max]="maxDate">
+                      <input matStartDate formControlName="dateInStart" #fromDateId maskDate
+                        placeholder="{{ 'common.fromDate' | translate }}"
+                        (dateChange)="getValueTimeOutFrom($event.value)" (keyup.enter)="onSearch()">
+                      <input matEndDate formControlName="dateInEnd" maskDate
+                        placeholder="{{ 'common.endDate' | translate }}" #endDateId
+                        (dateChange)="getValueTimeInFrom($event.value)" (keyup.enter)="onSearch()">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value"
+                      class="showclearDatePopup"
+                      (click)="minDate=null;maxDate=null;this.formSearch.controls.dateInStart.setValue(null);this.formSearch.controls.dateInEnd.setValue(null); $event.stopPropagation()">
+                      <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                    <mat-error
+                      *ngIf="formSearch.controls.dateInStart.hasError('required') && formSearch.controls.dateInEnd.hasError('required')">
+                      {{'search-information.enter-start-date-station-input' | translate}}</mat-error>
+                    <mat-error
+                      *ngIf="formSearch.controls.dateInStart.hasError('required') && !formSearch.controls.dateInEnd.hasError('required')">
+                      {{'search-information.enter-start-date-history-vehicle' | translate}}</mat-error>
+                    <mat-error
+                      *ngIf="!formSearch.controls.dateInStart.hasError('required') && formSearch.controls.dateInEnd.hasError('required')">
+                      {{'search-information.enter-end-date-history-vehicle' | translate}}</mat-error>
+                    <mat-error *ngIf="formSearch.controls.dateInStart.hasError('matStartDateInvalid')">
+                      {{'customer.err_ResgiterFromDate' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'search-information.start-date-station-output' | translate }}<span class="required"
+                        *ngIf="formSearch.controls.stationType.value == stationType.TRAM_KIN">*</span></mat-label>
+                    <mat-date-range-input [min]="minDateOut" [max]="maxDateOut" [rangePicker]="pickerOut"
+                      (click)="pickerOut.open()"
+                      [disabled]="formSearch.controls.stationType.value == stationType.TRAM_MO">
+                      <input matStartDate formControlName="dateInStartOut" #fromDateIdOut maskDate
+                        placeholder="{{ 'common.fromDate' | translate }}" (dateChange)="getValueTimeOut($event.value)"
+                        (keyup.enter)="onSearch()">
+                      <input matEndDate formControlName="dateInEndOut" maskDate
+                        placeholder="{{ 'common.endDate' | translate }}" #endDateOutId
+                        (dateChange)="getValueTimeIn($event.value)" (keyup.enter)="onSearch()">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix *ngIf="(fromDateIdOut.value || endDateOutId.value )"
+                      class="showclearDatePopup"
+                      (click)="minDateOut=null;maxDateOut=null;formSearch.controls.dateInStartOut.setValue(null);formSearch.controls.dateInEndOut.setValue(null); $event.stopPropagation()">
+                      <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker-toggle matSuffix [for]="pickerOut"></mat-datepicker-toggle>
+                    <mat-date-range-picker #pickerOut></mat-date-range-picker>
+                    <mat-error
+                      *ngIf="formSearch.controls.dateInStartOut.hasError('required') && formSearch.controls.dateInEndOut.hasError('required')">
+                      {{'search-information.enter-start-date-station-output' | translate}}</mat-error>
+                    <mat-error
+                      *ngIf="formSearch.controls.dateInStartOut.hasError('required') && !formSearch.controls.dateInEndOut.hasError('required')">
+                      {{'search-information.enter-start-date-history-vehicle' | translate}}</mat-error>
+                    <mat-error
+                      *ngIf="!formSearch.controls.dateInStartOut.hasError('required') && formSearch.controls.dateInEndOut.hasError('required')">
+                      {{'search-information.enter-end-date-history-vehicle' | translate}}</mat-error>
+                    <mat-error *ngIf="formSearch.controls.dateInStartOut.hasError('matStartDateInvalid')">
+                      {{'customer.err_ResgiterFromDate' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'search-information.codes' | translate }}</mat-label>
+                    <input matInput formControlName="code" #code autoFocus="code" (keyup.enter)="onSearch()" />
+                    <button mat-button *ngIf="this.formSearch.controls.code.value" matSuffix mat-icon-button
+                      aria-label="Clear"
+                      (click)="this.formSearch.controls.code.setValue(null); $event.stopPropagation()" class="showclear"
+                      type="button">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'search-information.station-input' | translate }}</mat-label>
+                    <mtx-select [items]="listSationOpen" bindLabel="name" bindValue="id" [multiple]="false"
+                      appendTo="body" (change)="getLanesIn($event)" formControlName="stationInId"
+                      [notFoundText]="'common.notFound' | translate" [searchable]="listSationOpen?.length>10">
+                    </mtx-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'policy.input-lane' | translate }}</mat-label>
+                    <mtx-select [items]="listLaneOpen" bindLabel="name" bindValue="id" [multiple]="false"
+                      appendTo="body" formControlName="laneInId" [notFoundText]="'common.notFound' | translate"
+                      [searchable]="listLaneOpen?.length>10">
+                    </mtx-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'search-information.source-transection' | translate }}</mat-label>
+                    <mat-select formControlName="sourceTransaction">
+                      <mat-option [value]="null">{{ 'common.default-select' | translate }}</mat-option>
+                      <ng-container *ngFor="let item of listTransactionSource">
+                        <mat-option [value]="item.code">{{item.value}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.sourceTransaction.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.sourceTransaction.setValue(null); $event.stopPropagation()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'search-information.station-output' | translate }}</mat-label>
+                    <mtx-select [items]="listStationClose" bindLabel="name" bindValue="id" [multiple]="false"
+                      [disabled]="formSearch.controls.stationType.value == stationType.TRAM_MO"
+                      (change)="getLanesOut($event)" appendTo="body" formControlName="stationOutId"
+                      [notFoundText]="'common.notFound' | translate" [searchable]="listStationClose?.length>10">
+                    </mtx-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'policy.output-lane' | translate }}</mat-label>
+                    <mtx-select [items]="listLanClose" bindLabel="name" bindValue="id" [multiple]="false"
+                      appendTo="body" [disabled]="formSearch.controls.stationType.value == stationType.TRAM_MO"
+                      formControlName="laneOutId" [notFoundText]="'common.notFound' | translate"
+                      [searchable]="listLanClose?.length>10">
+                    </mtx-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row wrap" fxLayoutGap="20px grid">
+
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'buyTicket.ticket' | translate }}</mat-label>
+                    <mat-select formControlName="ticketType">
+                      <mat-option [value]="null">{{ 'common.default-select' | translate }}</mat-option>
+                      <ng-container *ngFor="let item of listTicketPriceTypes">
+                        <mat-option [value]="item.code">{{item.value}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.ticketType.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.ticketType.setValue(null); $event.stopPropagation()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'pricelist-add.vehiclesCountFee' | translate }}</mat-label>
+                    <mat-select formControlName="vehicleType">
+                      <mat-option [value]="null">{{ 'common.default-select' | translate }}</mat-option>
+                      <ng-container *ngFor="let item of listVehicleFee">
+                        <mat-option [value]="item.id">{{item.value}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.vehicleType.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.vehicleType.setValue(null); $event.stopPropagation()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+                fxLayoutGap.xs="0" style="margin-right: 8px;">
+                <button mat-raised-button color="primary" type="submit" (click)="onSearch()"
+                  [disabled]="formSearch.invalid">
+                  {{ 'contractSearch.search-contract' | translate }}
+                </button>
+                <button mat-raised-button color="primary" type="submit" (click)="exportFile()">
+                  {{ 'policy.exportExcel' | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-card>
+        <crm-table [headerTable]="'search-information.history-search-vehicle-via'" [dataSource]="dataModel.dataSource"
+          [isLoading]="isLoading" [isPaging]="true" [totalRecord]="totalRecord" [displayedColumns]="displayedColumns"
+          [pageIndex]="pageIndex" (onPage)="onPageChangeHistoriesViaStation($event)">
+          <ng-container *ngFor="let item of columns " [ngSwitch]="item.field">
+            <ng-container matColumnDef="{{item.field}}" *ngSwitchDefault>
+              <th mat-header-cell *matHeaderCellDef>{{item.i18n | translate}}</th>
+              <td mat-cell *matCellDef="let row;">
+                {{row[item.field]}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="{{item.field}}" *ngSwitchCase="'price'">
+              <th mat-header-cell *matHeaderCellDef>{{item.i18n | translate}}</th>
+              <td mat-cell *matCellDef="let row;" style="text-align: right;">
+                {{row[item.field] | number}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="{{item.field}}" *ngSwitchCase="'orderNumber'">
+              <th mat-header-cell *matHeaderCellDef>{{item.i18n | translate}}</th>
+              <td mat-cell *matCellDef="let row;let i = dataIndex" class="ui-text-center">
+                {{i+1 + formSearch.controls.startrecord.value}}
+              </td>
+            </ng-container>
+          </ng-container>
+        </crm-table>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_SEARCH_06)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

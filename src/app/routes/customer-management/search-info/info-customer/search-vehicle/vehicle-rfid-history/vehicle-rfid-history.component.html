@@ -1,0 +1,82 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <div class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="100" fxFlex.lt-sm="100"></div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'action_audit.create' | translate }}:{{
+                'common.fromDate' | translate
+              }}</mat-label>
+            <input matInput maskDate [matDatepicker]="fromDate" placeholder="dd/MM/yyyy"
+              [(ngModel)]="searchModel.fromDate" [max]="searchModel.endDate" (click)="fromDate.open()"
+              autocomplete="off" />
+            <mat-datepicker-toggle matSuffix *ngIf="searchModel.fromDate" class="showclearDatePopup"
+              (click)="searchModel.fromDate = null">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+            <mat-datepicker #fromDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'common.endDate' | translate }}</mat-label>
+            <input matInput maskDate [matDatepicker]="endDate" placeholder="dd/MM/yyyy"
+              [(ngModel)]="searchModel.endDate" [min]="searchModel.fromDate" (click)="endDate.open()"
+              autocomplete="off" />
+            <mat-datepicker-toggle matSuffix *ngIf="searchModel.endDate" class="showclearDatePopup"
+              (click)="searchModel.endDate = null">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+            <mat-datepicker #endDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
+        <div>
+          <button mat-raised-button color="primary" style="margin-right: 8px;" type="submit">
+            {{ 'common.button.search' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+  <mat-card appearance="outline">
+    <div class="row table-toolbar">
+      <div class="col-md-11 table-toolbar-title">
+        {{ 'customer.impactHistory' | translate | uppercase }}
+      </div>
+    </div>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <div class="crm__table">
+      <table mat-table [dataSource]="dataModel.dataSource" matSort matSortActive="orderNumber" matSortDisableClear
+        matSortDirection="desc">
+        <ng-container *ngFor="let item of columns" [ngSwitch]="item.field">
+          <ng-container matColumnDef="{{ item.field }}" *ngSwitchDefault>
+            <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row[item.field] }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'orderNumber'" sticky>
+            <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+            <td mat-cell *matCellDef="let row; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'create_Date'">
+            <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row[item.field] | date: 'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </mat-card>
+</mat-accordion>

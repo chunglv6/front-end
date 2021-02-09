@@ -1,0 +1,12 @@
+<common-list [dataSource]="dataModel.dataSource" [columns]="columns" [totalRecord]="totalRecord" [isLoading]="isLoading"
+  [isPaging]="true" [showHeader]="false" (page)="onPageChange($event)" [pageIndex]="pageIndex"
+  [startRecord]="searchModel.startrecord">
+  <custom-mat-column columnName="function">
+    <ng-template let-item>
+      <button mat-icon-button color="primary" (click)="request(item)" *ngIf="item.booCode== 'BOO2'"
+        matTooltip="{{'cancel-ticket-refund.ask-tooltip' | translate}}" matTooltipPosition="above">
+        <mat-icon>done</mat-icon>
+      </button>
+    </ng-template>
+  </custom-mat-column>
+</common-list>

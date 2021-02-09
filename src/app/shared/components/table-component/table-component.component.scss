@@ -1,0 +1,19 @@
+.noRecored {
+  text-align: center;
+  padding: 10px;
+  display: block;
+  border-bottom: 1px solid #c9cdd2;
+  border-right: 1px solid #c9cdd2;
+  border-left: 1px solid #c9cdd2;
+  font-weight: 700;
+}
+.evenColumn-color {
+  background-color: #f0f3f5;
+}
+.selectedRow {
+  background-color: #eac8ad !important;
+}
+::ng-deep .mat-paginator-page-size-select {
+  margin: 6px 4px 0 4px;
+  width: 50px !important;
+}

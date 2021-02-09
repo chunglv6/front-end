@@ -1,0 +1,14 @@
+.group-representative {
+  ::ng-deep .mat-tab-body .mat-tab-body-active {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+  }
+
+  ::ng-deep .mat-tab-body-content {
+    overflow: hidden !important;
+  }
+
+  ::ng-deep .mat-tab-header {
+    border-bottom: none;
+  }
+}

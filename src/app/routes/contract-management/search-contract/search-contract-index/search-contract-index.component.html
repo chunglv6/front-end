@@ -1,0 +1,7 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CONTRACT_01)">
+  <search-contract-search></search-contract-search>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CONTRACT_01)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

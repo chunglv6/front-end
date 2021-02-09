@@ -1,0 +1,136 @@
+<page-header></page-header>
+<form [formGroup]="formSearch">
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.lt-sm="100">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ 'contractSearch.title' | translate | uppercase }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-field-full">
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'contractSearch.contract-number' | translate }}</mat-label>
+                  <input matInput #contractNo autoFocus="contractNo" formControlName="contractNo"
+                    placeholder="{{ 'contractSearch.enter-contract-number' | translate }}" (keyup.enter)="onSearch()" />
+                  <button mat-button *ngIf="formSearch.controls.contractNo.value" class="showclear" matSuffix
+                    mat-icon-button (click)="formSearch.controls.contractNo.setValue(null); $event.stopPropagation()"
+                    type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.method_Recharge' | translate }}</mat-label>
+                  <mat-select formControlName="saleOrderSource">
+                    <mat-option>{{ 'common.default-select' | translate }}</mat-option>
+                    <ng-container *ngFor="let item of listSource">
+                      <mat-option [value]="item">{{item}}</mat-option>
+                    </ng-container>
+                  </mat-select>
+                  <button *ngIf="formSearch.controls.saleOrderSource.value" matSuffix mat-icon-button type="button"
+                    class="btn-clear-drop"
+                    (click)="formSearch.controls.saleOrderSource.setValue(null); $event.stopPropagation();">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{'search-information.transaction_date' | translate}}</mat-label>
+                  <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+                    <input matStartDate formControlName="startDate" #fromDateId maskDate
+                      placeholder="{{ 'common.fromDate' | translate }}" (keyup.enter)="onSearch()">
+                    <input matEndDate formControlName="endDate" maskDate
+                      placeholder="{{ 'common.endDate' | translate }}" #endDateId (keyup.enter)="onSearch()">
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value"
+                    class="showclearDatePopup"
+                    (click)="formSearch.controls.startDate.setValue(null);formSearch.controls.endDate.setValue(null); $event.stopPropagation()">
+                    <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                  <mat-error *ngIf="formSearch.controls.startDate.hasError('matStartDateInvalid')">
+                    {{ 'customer.err_ResgiterFromDate' | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'search-information.transaction_vtp_status' | translate }}</mat-label>
+                  <mat-select formControlName="payGateStatus">
+                    <mat-option [value]="null"> {{ 'common.default-select' | translate }}</mat-option>
+                    <ng-container *ngFor="let item of listStatus">
+                      <mat-option [value]="item.value">{{item.label}}</mat-option>
+                    </ng-container>
+                  </mat-select>
+                  <button *ngIf="formSearch.controls.payGateStatus.value" matSuffix mat-icon-button type="button"
+                    class="btn-clear-drop"
+                    (click)="formSearch.controls.payGateStatus.setValue(null); $event.stopPropagation();">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'search-information.transaction_momo_status' | translate }}</mat-label>
+                  <mat-select formControlName="ocsStatus">
+                    <mat-option [value]="null">{{ 'common.default-select' | translate }}</mat-option>
+                    <ng-container *ngFor="let item of listStatus">
+                      <mat-option [value]="item.value">{{item.label}}</mat-option>
+                    </ng-container>
+                  </mat-select>
+                  <button *ngIf="formSearch.controls.ocsStatus.value" matSuffix mat-icon-button type="button"
+                    class="btn-clear-drop"
+                    (click)="formSearch.controls.ocsStatus.setValue(null); $event.stopPropagation();">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <button mat-raised-button color="primary" (click)="onSearch()" [disabled]="formSearch.invalid"
+                  style="float: right;">{{'common.button.search' | translate}}</button>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-accordion>
+        <mat-card>
+          <common-list [headerTable]="'vehicle.exchangeHistory'" [dataSource]="dataModel.dataSource" [isPaging]="true"
+            [totalRecord]="totalRecord" [columns]="columns" (page)="onPageChange($event)" [pageIndex]="pageIndex"
+            [isLoading]="isLoading" [startRecord]="formSearch.value.startrecord">
+            <custom-mat-column columnName="saleOrderSource">
+              <ng-template let-item>
+                <span style="text-align: center !important;">{{item.saleOrderSource}}</span>
+              </ng-template>
+            </custom-mat-column>
+            <custom-mat-column columnName="payGateStatus">
+              <ng-template let-item>
+                <span style="text-align: center !important;"
+                  *ngIf="item.payGateStatus ==1">{{'search-information.success' | translate}}</span>
+                <span style="text-align: center !important;" *ngIf="item.payGateStatus==0">{{'search-information.fail' |
+                  translate}}</span>
+              </ng-template>
+            </custom-mat-column>
+            <custom-mat-column columnName="ocsStatus">
+              <ng-template let-item>
+                <span style="text-align: center !important;" *ngIf="item.ocsStatus==1">{{'search-information.success' |
+                  translate}}</span>
+                <span style="text-align: center !important;" *ngIf="item.ocsStatus ==0">{{'search-information.fail' |
+                  translate}}</span>
+              </ng-template>
+            </custom-mat-column>
+          </common-list>
+        </mat-card>
+      </mat-accordion>
+    </div>
+  </div>
+</form>

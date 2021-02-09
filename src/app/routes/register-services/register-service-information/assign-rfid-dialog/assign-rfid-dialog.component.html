@@ -1,0 +1,29 @@
+<a class="close" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{ 'customer-management.titleModalAssignRfid' | translate}}</h2>
+
+<mat-dialog-content class="over-hidden">
+  <form [formGroup]="formAssignRfid" class="form-field-full">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="100" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{'customer-management.assignRfid.rfidFrom' | translate}} <span class="required">*</span>
+          </mat-label>
+          <input matInput placeholder="{{'customer-management.assignRfid.rfidFrom' | translate}}"
+            formControlName="seriFrom" />
+          <mat-error *ngIf="formAssignRfid.get('seriFrom').errors?.required">
+            {{'customer-management.assignRfid.errorRfidFrom' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button class="ml-20 " mat-raised-button color="secondary"
+    (click)="resetForm()">{{'common.button.reEnter' | translate}}</button>
+  <button class="ml-20" [mat-dialog-close]="formAssignRfid.get('seriFrom').value" mat-button mat-raised-button
+    color="primary" [disabled]="formAssignRfid.invalid">{{'common.button.save' | translate}}</button>
+</mat-dialog-actions>

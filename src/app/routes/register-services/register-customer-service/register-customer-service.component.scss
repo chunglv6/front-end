@@ -1,0 +1,74 @@
+.ml-20 {
+  margin-left: 20px;
+}
+
+.float-right {
+  float: right;
+}
+
+.group-representative {
+  ::ng-deep .mat-tab-body .mat-tab-body-active {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+  }
+
+  ::ng-deep .mat-tab-body-content {
+    overflow: hidden !important;
+  }
+
+  // ::ng-deep .mat-tab-header {
+  //     border-bottom: none;
+  // }
+
+  // ::ng-deep .mat-tab-label-active {
+  //     background-color: transparent;
+  //     color: orange;
+  // }
+
+  // ::ng-deep mat-ink-bar {
+  //     background-color: transparent !important;
+  // }
+}
+
+.customer-code {
+  ::ng-deep .mat-form-field-appearance-outline {
+    .mat-form-field-outline-gap,
+    .mat-form-field-outline-end,
+    .mat-form-field-outline-start {
+      border-width: 1px !important;
+      color: #e0e0e0;
+    }
+  }
+}
+
+.dupDocNumber {
+  margin-top: -27px;
+  margin-left: 10px;
+  font-size: 9pt;
+}
+
+.city,
+.district,
+.ward {
+  ::ng-deep ng-dropdown-panel {
+    ::ng-deep .ng-dropdown-panel-items,
+    .scroll-host {
+      max-height: 150px !important;
+    }
+  }
+}
+
+::ng-deep .mat-tab-header {
+  border: none !important;
+}
+.successNotice {
+  color: green;
+  font-size: 15pt;
+}
+.failNotice {
+  color: red;
+  font-size: 15pt;
+}
+.mt-20 {
+  margin-top: 20px !important;
+}

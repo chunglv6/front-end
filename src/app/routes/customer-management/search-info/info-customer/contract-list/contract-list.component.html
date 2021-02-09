@@ -1,0 +1,61 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <div class="form-field-full" style="margin-top:25px">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contract.signDate' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+              <input matStartDate [formControl]="signDateForm" #fromDateId maskDate
+                placeholder="{{ 'common.fromDate' | translate }}">
+              <input matEndDate [formControl]="expDateForm" maskDate placeholder="{{ 'common.endDate' | translate }}"
+                #endDateId>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value" class="showclearDatePopup"
+              (click)="signDateForm.setValue(null);expDateForm.setValue(null); $event.stopPropagation()">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error *ngIf="signDateForm.hasError('matStartDateInvalid')">
+              {{ 'customer.err_ResgiterFromDate' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contract.code' | translate }}</mat-label>
+            <input matInput [(ngModel)]="searchModel.contractNo" (keyup.enter)="onSearch()"
+              placeholder="{{ 'contract.code' | translate }}" />
+            <button mat-button *ngIf="searchModel.contractNo" matSuffix mat-icon-button
+              (click)="searchModel.contractNo = null" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <button mat-raised-button color="primary" style="margin-right: 8px;"
+            [disabled]="signDateForm.hasError('matDatepickerMax')" (click)="onSearch()">
+            {{ 'common.button.search' | translate }}
+          </button>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="100" fxFlex.lt-sm="100">
+          <common-list [headerTable]="'contract.title.list'" [dataSource]="dataModel.dataSource" [isPaging]="true"
+            [totalRecord]="totalRecord" [columns]="columns" (page)="onPageChange($event)" [pageIndex]="pageIndex"
+            [isLoading]="isLoading">
+            <custom-mat-column columnName="status">
+              <ng-template let-item>
+                <span *ngIf="item.status == '1'">{{ 'common.deadActive' | translate }}</span>
+                <span *ngIf="item.status == '2'">{{ 'common.active' | translate }}</span>
+                <span *ngIf="item.status == '3'">{{ 'common.cancel' | translate }}</span>
+                <span *ngIf="item.status == '4'">{{ 'common.end' | translate }}</span>
+              </ng-template>
+            </custom-mat-column>
+          </common-list>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

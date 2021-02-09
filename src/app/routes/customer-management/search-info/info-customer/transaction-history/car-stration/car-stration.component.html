@@ -1,0 +1,102 @@
+<mat-accordion>
+  <div class="form-field-full">
+    <mat-card>
+      <form [formGroup]="formSearch">
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="50" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'exchangeHistory.payment_type' | translate }}</mat-label>
+              <mtx-select [items]="dataTransactionType" bindLabel="name" bindValue="code" [multiple]="false"
+                formControlName="sourceTransaction" [notFoundText]="'common.notFound' | translate"
+                [searchable]="dataTransactionType?.length>10">
+              </mtx-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'exchangeHistory.time_to' | translate }}
+                <span class="required">*</span>
+              </mat-label>
+              <mat-date-range-input [rangePicker]="picker" (click)="picker.open()" [max]="maxDate">
+                <input matStartDate formControlName="timestampOutFrom" #fromDateId maskDate [(ngModel)]="departDate"
+                  (dateChange)="getValueTimeOutFrom($event.value)" placeholder="{{ 'common.fromDate' | translate }}">
+                <input matEndDate formControlName="timestampOutTo" maskDate [(ngModel)]="returnDate"
+                  (dateChange)="getValueTimeOutTo($event.value)" placeholder="{{ 'common.endDate' | translate }}"
+                  #endDateId>
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value" class="showclearDatePopup"
+                (click)="minToDate=null;maxDate=null;formSearch.controls.timestampOutFrom.setValue(null);formSearch.controls.timestampOutTo.setValue(null); $event.stopPropagation()">
+                <mat-icon matDatepickerToggleIcon>close</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <mat-error
+                *ngIf="formSearch.get('timestampOutFrom').errors?.required || formSearch.get('timestampOutTo').errors?.required">
+                {{ 'exchangeHistory.time-error-required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSearch.get('timestampOutFrom').hasError('matStartDateInvalid')">
+                {{ 'customer.err_ResgiterFromDate' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="50" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'exchangeHistory.station_type' | translate }}
+              </mat-label>
+              <mat-select formControlName="stationType">
+                <mat-option [value]="null">{{ 'common.default-select' | translate }}</mat-option>
+                <ng-container *ngFor="let item of dataOptionStationType">
+                  <mat-option [value]="item.code">{{item.val}}</mat-option>
+                </ng-container>
+              </mat-select>
+              <button *ngIf="formSearch.value.stationType" matSuffix mat-icon-button type="button"
+                class="btn-clear-drop"
+                (click)="formSearch.controls.stationType.setValue(null); $event.stopPropagation()">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error>{{ 'buyTicket.station_typeEr' | translate }} </mat-error>
+
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="showStages">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.distance_type' | translate }}
+              </mat-label>
+              <mtx-select [items]="dataOptionStages" bindLabel="name" bindValue="id" [multiple]="false"
+                (change)="getStationInOut($event)" formControlName="stages"
+                [notFoundText]="'common.notFound' | translate" [searchable]="dataOptionStages?.length>10"
+                [dropdownPosition]="'bottom'">
+              </mtx-select>
+              <mat-error>{{ 'buyTicket.distance_typeEr' | translate }} </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="showStations">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'buyTicket.stations' | translate }}</mat-label>
+              <mtx-select [items]="dataOptionStations" bindLabel="name" bindValue="code" [multiple]="false"
+                formControlName="stations" [notFoundText]="'common.notFound' | translate"
+                [searchable]="dataOptionStations?.length>10">
+              </mtx-select>
+              <mat-error>{{ 'policy.select-station' | translate }} </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="85" fxFlex.lt-sm="100"></div>
+          <div fxFlex="15" fxFlex.lt-sm="100">
+            <button mat-raised-button color="primary" type="submit" (click)="onSearch()"
+              [disabled]="formSearch.invalid">
+              {{ 'exchangeHistory.search' | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+      <common-list [headerTable]="'exchangeHistory.carStration'" [dataSource]="dataModel.dataSource" [columns]="columns"
+        [totalRecord]="totalRecord" [isLoading]="isLoading" [isPaging]="true" [showHeader]="true"
+        (page)="onPageChange($event)" [pageIndex]="pageIndex" [startRecord]="formSearch.value.startrecord">
+      </common-list>
+    </mat-card>
+  </div>
+</mat-accordion>

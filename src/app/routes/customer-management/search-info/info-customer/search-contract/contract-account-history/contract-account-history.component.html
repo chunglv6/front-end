@@ -1,0 +1,88 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <div class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="100" fxFlex.lt-sm="100"></div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contract.account.changeDate' | translate }}:
+              {{ 'common.fromDate' | translate }}</mat-label>
+            <input matInput maskDate [matDatepicker]="create" placeholder="{{ 'common.fromDate' | translate }}"
+              [(ngModel)]="searchModel.create" [max]="searchModel.create" (click)="create.open()" autocomplete="off" />
+            <mat-datepicker-toggle matSuffix *ngIf="searchModel.create" class="showclearDatePopup"
+              (click)="searchModel.create = null">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="create"></mat-datepicker-toggle>
+            <mat-datepicker #create></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'common.endDate' | translate }}</mat-label>
+            <input matInput maskDate [matDatepicker]="endDate" placeholder="{{ 'common.endDate' | translate }}"
+              [(ngModel)]="searchModel.endDate" [min]="searchModel.endDate" (click)="endDate.open()"
+              autocomplete="off" />
+            <mat-datepicker-toggle matSuffix *ngIf="searchModel.endDate" class="showclearDatePopup"
+              (click)="searchModel.endDate = null">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+            <mat-datepicker #endDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contract.account.changeType' | translate }}</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let type of changeTypeList" [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            </mat-select>
+            <!-- <button *ngIf="formSearch.controls.license.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop" (click)="formSearch.controls.license.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button> -->
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
+        <div>
+          <button mat-raised-button color="primary" style="margin-right: 8px;" type="submit" (click)="getData()">
+            {{ 'common.button.search' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+  <mat-card appearance="outline">
+    <div class="row table-toolbar">
+      <div class="col-md-11 table-toolbar-title">
+        {{ 'contract.accountHistory' | translate | uppercase }}
+      </div>
+    </div>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <div class="crm__table">
+      <table mat-table [dataSource]="dataModel.dataSource" matSort matSortActive="code" matSortDisableClear
+        matSortDirection="desc">
+        <ng-container *ngFor="let item of columns" [ngSwitch]="item.field">
+          <ng-container matColumnDef="{{ item.field }}" *ngSwitchDefault>
+            <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row[item.field] }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'orderNumber'" sticky>
+            <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+            <td mat-cell *matCellDef="let row; let i = index" class="ui-text-center">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </mat-card>
+</mat-accordion>

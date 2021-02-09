@@ -1,0 +1,147 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'customer.title' | translate | uppercase }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.type' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.custTypeName" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.code' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.custId" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'common.status' | translate }}</mat-label>
+            <input matInput *ngIf="!dataModel.status" [value]="" readonly />
+            <input matInput *ngIf="dataModel.status == '1'" [value]="'common.active' | translate" readonly />
+            <input matInput *ngIf="dataModel.status == '0'" [value]="'briefcase.deadActive' | translate" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label *ngIf="dataModel.type == 1 || previous.type == 1">{{ 'customer.name' | translate }}
+            </mat-label>
+            <mat-label *ngIf="dataModel.type == 2 || previous.type == 2">
+              {{ 'customer-management.formCustomerRegister.companyName' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.custName" readonly matTooltip="{{ dataModel.custName }}"
+              [matTooltipPosition]="'above'" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label *ngIf="dataModel.type == 1 || previous.type == 1">{{ 'customer.dob' | translate }}
+            </mat-label>
+            <mat-label *ngIf="dataModel.type == 2 || previous.type == 2">
+              {{ 'customer-management.formCustomerRegister.foundingDate' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.birthDate" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="dataModel.type == 1">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.gender' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.gender" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="dataModel.type == 2">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.formCustomerRegister.taxNo' | translate
+            }}</mat-label>
+            <input matInput placeholder="{{ 'customer-management.formCustomerRegister.taxNo' | translate }}"
+              [(ngModel)]="dataModel.taxCode" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.attachType' | translate }}</mat-label>
+            <input matInput placeholder="{{ 'customer.attachType' | translate }}"
+              [(ngModel)]="dataModel.documentTypeName" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.attachNumber' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.documentNumber" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.attachDate' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.dateOfIssue" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.attachAddress' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.placeOfIssue" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="dataModel.type == 2 || previous.type == 2">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.province' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.province" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="dataModel.type == 2 || previous.type == 2">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.district' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.district" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="dataModel.type == 2 || previous.type == 2">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.commune' | translate }}</mat-label>
+            <input matInput [(ngModel)]="place.name" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.address' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.areaName" readonly matTooltip="{{ dataModel.areaName }}"
+              [matTooltipPosition]="'above'" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.phoneNumber' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.phoneNumber" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer.email' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.email" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <hr *ngIf="dataModel.type == 2 || previous.type == 2" />
+      <app-enterprise-customer-search [dataCustomer]="dataModel"
+        *ngIf="(dataModel && dataModel.type == 2) || previous.type == 2">
+      </app-enterprise-customer-search>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

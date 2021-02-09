@@ -1,0 +1,14 @@
+<page-header></page-header>
+<mat-tab-group animationDuration="0ms" class="group-representative">
+  <mat-tab *ngIf="isEdit" label="{{ 'policy.title.add-new-ticket-prices' | translate }}">
+    <add-pricelist></add-pricelist>
+  </mat-tab>
+  <mat-tab *ngIf="!isEdit" label="{{ 'policy.title.update-ticket-prices' | translate }}">
+    <add-pricelist></add-pricelist>
+  </mat-tab>
+  <div *ngIf="isEdit">
+    <mat-tab label="{{ 'policy.importFromExcel' | translate }}">
+      <app-import-prices-list></app-import-prices-list>
+    </mat-tab>
+  </div>
+</mat-tab-group>

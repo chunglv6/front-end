@@ -1,0 +1,187 @@
+<a class="close-popup" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>
+  {{ dataModel.titlePopup | translate }}
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="formDetail" class="form-field-full">
+    <mat-card>
+      <mat-panel-title>
+        {{ 'topup-money.select-account' | translate }}
+      </mat-panel-title>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="mt-20" [ngClass]="dataDialog.isView?'readonly':''">
+        <div fxFlex="33.33" fxFlex.lt-sm="100" [ngClass]="dataDialog.item?'readonly':''">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.user-account' | translate }}<span class="required">*</span>
+            </mat-label>
+            <input matInput formControlName="accountUser" [readonly]="dataDialog.isView || dataDialog.item"
+              (change)="getInfoMember()" />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.accountUser && !dataDialog.item" matSuffix
+              mat-icon-button type="button" (click)="formDetail.controls.accountUser.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error
+              *ngIf="formDetail.controls.accountUser.errors?.required || formDetail.controls.accountUser.errors?.cannotWhiteSpace">
+              {{ 'topup-money.error-required-account' | translate }}
+            </mat-error>
+            <mat-error *ngIf="formDetail.controls.accountUser.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.accountUser.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.staff-name' | translate }}</mat-label>
+            <input matInput formControlName="accountFullname" [readonly]="dataDialog.isView" />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.accountFullname" matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.accountFullname.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.accountFullname.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.accountFullname.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.account-id' | translate }}<span class="required">*</span></mat-label>
+            <input matInput formControlName="accountUserId" />
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <mat-panel-title>
+        {{ 'topup-money.staff-orgnization' | translate }}
+      </mat-panel-title>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="mt-20" [ngClass]="dataDialog.isView?'readonly':''">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.code-station-organization' | translate }}</mat-label>
+            <input matInput formControlName="partyCode" [readonly]="dataDialog.isView" />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.partyCode" matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.partyCode.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.partyCode.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.partyCode.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="66.67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.name-station-organization' | translate }}</mat-label>
+            <input matInput formControlName="partyName" [readonly]="dataDialog.isView" />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.partyName" matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.partyName.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.partyName.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.partyName.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </mat-card>
+    <mat-card>
+      <mat-panel-title>
+        {{ 'topup-money.contact' | translate }}
+      </mat-panel-title>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="mt-20" [ngClass]="dataDialog.isView?'readonly':''">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'Email' | translate }}</mat-label>
+            <input matInput formControlName="email" [readonly]="dataDialog.isView" />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.email" matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.email.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.email.errors?.pattern">
+              {{'common.emailRegex' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formDetail.controls.email.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.email.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.formCustomerRegister.numberPhone' | translate }}</mat-label>
+            <input matInput formControlName="phoneNumber" [readonly]="dataDialog.isView" digitOnly />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.phoneNumber" matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.phoneNumber.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.phoneNumber.errors?.pattern">
+              {{'common.numberPhoneRegex' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formDetail.controls.phoneNumber.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.phoneNumber.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.identiy-number' | translate }}</mat-label>
+            <input matInput formControlName="dentityNumber" [readonly]="dataDialog.isView" digitOnly />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.dentityNumber " matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.dentityNumber.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.dentityNumber.errors?.maxlength">
+              {{ 'topup-money.error-maxlength' | translate: { char:
+              formDetail.controls.dentityNumber.errors?.maxlength.requiredLength} }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card>
+      <mat-panel-title>
+        {{ 'topup-money.limit' | translate }}
+      </mat-panel-title>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="mt-20" [ngClass]="dataDialog.isView?'readonly':''">
+        <div fxFlex="100" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'topup-money.amount-per-day' | translate }} <span class="required">*</span></mat-label>
+            <input matInput formControlName="amount" [readonly]="dataDialog.isView" vndFormat
+              money="{{formDetail.value.amount}}" maxlength="12" />
+            <button mat-button *ngIf="!dataDialog.isView && formDetail.value.amount " matSuffix mat-icon-button
+              type="button" (click)="formDetail.controls.amount.setValue(null)" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formDetail.controls.amount.invalid">
+              {{'topup-money.error-required-amount' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+    style="margin-right: 8px; width: 100%;">
+    <button mat-raised-button type="button" color="secondary" mat-dialog-close style="float: right;">
+      {{ 'common.button.close' | translate }}
+    </button>
+    <button mat-raised-button type="button" color="primary" style="float: right;" *ngIf="!dataDialog.isView"
+      (click)="save()" [disabled]="formDetail.invalid || !formDetail.controls.accountUserId.value">
+      <span *ngIf="!dataDialog.item">
+        {{'common.button.insert' | translate}}
+      </span>
+      <span *ngIf="dataDialog.item">
+        {{'common.button.update' | translate}}
+      </span>
+    </button>
+  </div>
+</mat-dialog-actions>

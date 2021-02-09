@@ -1,0 +1,37 @@
+<div class="form-field-full">
+  <div fxLayout="row wrap" fxLayoutGap="20px grid">
+    <div fxFlex="100" fxFlex.lt-sm="100" style="margin-bottom: 10px;margin-top: 10px;">
+      <label style="font-style: italic; cursor: pointer; color: blue;" (click)="onDownloadFile($event)">
+        <mat-icon svgIcon="ic_download"></mat-icon> {{'common.downloadTemplate' | translate}}
+      </label>
+    </div>
+  </div>
+
+  <div fxLayout="row wrap" fxLayoutGap="20px grid">
+    <div fxFlex="50" fxFlex.lt-sm="100" class=" ">
+      <form [formGroup]="formImport">
+        <div fxLayout="row wrap" fxLayoutGap="8px grid" class="mt-15 readonly">
+          <div fxFlex="100" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" floatLabel="always">
+              <input matInput formControlName="inputFile" style="padding-left: 80px;" readonly />
+              <div fxLayout="row wrap" fxLayoutGap="4px grid" style="height: 10px;">
+                <input #chooseFile hidden="true" type="file" accept=".xlsx" onclick="this.value=null"
+                  (change)="onFileChange($event.target.files)" />
+                <button (click)="chooseFile.click()"
+                  class="btn-file">{{'customer-management.updateProfileForm.btnChooseFile' | translate}}</button>
+              </div>
+              <mat-error *ngIf="formImport.get('inputFile').errors?.required">
+                {{'common.importFile' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div fxFlex="50" fxFlex.lt-sm="100" class=" ">
+      <button mat-raised-button (click)="onSaveFile()" [disabled]="formImport.get('inputFile').value == ''"
+        color="primary">{{'common.button.save' | translate}}</button>
+    </div>
+  </div>
+</div>

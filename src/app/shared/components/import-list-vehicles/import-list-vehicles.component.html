@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>{{'common.importVehicle' | translate}}
+  <a class="btn-close-popup" mat-dialog-close>
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </a>
+</h2>
+
+<mat-dialog-content class="over-hidden">
+  <div class="form-field-full">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="100" fxFlex.lt-sm="100">
+        <label style="font-style: italic; cursor: pointer; color: blue;" (click)="onDownloadFile($event)">
+          <mat-icon svgIcon="ic_download"></mat-icon> {{'common.downloadTemplate' | translate}}
+        </label>
+      </div>
+    </div>
+    <form [formGroup]="formImport">
+      <div fxLayout="row wrap" fxLayoutGap="8px grid" class="mt-15 readonly">
+        <div fxFlex="100" fxFlex.lt-sm="100">
+          <div class="center">
+            <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+              <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <input matInput formControlName="inputFile" style="padding-left: 14em; color: red;" readonly />
+                  <div fxLayout="row wrap" fxLayoutGap="4px grid" style="height: 10px;">
+                    <input #chooseFile hidden="true" type="file" accept=".xlsx ,.xls" onclick="this.value=null"
+                      (change)="onFileChange($event.target.files)" />
+                    <button (click)="chooseFile.click()"
+                      class="btn-file">{{'customer-management.updateProfileForm.btnDropFile' | translate}}</button>
+                  </div>
+                  <mat-error *ngIf="formImport.get('inputFile').errors?.required">
+                    {{'common.importFile' | translate}}
+                  </mat-error>
+                </mat-form-field>
+              </ng-template>
+            </ngx-file-drop>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button class="ml-20" mat-dialog-close mat-button mat-raised-button
+    color="secondary">{{'common.button.close' | translate}}</button>
+  <button class="ml-20" mat-button mat-raised-button (click)="onSaveFile()" [disabled]="disableSaveFile"
+    color="primary">{{'common.button.save' | translate}}</button>
+</mat-dialog-actions>

@@ -1,0 +1,70 @@
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+.ml-20 {
+  margin-left: 20px;
+}
+.float-right {
+  float: right;
+}
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none !important;
+  width: 100%;
+}
+
+::ng-deep mat-step-header .mat-step-icon {
+  visibility: hidden !important;
+}
+::ng-deep .mat-stepper-horizontal-line {
+  visibility: hidden !important;
+}
+::ng-deep .mat-step-label {
+  width: 100%;
+}
+:host ::ng-deep {
+  .mat-step-text-label {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+  }
+}
+
+.step {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  &.done {
+    background-color: #29c555;
+  }
+  &.active {
+    background-color: #e16408;
+  }
+  &.inactive {
+    background-color: #c3bfbf;
+  }
+}
+
+.vector {
+  height: 10.22px;
+  width: 14.05px;
+  position: relative;
+  left: 26%;
+  top: 31%;
+  background: url(../../../assets/images/Vector.png);
+}
+.text-step {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  &.active-color {
+    color: #e16408 !important;
+  }
+}
+.step-block {
+  display: flex;
+  width: 100%;
+}
+.next-icon {
+  margin-left: auto;
+}

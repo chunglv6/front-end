@@ -1,0 +1,53 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CUST_01)">
+  <page-header></page-header>
+  <ng-container *ngIf="!isSaved">
+    <mat-horizontal-stepper #stepper [selectedIndex]="currentStep" (selectionChange)="setIndex($event)">
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="step-block">
+            <div class="step" [ngClass]="(index==0)?'active':'done'">
+              <div class="vector" *ngIf="index>0"></div>
+            </div>
+            <span class="text-step" [ngClass]="(index==0)?'active-color':''"> 1.
+              {{ 'customer-management.step1Title' | translate | uppercase }}</span>
+            <mat-icon svgIcon="next_step" class="next-icon"></mat-icon>
+          </div>
+        </ng-template>
+        <app-register-customer-service (emitFullName)="onReceiveFullName($event)"></app-register-customer-service>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="step-block">
+            <div class="step" [ngClass]="(index==1)?'active':(index==0)?'inactive':'done'">
+              <div class="vector" *ngIf="index>1"></div>
+            </div>
+            <span class="text-step" [ngClass]="(index==1)?'active-color':''">2.
+              {{ 'customer-management.step2Title' | translate | uppercase }}</span>
+            <mat-icon svgIcon="next_step" class="next-icon"></mat-icon>
+          </div>
+        </ng-template>
+        <app-register-contract-service [fullNameCust]="fullName" *ngIf="index==1"></app-register-contract-service>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="step-block">
+            <div class="step" [ngClass]="(index==2)?'active':(index<2)?'inactive':'done'">
+              <div class="vector" *ngIf="index>2"></div>
+            </div>
+            <span class="text-step" [ngClass]="(index==2)?'active-color':''"> 3.
+              {{ 'customer-management.step3Title' | translate | uppercase }}</span>
+          </div>
+        </ng-template>
+        <app-register-vehicle-service *ngIf="index==2"></app-register-vehicle-service>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </ng-container>
+  <ng-container *ngIf="isSaved">
+    <app-register-service-information (backToRegisterForm)="backToRegisterFormInfo($event)" [fullNameCust]="fullName">
+    </app-register-service-information>
+  </ng-container>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CUST_01)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

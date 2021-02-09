@@ -1,0 +1,13 @@
+.text-ui-center {
+  text-align: center;
+}
+.mat-form-field-wrapper {
+  padding: 0 !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  padding: 0 !important;
+}
+::ng-deep .tablemat .mat-form-field-wrapper {
+  padding: 0px !important;
+  margin-bottom: 10px !important;
+}

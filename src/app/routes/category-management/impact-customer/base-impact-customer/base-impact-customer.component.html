@@ -1,0 +1,80 @@
+<a class="close" mat-dialog-close>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{header}}
+</h2>
+
+<div class="form-field-full">
+  <form [formGroup]="formImpact">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline" class="common-field">
+          <mat-label>{{ 'action_audit.actionType' | translate }} <span class="required">*</span></mat-label>
+          <mtx-select [items]="listActType" bindLabel="name" bindValue="actTypeId" [multiple]="false" appendTo="body"
+            formControlName="actTypeId" [searchable]="listActType?.length>10"
+            [notFoundText]="'common.notFound' | translate">
+          </mtx-select>
+          <mat-error *ngIf="formImpact.get('actTypeId').errors?.required">
+            {{'category.valid-choose-impactName' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.license' | translate }} <span class="required">*</span></mat-label>
+          <mtx-select [items]="listOptionLicense" bindLabel="value" bindValue="id" [multiple]="false" appendTo="body"
+            [searchable]="listOptionLicense?.length>10" formControlName="documentTypeId"
+            [notFoundText]="'common.notFound' | translate">
+          </mtx-select>
+          <mat-error *ngIf="formImpact.get('documentTypeId').errors?.required">
+            {{'category.valid-license' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.status' | translate }} <span class="required">*</span></mat-label>
+          <mat-select formControlName="status">
+            <ng-container *ngFor="let item of listStatus">
+              <mat-option [value]="item.code">{{item.value}}</mat-option>
+            </ng-container>
+          </mat-select>
+          <button *ngIf="formImpact.controls.status.value" matSuffix mat-icon-button type="button"
+            class="btn-clear-drop" (click)="formImpact.controls.status.setValue(null); $event.stopPropagation();">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formImpact.get('status').errors?.required">
+            {{'category.valid-status' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.note' | translate }}</mat-label>
+          <input matInput placeholder="{{ 'category.enter-note' | translate }}" formControlName="description" />
+          <button mat-button *ngIf="formImpact.controls.description.value" class="showclear" matSuffix mat-icon-button
+            (click)="formImpact.controls.description.setValue(null); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formImpact.get('description').errors?.cannotWhiteSpace">
+            {{'common.space_error' | translate}}
+          </mat-error>
+          <mat-error *ngIf="formImpact.get('description').errors?.maxlength">
+            {{'common.validate.maxlength-510' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <div div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+    fxLayoutGap.xs="0" style="margin-right: 8px;">
+    <button mat-raised-button color="primary" style="margin-right: 8px;" (click)="onSave()"
+      [disabled]="formImpact.invalid">{{'common.button.save' | translate}}</button>
+    <button mat-raised-button color="secondary"
+      (click)="resetAllForm()">{{'common.button.reEnter' | translate}}</button>
+  </div>
+</div>

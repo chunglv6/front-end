@@ -1,0 +1,22 @@
+<mat-accordion>
+  <div class="form-field-full">
+    <mat-card appearance="outline">
+      <common-list  [headerTable]="'contract.attachList'"
+      [dataSource]="dataModel.dataSource"
+      [isLoading]="isLoading"
+      [isPaging]="true"
+      [columns]="columns"
+      [totalRecord]="totalRecord"
+      [pageIndex]="pageIndex"
+      (page)="onPageChange($event)">
+            <custom-mat-column columnName="action">
+              <ng-template let-item>
+                <button mat-icon-button color="primary" (click)="downLoadFile(item)">
+                  <mat-icon>get_app</mat-icon>
+                </button>
+              </ng-template>
+            </custom-mat-column>
+          </common-list>
+    </mat-card>
+  </div>
+</mat-accordion>

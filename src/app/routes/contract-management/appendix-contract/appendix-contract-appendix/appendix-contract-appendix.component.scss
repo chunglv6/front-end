@@ -1,0 +1,20 @@
+.noRecored {
+  text-align: center;
+  padding: 10px;
+  display: block;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
+  font-weight: 700;
+}
+#fix-page ::ng-deep .mat-paginator-page-size-select {
+  margin: 6px 4px 0 4px;
+  width: 60px !important;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}

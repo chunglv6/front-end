@@ -1,0 +1,158 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CUST_31)">
+  <page-header> </page-header>
+  <form [formGroup]="formSearch" class="form-field-full">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'contractAdd.title-search' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.titleAutoComplete' | translate }}
+                <span class="required">*</span>
+              </mat-label>
+              <input matInput [matAutocomplete]="auto" formControlName="searchContract" #inputContract
+                autoFocus="inputContract" placeholder="{{ 'buyTicket.code' | translate }}" />
+              <button mat-button *ngIf="formSearch.controls.searchContract.value" matSuffix mat-icon-button
+                aria-label="Clear" (click)="formSearch.controls.searchContract.setValue(null); $event.stopPropagation()"
+                class="showclear" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error>{{ 'contractMerge.contract-or-plate' | translate }} </mat-error>
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+              (optionSelected)="onSelectedContract($event)">
+              <mat-option *ngIf="searchModel.isLoadingContract">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-option>
+              <ng-container *ngIf="!searchModel.isLoadingContract">
+                <mat-option *ngFor="let contract of contracts" [value]="contract">
+                  <div innerHTML="{{
+                    contract?.contractNo | highlight: formSearch.controls.searchContract.value
+                  }}"></div>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.code' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.contractNo" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.signDate' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.signDate" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.create' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.signName" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.employee' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.createUser" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.validity-date' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.effDate" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.end-validity-date' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.expDate" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer.title' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.name' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.custName" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.phoneNumber' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.phoneNumber" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"></div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.attachType' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.attachType" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.attachNumber' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dataModel.documentNumber" [ngModelOptions]="{ standalone: true }" readonly />
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"></div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'cancel-ticket-refund.bought-ticket' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-tab-group (selectedIndexChange)="changeTab($event)">
+          <mat-tab label="{{ 'buyTicket.ticket_list' | translate }}">
+            <common-list [dataSource]="dataModel.dataSource" [columns]="columns" [totalRecord]="totalRecord"
+              [isLoading]="isLoading" [isPaging]="true" [showHeader]="false" (page)="onPageChange($event)"
+              [startRecord]="searchModel.startrecord" [pageIndex]="pageIndex">
+              <custom-mat-column columnName="action">
+                <ng-template let-item>
+                  <button mat-icon-button color="primary" (click)="cancel(item)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </ng-template>
+              </custom-mat-column>
+            </common-list>
+          </mat-tab>
+          <mat-tab label="{{ 'cancel-ticket-refund.title-requied-refund' | translate }}">
+            <app-requied-refund *ngIf="index == 1" [infoContract]="dataModel"></app-requied-refund>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CUST_31)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

@@ -1,0 +1,289 @@
+{
+  "menu": [
+    {
+      "route": "register-services",
+      "name": "register-services",
+      "icon": "ic_DangKyDichVu",
+      "type": "link"
+    },
+    {
+      "route": "customer-management",
+      "name": "customer-management",
+      "type": "sub",
+      "icon": "ic_QlyKhachHang",
+      "children": [
+        {
+          "route": "customer-register",
+          "name": "customer-register",
+          "type": "link"
+        },
+        {
+          "route": "connect-viettelpay",
+          "name": "connect-viettelpay",
+          "type": "link"
+        },
+        {
+          "route": "search",
+          "name": "search-info",
+          "type": "link",
+          "icon": "question_answer"
+        },
+        {
+          "route": "change-information",
+          "name": "change-information",
+          "type": "link"
+        },
+        {
+          "route": "buy-ticket",
+          "name": "buy-ticket",
+          "type": "link"
+        },
+        {
+          "route": "change-card-rfid",
+          "name": "change-card-rfid",
+          "type": "link"
+        },
+        {
+          "route": "transfer-own-vehicle",
+          "name": "transfer-own-vehicle",
+          "type": "link",
+          "icon": "question_answer"
+        },
+        {
+          "1--route": "account-recharge",
+          "1--name": "account-recharge",
+          "1--type": "link",
+          "1--icon": "question_answer"
+        },
+        {
+          "route": "update-cancel-ticket-no-refund",
+          "name": "update-cancel-ticket-no-refund",
+          "type": "link",
+          "icon": "question_answer"
+        },
+        {
+          "route": "cancel-ticket-refund",
+          "name": "cancel-ticket-refund",
+          "type": "link",
+          "icon": "question_answer"
+        }
+      ]
+    },
+    {
+      "route": "contract-management",
+      "name": "contract-management",
+      "type": "sub",
+      "icon": "ic_QlyHopDong",
+      "children": [
+        {
+          "route": "search-contract",
+          "name": "search-contract",
+          "type": "link"
+        },
+        {
+          "route": "add-contract",
+          "name": "sign-new-contract",
+          "type": "link"
+        },
+        {
+          "route": "appendix-contract",
+          "name": "sign-appendix-contract",
+          "type": "link"
+        },
+        {
+          "route": "detach-contract",
+          "name": "detach-contract",
+          "type": "link"
+        },
+        {
+          "route": "merge-contract",
+          "name": "merge-contract",
+          "type": "link"
+        },
+        {
+          "route": "end-contract",
+          "name": "end-contract",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "route": "briefcase",
+      "name": "briefcase",
+      "type": "sub",
+      "icon": "ic_QlyHoSo",
+      "children": [
+        {
+          "route": "search",
+          "name": "search",
+          "type": "link"
+        },
+        {
+          "route": "approve",
+          "name": "approve",
+          "type": "link"
+        },
+        {
+          "route": "additional",
+          "name": "additional",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "route": "policy",
+      "name": "policy",
+      "type": "sub",
+      "icon": "ic_ChinhSach-GiaGoi",
+      "children": [
+        {
+          "route": "promotion",
+          "name": "promotion",
+          "type": "link"
+        },
+        {
+          "route": "manage-fee",
+          "name": "servicefee",
+          "type": "link"
+        },
+        {
+          "route": "pricelist",
+          "name": "pricelist",
+          "type": "link"
+        },
+        {
+          "route": "pricelist_add",
+          "name": "pricelist_add",
+          "type": "not-link"
+        },
+        {
+          "route": "pricelist_edit",
+          "name": "pricelist_edit",
+          "type": "not-link"
+        }
+      ]
+    },
+    {
+      "route": "search-information",
+      "name": "search-info",
+      "type": "sub",
+      "icon": "ic_TracuuThongTin",
+      "children": [
+        {
+          "route": "vehicle-history-via-station",
+          "name": "vehicle-history-via-station",
+          "type": "link"
+        },
+        {
+          "route": "search-agency",
+          "name": "search-agency",
+          "type": "link"
+        },
+        {
+          "route": "search-history-action",
+          "name": "search-history-action",
+          "type": "link"
+        },
+        {
+          "route": "search-transaction",
+          "name": "search-transaction",
+          "type": "link"
+        },
+        {
+          "route": "cust-regis",
+          "name": "cust-regis",
+          "type": "link"
+        },
+        {
+          "route": "topup-etc",
+          "name": "topup-etc",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "route": "special-vehicle-management",
+      "name": "special-vehicle-management",
+      "type": "sub",
+      "icon": "ic_QuanlyPhuongTienDB",
+      "children": [
+        {
+          "route": "priority-forbidden-vehicle",
+          "name": "priority-forbidden-vehicle",
+          "type": "link"
+        },
+        {
+          "route": "priority-forbidden-vehicle-create",
+          "name": "priority-forbidden-vehicle-create",
+          "type": "not-link"
+        },
+        {
+          "route": "priority-forbidden-vehicle-update",
+          "name": "priority-forbidden-vehicle-update",
+          "type": "not-link"
+        },
+        {
+          "route": "exception-vehicle",
+          "name": "exception-vehicle",
+          "type": "link"
+        },
+        {
+          "route": "exception-vehicle-create",
+          "name": "exception-vehicle-create",
+          "type": "not-link"
+        },
+        {
+          "route": "exception-vehicle-update",
+          "name": "exception-vehicle-update",
+          "type": "not-link"
+        }
+      ]
+    },
+    {
+      "route": "category-management",
+      "name": "category-management",
+      "type": "sub",
+      "icon": "ic_quanlyDanhMuc",
+      "children": [
+        {
+          "route": "impact",
+          "name": "impact",
+          "type": "link"
+        },
+        {
+          "route": "reason-impact",
+          "name": "reason-impact",
+          "type": "link"
+        },
+        {
+          "route": "customer-impact",
+          "name": "customer-impact",
+          "type": "link"
+        },
+        {
+          "route": "license-impact",
+          "name": "license-impact",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "route": "topup-money",
+      "name": "topup-money",
+      "type": "sub",
+      "icon": "ic_quanlyDanhMuc",
+      "children": [
+        {
+          "route": "config",
+          "name": "config",
+          "type": "link"
+        },
+        {
+          "route": "topup",
+          "name": "topup",
+          "type": "link"
+        }
+      ]
+    }
+  ]
+}

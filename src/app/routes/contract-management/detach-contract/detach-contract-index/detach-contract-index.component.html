@@ -1,0 +1,7 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CONTRACT_06)">
+  <detach-contract-detach></detach-contract-detach>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CONTRACT_06)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

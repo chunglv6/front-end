@@ -1,0 +1,24 @@
+<div class="row table-toolbar" *ngIf="showHeader">
+  <div class="col-md-9 table-toolbar-title">
+    {{headerTable |translate | uppercase}} <span class="table__totalRecord--color">({{totalRecord}})</span>
+  </div>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<div class="crm__table" [ngStyle]="{'height':stickyHeight}">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+    <ng-content>
+    </ng-content>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+    <tr class="" mat-row [ngClass]="{'evenColumn-color': index%2 !=0,'selectedRow':row.selected}"
+      (click)="onClickRow(row)" *matRowDef="let row;let index= dataIndex; columns: displayedColumns;">
+    </tr>
+  </table>
+  <span class="noRecored" *ngIf="!dataSource || dataSource.length ==0 ">
+    {{'common.noRecord' |translate}}
+  </span>
+  <div [hidden]="!isPaging">
+    <mat-paginator [pageSizeOptions]="pageSizeList" [length]="totalRecord" showFirstLastButtons
+      (page)="onPaginateChange($event)">
+    </mat-paginator>
+  </div>
+</div>

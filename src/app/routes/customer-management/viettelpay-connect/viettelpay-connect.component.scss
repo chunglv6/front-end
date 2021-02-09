@@ -1,0 +1,34 @@
+.afterClick {
+  height: 50%;
+  position: relative;
+}
+.lbl-style {
+  font-size: 9pt;
+  position: relative;
+}
+::ng-deep ngx-file-drop {
+  .ngx-file-drop__drop-zone {
+    border: none !important;
+    position: relative !important;
+    bottom: 18px !important;
+    height: 42px !important;
+    border-radius: 5px !important;
+    color: black !important;
+  }
+
+  mat-form-field {
+    position: relative;
+    bottom: 15px !important;
+  }
+}
+
+.disabledAccording {
+  pointer-events: none;
+}
+.document-title {
+  font-weight: bold;
+  font-size: 13px;
+}
+#cmt ::ng-deep .mat-input-element:disabled {
+  color: black !important;
+}

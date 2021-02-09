@@ -1,0 +1,8 @@
+<!-- author hieulx -->
+<div *ngIf="hasPermission(permissionApp.CRM_CONTRACT_04)">
+  <appendix-contract-appendix></appendix-contract-appendix>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CONTRACT_04)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

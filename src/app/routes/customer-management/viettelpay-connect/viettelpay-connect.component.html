@@ -1,0 +1,307 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CUST_07)">
+  <page-header></page-header>
+  <div class="form-field-full">
+    <form [formGroup]="formSave" (keydown.enter)="$event.preventDefault()">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ 'viettelpay.contract_search' | translate | uppercase }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.code' | translate }} <span class="required">*</span></mat-label>
+                <input matInput formControlName="contractNumber" #contractNumber (keyup.enter)="filter();"
+                  autoFocus="contractNumber" type="text" />
+                <button mat-button *ngIf="formSave.controls.contractNumber.value" matSuffix mat-icon-button
+                  (click)="formSave.controls.contractNumber.setValue(null); $event.stopPropagation()" class="showclear"
+                  type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-hint>{{ 'viettelpay.hint-search' | translate }} </mat-hint>
+                <mat-error>{{ 'buyTicket.contractOrPlate' | translate }} </mat-error>
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.contract_number' | translate }}</mat-label>
+                <input matInput [(ngModel)]="selectedContract.contractNo" [disabled]="true"
+                  [ngModelOptions]="{ standalone: true }" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.employee' | translate }}</mat-label>
+                <input matInput [(ngModel)]="selectedContract.createUser" [disabled]="true"
+                  [ngModelOptions]="{ standalone: true }" />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.signDate' | translate }}</mat-label>
+                <input matInput [(ngModel)]="selectedContract.signDate" [disabled]="true"
+                  [ngModelOptions]="{ standalone: true }" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.dateStart' | translate }}</mat-label>
+                <input matInput [(ngModel)]="selectedContract.effDate" [disabled]="true"
+                  [ngModelOptions]="{ standalone: true }" />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.signName' | translate }}</mat-label>
+                <input matInput [(ngModel)]="selectedContract.signName" [disabled]="true"
+                  [ngModelOptions]="{ standalone: true }" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.dateEnd' | translate }}</mat-label>
+                <input matInput [(ngModel)]="selectedContract.expDate" [disabled]="true"
+                  [ngModelOptions]="{ standalone: true }" />
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ 'viettelpay.connect_acc_title' | translate | uppercase }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="75" fxFlex.lt-sm="100"></div>
+            <div fxFlex="25" fxFlex.lt-sm="100">
+              <a style="cursor: pointer; float: right;" (click)="checkSourceMoneyVTP()"
+                matTooltip="{{ 'viettelpay.check_source_money' | translate }}"
+                [ngClass]="{ disabledAccording: isShowInfor }">
+                {{ 'viettelpay.check_Account' | translate }}</a>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="8px grid" [ngClass]="{ disabledAccording: isShowInfor }">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.type_acc' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <mat-select formControlName="type_acc" (selectionChange)="getValueRecharge($event.value)">
+                  <ng-container *ngFor="let item of methodRecharge">
+                    <mat-option [value]="item.code">{{ item.name }}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <button *ngIf="formSave.controls.type_acc.value" matSuffix mat-icon-button type="button"
+                  class="btn-clear-drop" (click)="formSave.controls.type_acc.setValue(null); $event.stopPropagation();">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error>{{ 'viettelpay.type_accEr' | translate }} </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.wallet_name' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <mat-select formControlName="wallet_name">
+                  <ng-container *ngFor="let item of ewallet">
+                    <mat-option [value]="item.code">{{ item.name }}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <button *ngIf="formSave.controls.wallet_name.value" matSuffix mat-icon-button type="button"
+                  class="btn-clear-drop"
+                  (click)="formSave.controls.wallet_name.setValue(null); $event.stopPropagation();">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error>{{ 'viettelpay.wallet_nameEr' | translate }} </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.vtp.phoneNumber' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <input matInput formControlName="phoneNumber" />
+                <button mat-button *ngIf="formSave.controls.phoneNumber.value" matSuffix mat-icon-button
+                  aria-label="Clear" (click)="formSave.controls.phoneNumber.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="formSave.get('phoneNumber').errors?.required">
+                  {{ 'viettelpay.phoneNumberEr' | translate }}
+                </mat-error>
+                <mat-error *ngIf="formSave.get('phoneNumber').errors?.maxlength">
+                  {{ 'common.validate.maxlength-11' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutGap="8px grid" [ngClass]="{ disabledAccording: isShowInfor }">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.number_acc' | translate }}</mat-label>
+                <input matInput formControlName="number_acc" />
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.holder_acc' | translate }}</mat-label>
+                <input matInput formControlName="holder_acc" />
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.default_moneySource' | translate }}</mat-label>
+                <input matInput formControlName="default_moneySource" />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutGap="8px grid" [ngClass]="{ disabledAccording: isShowInfor }">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.type_papers' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <mat-select formControlName="type_papers" (selectionChange)="onSelectedDocument($event.value)">
+                  <ng-container *ngFor="let item of listDocumentType">
+                    <mat-option [value]="item.code">{{ item.val }}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <button *ngIf="formSave.controls.type_papers.value" matSuffix mat-icon-button type="button"
+                  class="btn-clear-drop"
+                  (click)="formSave.controls.type_papers.setValue(null); $event.stopPropagation();">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="formSave.get('type_papers').errors?.required">
+                  {{ 'viettelpay.type_papersErr' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'viettelpay.number_papers' | translate }}
+                  <span class="required">*</span>
+                </mat-label>
+                <input matInput formControlName="number_papers"
+                  placeholder="{{ 'viettelpay.checkOnly' | translate }}" />
+                <button mat-button *ngIf="formSave.controls.number_papers.value" matSuffix mat-icon-button
+                  aria-label="Clear" (click)="formSave.controls.number_papers.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="formSave.get('number_papers').errors?.required">
+                  {{ 'viettelpay.number_papersErr' | translate }}
+                </mat-error>
+                <mat-error *ngIf="formSave.get('number_papers').errors?.maxlength">
+                  {{ 'common.validate.maxlength-20' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="50" fxFlex.lt-sm="100" style="margin-bottom: 0px !important">
+              <div fxLayout="column wrap" fxLayoutGap="20px grid">
+                <div fxFlex="25" fxFlex.lt-sm="100">
+                  <label> {{ 'viettelpay.CMT' | translate }} <span class="required">*</span></label>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event, importFile.CMT)">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                      <mat-form-field appearance="outline" floatLabel="always" id="cmt">
+                        <input matInput formControlName="CMT" style="padding-left: 100px; color:black" readonly />
+                        <div fxLayout="row wrap" fxLayoutGap="4px grid" style="height: 10px;">
+                          <input #chooseFile hidden="true" type="file" accept=".jpg, .png, .tiff, .bmp, .pdf"
+                            ngf-max-size="5MB" onclick="this.value=null"
+                            (change)="chooseFileChange($event, importFile.CMT)" />
+                          <button (click)="chooseFile.click()" color="primary" class="btn-file" type="button">
+                            {{ 'customer-management.updateProfileForm.btnChooseFile' | translate }}
+                          </button>
+                        </div>
+                        <mat-error *ngIf="formSave.get('CMT').errors?.required">
+                          {{ 'common.importFile' | translate }}
+                        </mat-error>
+                        <mat-error *ngIf="formSave.get('CMT').errors?.size">
+                          {{ 'viettelpay.file-size-error' | translate }}
+                        </mat-error>
+                        <mat-error *ngIf="formSave.get('CMT').errors?.filename">
+                          {{ 'viettelpay.file-type-error' | translate }}
+                        </mat-error>
+                      </mat-form-field>
+                    </ng-template>
+                  </ngx-file-drop>
+                </div>
+              </div>
+            </div>
+            <div fxFlex="50" fxFlex.lt-sm="100" style="margin-bottom: 0px !important">
+              <div fxLayout="column wrap" fxLayoutGap="20px grid">
+                <div fxFlex="25" fxFlex.lt-sm="100">
+                  <label>
+                    {{ 'viettelpay.acceptAcc' | translate }} <span class="required">*</span></label>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <ngx-file-drop dropZoneLabel="Drop files here"
+                    (onFileDrop)="dropped($event, importFile.ACCEPT_ACCOUNT)">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                      <mat-form-field appearance="outline" floatLabel="always">
+                        <input matInput formControlName="acceptAcc" style="padding-left: 100px; color:black" readonly />
+                        <div fxLayout="row wrap" fxLayoutGap="4px grid" style="height: 10px;">
+                          <input #chooseFile hidden="true" type="file" accept=".jpg, .png, .tiff, .bmp, .pdf"
+                            ngf-max-size="5MB" onclick="this.value=null"
+                            (change)="chooseFileChange($event, importFile.ACCEPT_ACCOUNT)" />
+                          <button (click)="chooseFile.click()" color="primary" class="btn-file" type="button">
+                            {{ 'customer-management.updateProfileForm.btnChooseFile' | translate }}
+                          </button>
+                        </div>
+                        <mat-error *ngIf="formSave.get('acceptAcc').errors?.required">
+                          {{ 'common.importFile' | translate }}
+                        </mat-error>
+                        <mat-error *ngIf="formSave.get('acceptAcc').errors?.size">
+                          {{ 'viettelpay.file-size-error' | translate }}
+                        </mat-error>
+                        <mat-error *ngIf="formSave.get('acceptAcc').errors?.filename">
+                          {{ 'viettelpay.file-type-error' | translate }}
+                        </mat-error>
+                      </mat-form-field>
+                    </ng-template>
+                  </ngx-file-drop>
+                </div>
+              </div>
+            </div>
+            <span><i>{{ 'viettelpay.format-profile-notify' | translate }}</i></span>
+          </div>
+          <div fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+            style="margin-right: 8px">
+            <button mat-raised-button *ngIf="!show" color="primary"
+              [disabled]="formSave.invalid && listChooseFile.length && listChooseFileAccept.length" type="button"
+              (click)="connectViettelPay()">
+              {{ 'viettelpay.conncet_acc_btn' | translate }}
+            </button>
+            <mat-form-field appearance="outline" *ngIf="show" style="width: 20%">
+              <mat-label>{{ 'viettelpay.OTP' | translate }}</mat-label>
+              <input matInput formControlName="OTP" />
+              <mat-icon matSuffix *ngIf="show" color="primary" mat-icon svgIcon="ic_Duyet" (click)="confirmConnectVTP()"
+                style="position: relative; right: 30px; bottom: 1px; cursor: pointer;"
+                matTooltip="{{ 'viettelpay.connect-otp' | translate }}"></mat-icon>
+              <mat-icon matSuffix *ngIf="show" color="primary" svgIcon="ic_Delete" (click)="clearInputOtp($event)"
+                style="position: relative; bottom: 25px; cursor: pointer;"
+                matTooltip="{{ 'viettelpay.cancel-connect-otp' | translate }}">
+              </mat-icon>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </div>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CUST_07)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

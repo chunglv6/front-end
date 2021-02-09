@@ -1,0 +1,200 @@
+<a class="close" (click)="onClosePopup()">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{ titlePopup | translate | uppercase }}</h2>
+<div fxLayout="row wrap" class=" ">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <form [formGroup]="formSave" class="form-field-full">
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'action_audit.actionType' | translate }}
+                <span class="required">*</span></mat-label>
+              <mtx-select [items]="listActType" bindLabel="name" bindValue="id" [multiple]="false"
+                formControlName="actTypeId" [notFoundText]="'common.notFound' | translate"
+                (change)="getListActReason($event)" [searchable]="listActType?.length>10">
+              </mtx-select>
+              <mat-error *ngIf="formSave.get('actTypeId').errors?.required">
+                {{ 'manage-fee.enterActType' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'search-information.action-reason' | translate }}
+                <span class="required">*</span>
+              </mat-label>
+              <mtx-select [items]="listActReason" bindLabel="name" bindValue="id" [multiple]="false"
+                formControlName="actReasonId" [notFoundText]="'common.notFound' | translate"
+                (change)="setServiceFeeName($event)" [searchable]="listActReason?.length>10">
+              </mtx-select>
+              <mat-error *ngIf="formSave.get('actReasonId').errors?.required">
+                {{ 'manage-fee.enterReason' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'manage-fee.fee' | translate }} <span class="required">*</span></mat-label>
+              <input matInput formControlName="fee" digitOnly />
+              <button mat-button *ngIf="this.formSave.controls.fee.value && !viewMode" matSuffix mat-icon-button
+                aria-label="Clear" (click)="this.formSave.controls.fee.setValue(null); $event.stopPropagation()"
+                class="showclear" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="formSave.get('fee').errors?.required">
+                {{ 'manage-fee.enterFee' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('fee').errors?.max">
+                {{ 'common.validate.maxlength-15' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('fee').errors?.cannotWhiteSpace">
+                {{ 'common.space_error' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="66.66" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'manage-fee.name' | translate }} <span class="required">*</span> </mat-label>
+              <input matInput formControlName="serviceFeeName" />
+              <button mat-button *ngIf="this.formSave.controls.serviceFeeName.value && !viewMode" matSuffix
+                mat-icon-button aria-label="Clear"
+                (click)="this.formSave.controls.serviceFeeName.setValue(null); $event.stopPropagation()"
+                class="showclear" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="formSave.get('serviceFeeName').errors?.required">
+                {{ 'manage-fee.enterName' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('serviceFeeName').errors?.maxlength">
+                {{ 'common.validate.maxlength-255' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('serviceFeeName').errors?.cannotWhiteSpace">
+                {{ 'common.space_error' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'manage-fee.code' | translate }} <span class="required">*</span></mat-label>
+              <input matInput formControlName="serviceFeeCode" />
+              <button mat-button *ngIf="this.formSave.controls.serviceFeeCode.value && !viewMode" matSuffix
+                mat-icon-button aria-label="Clear"
+                (click)="this.formSave.controls.serviceFeeCode.setValue(null); $event.stopPropagation()"
+                class="showclear" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="formSave.get('serviceFeeCode').errors?.required">
+                {{ 'manage-fee.enterCode' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('serviceFeeCode').errors?.maxlength">
+                {{ 'common.validate.maxlength-20' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('serviceFeeCode').errors?.cannotWhiteSpace">
+                {{ 'common.space_error' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'policy.dateeffectStart' | translate }} <span class="required">*</span>
+              </mat-label>
+              <input matInput maskDate placeholder="dd/mm/yyyy" [matDatepicker]="pickerDateEffectStart"
+                [min]="minDateStart" [(ngModel)]="startDateFrom" [max]="endDateTo" formControlName="startDate"
+                [disabled]="editMode" #startDateId (click)="pickerDateEffectStart.open()" />
+              <button mat-button *ngIf="startDateId.value && !dataDialog.data.record" matSuffix mat-icon-button
+                aria-label="Clear" (click)="this.formSave.controls.startDate.setValue(null); $event.stopPropagation()"
+                class="showclearDatePopup" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-datepicker-toggle matSuffix [for]="pickerDateEffectStart"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDateEffectStart></mat-datepicker>
+              <mat-error *ngIf="formSave.controls.startDate.hasError('required')">
+                {{ 'contractAdd.valid-validity-date' | translate }}</mat-error>
+              <mat-error *ngIf="formSave.controls.startDate.hasError('matDatepickerMax')">
+                {{ 'customer.err_ResgiterFromDate' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'policy.dateeffectEnd' | translate }} </mat-label>
+              <input matInput maskDate placeholder="dd/mm/yyyy" [matDatepicker]="pickerDateEffectEnd"
+                [(ngModel)]="endDateTo" [min]="minDate()" formControlName="endDate" #endDateId
+                (click)="pickerDateEffectEnd.open()" />
+              <button mat-button *ngIf="endDateId.value" matSuffix mat-icon-button aria-label="Clear"
+                (click)="this.formSave.controls.endDate.setValue(null); $event.stopPropagation()"
+                class="showclearDatePopup" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-datepicker-toggle matSuffix [for]="pickerDateEffectEnd"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDateEffectEnd></mat-datepicker>
+              <mat-error *ngIf="formSave.controls.endDate.hasError('matDatepickerMin')">
+                {{ 'customer.err_ResgiterFromDate' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'promotion.policy.proof_doc' | translate
+                }}<span class="required">*</span></mat-label>
+              <input matInput formControlName="docRefer" />
+              <button mat-button *ngIf="this.formSave.controls.docRefer.value && !viewMode" matSuffix mat-icon-button
+                aria-label="Clear" (click)="this.formSave.controls.docRefer.setValue('')" class="showclear"
+                type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="formSave.get('docRefer').errors?.required">
+                {{ 'promotion.enterPDocRefer' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('docRefer').errors?.maxlength">
+                {{ 'common.validate.maxlength-255' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('docRefer').errors?.cannotWhiteSpace">
+                {{ 'common.space_error' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline" class="common-field">
+              <mat-label>{{ 'promotion.policy.note' | translate }}</mat-label>
+              <input matInput formControlName="description" />
+              <button mat-button *ngIf="this.formSave.controls.description.value && !viewMode" matSuffix mat-icon-button
+                aria-label="Clear" (click)="this.formSave.controls.description.setValue('')" class="showclear"
+                type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error *ngIf="formSave.get('description').errors?.maxlength">
+                {{ 'common.validate.maxlength-1024' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSave.get('description').errors?.cannotWhiteSpace">
+                {{ 'common.space_error' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-accordion>
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+      style="margin-right: 8px;">
+      <button mat-raised-button color="secondary" (click)="onClosePopup()">
+        {{ 'common.button.close' | translate }}
+      </button>
+      <button mat-raised-button color="secondary" (click)="typeAgain()" *ngIf="!viewMode">
+        {{ 'common.button.reEnter' | translate }}
+      </button>
+      <button mat-raised-button color="primary" (click)="save(dataDialog.data.record)" [disabled]="formSave.invalid"
+        *ngIf="!viewMode">
+        {{ 'common.button.save' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

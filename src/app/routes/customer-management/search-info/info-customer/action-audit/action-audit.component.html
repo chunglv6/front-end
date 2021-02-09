@@ -1,0 +1,57 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <div class="form-field-full">
+      <form [formGroup]="formSearch" class="form-field-full">
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="100" fxFlex.lt-sm="100"></div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'action_audit.create' | translate }}
+                <span class="required">*</span></mat-label>
+              <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+                <input matStartDate formControlName="startDateForm" #fromDateId maskDate
+                  placeholder="{{ 'common.fromDate' | translate }}">
+                <input matEndDate formControlName="endDateForm" maskDate
+                  placeholder="{{ 'common.endDate' | translate }}" #endDateId>
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value" class="showclearDatePopup"
+                (click)="formSearch.controls.startDateForm.setValue(null);formSearch.controls.endDateForm.setValue(null); $event.stopPropagation()">
+                <mat-icon matDatepickerToggleIcon>close</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <mat-error
+                *ngIf="formSearch.controls.startDateForm.hasError('required') && formSearch.controls.endDateForm.hasError('required')">
+                {{ 'action_audit.datepicker-error-requied' | translate }}
+              </mat-error>
+              <mat-error
+                *ngIf="formSearch.controls.startDateForm.hasError('required') && !formSearch.controls.endDateForm.hasError('required')">
+                {{ 'briefcase.selectStartDate' | translate }}
+              </mat-error>
+              <mat-error
+                *ngIf="formSearch.controls.endDateForm.hasError('required') && !formSearch.controls.startDateForm.hasError('required')">
+                {{ 'briefcase.selectEndate' | translate }}
+              </mat-error>
+              <mat-error *ngIf="formSearch.controls.startDateForm.hasError('matStartDateInvalid')">
+                {{ 'customer.err_ResgiterFromDate' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <button mat-raised-button color="primary" style="margin-right: 8px;" type="button"
+              [disabled]="formSearch.invalid" (click)="onSearch()">
+              {{ 'common.button.search' | translate }}
+            </button>
+          </div>
+
+          <div fxFlex="100" fxFlex.lt-sm="100">
+            <common-list [headerTable]="'action_audit.title'" [dataSource]="dataModel.dataSource"
+              [isLoading]="isLoading" [isPaging]="true" [columns]="columns" [totalRecord]="totalRecord"
+              (page)="onPageChange($event)" [pageIndex]="pageIndex">
+            </common-list>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

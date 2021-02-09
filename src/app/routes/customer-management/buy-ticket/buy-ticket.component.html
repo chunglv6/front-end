@@ -1,0 +1,476 @@
+<div *ngIf="hasPermission(permissionApp.CRM_CUST_28)">
+  <page-header></page-header>
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.lt-sm="100">
+      <form [formGroup]="formInformation" class="form-field-full" (keydown.enter)="$event.preventDefault()">
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ 'buyTicket.title' | translate | uppercase }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.code' | translate }} <span class="required">*</span></mat-label>
+                  <input matInput formControlName="contractNumber" #contractNumber autoFocus="contractNumber"
+                    (keyup.enter)="filter()" [value]="formInformation.controls.contractNumber.value | uppercase" />
+                  <button mat-button *ngIf=" formInformation.controls.contractNumber.value" matSuffix mat-icon-button
+                    aria-label="Clear"
+                    (click)="formInformation.controls.contractNumber.setValue(null); $event.stopPropagation()"
+                    class="showclear" type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <mat-hint>{{ 'viettelpay.hint-search' | translate }} </mat-hint>
+                  <mat-error>{{ 'buyTicket.contractOrPlate' | translate }} </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.contract_number' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="selectedContract.contractNo" readonly
+                    [ngModelOptions]="{ standalone: true }" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.employee' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="selectedContract.createUser" readonly
+                    [ngModelOptions]="{ standalone: true }" />
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.signDate' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="selectedContract.signDate" readonly
+                    [ngModelOptions]="{ standalone: true }" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.dateStart' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="selectedContract.effDate" readonly
+                    [ngModelOptions]="{ standalone: true }" />
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.signName' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="selectedContract.signName" readonly
+                    [ngModelOptions]="{ standalone: true }" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.dateEnd' | translate }}</mat-label>
+                  <input matInput [(ngModel)]="selectedContract.expDate" readonly
+                    [ngModelOptions]="{ standalone: true }" />
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ 'buyTicket.title_customer' | translate | uppercase }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+              <div fxFlex="33.3" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.name' | translate }}</mat-label>
+                  <input matInput formControlName="name" [(ngModel)]="selectedContract.custName" readonly />
+                  <mat-error>{{ 'buyTicket.nameEr' | translate }} </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.3" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.customer_code' | translate }}</mat-label>
+                  <input matInput formControlName="customer_code" [(ngModel)]="selectedContract.custId" readonly />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <mat-panel-title>{{ 'buyTicket.title_acc' | translate }}</mat-panel-title>
+
+            <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.account_balances' | translate }}</mat-label>
+                  <input matInput formControlName="account_balances" value="{{ balance | formatCurrency }}" readonly />
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.available_balances' | translate }}</mat-label>
+                  <input matInput formControlName="available_balances" value="{{ balance | formatCurrency }}"
+                    readonly />
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'buyTicket.custody_balance' | translate }}</mat-label>
+                  <input matInput formControlName="custody_balance" value="{{ balance | formatCurrency }}" readonly />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <hr />
+            <mat-panel-title>{{ 'buyTicket.ticket_infor' | translate }}</mat-panel-title>
+
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100" class="">
+                <div class="data-grid-options">
+                  <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                    <mat-form-field appearance="outline" style="width: 80%;">
+                      <input matInput type="text" matInput (input)="applyFilter($event)" formControlName="searchPlate"
+                        placeholder="{{ 'buyTicket.search_Plate' | translate }}" />
+                      <button mat-button *ngIf="formInformation.controls.searchPlate.value" matSuffix mat-icon-button
+                        aria-label="Clear"
+                        (click)="formInformation.controls.searchPlate.setValue(null); $event.stopPropagation()"
+                        class="showclear" type="button">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+
+                  <div style="height: 300px; overflow-y: auto;">
+                    <div class="crm__table">
+                      <table mat-table [dataSource]="listVehicles" class="mat-elevation-z8"
+                        style="overflow-y: scroll; width: 100%;">
+                        <ng-container matColumnDef="select">
+                          <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                            </mat-checkbox>
+                          </th>
+                          <td mat-cell *matCellDef="let row" style="text-align: center;">
+                            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? checkItem(row) : null"
+                              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                            </mat-checkbox>
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="number">
+                          <th mat-header-cell *matHeaderCellDef>
+                            {{ 'buyTicket.plateNumber' | translate }}
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="text-align: center;">
+                            {{ element.plateNumber }}
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="car_style">
+                          <th mat-header-cell *matHeaderCellDef>
+                            {{ 'buyTicket.car_style' | translate }}
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="text-align: center;">
+                            {{ element.car_style }}
+                          </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="66.67" fxFlex.lt-sm="100" class="">
+                <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.station_type' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+                      <mtx-select [items]="dataOptionStationType" bindLabel="val" bindValue="code" [multiple]="false"
+                        (change)="getValueStationType($event)" formControlName="station_type" [clearable]="false"
+                        [notFoundText]="'common.notFound' | translate" [searchable]="dataOptionStationType?.length>10">
+                      </mtx-select>
+                      <mat-error>{{ 'buyTicket.station_typeEr' | translate }} </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="showStages">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.distance_type' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+                      <mtx-select [items]="dataOptionStages" bindLabel="name" bindValue="id" [multiple]="false"
+                        [clearable]="false" (change)="getValueDistanceType($event)" formControlName="stages"
+                        [disabled]="disabledStages" [notFoundText]="'common.notFound' | translate"
+                        [searchable]="dataOptionStages?.length>10">
+                      </mtx-select>
+                      <mat-error>{{ 'buyTicket.distance_typeEr' | translate }} </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="showStations">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.stations' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+                      <mtx-select [items]="dataOptionStations" bindLabel="name" bindValue="id" [multiple]="false"
+                        [clearable]="false" (change)="getValueStation($event)" formControlName="stations"
+                        [disabled]="disabledStages" [notFoundText]="'common.notFound' | translate"
+                        [searchable]="dataOptionStations?.length>10">
+                      </mtx-select>
+                      <mat-error>{{ 'buyTicket.distance_typeEr' | translate }} </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.lane_in' | translate }}</mat-label>
+                      <mtx-select [items]="dataLanesIn" bindLabel="name" bindValue="id" [multiple]="false"
+                        [disabled]="isDisabledLaneIn" formControlName="lane_in" [clearable]="true"
+                        [notFoundText]="'common.notFound' | translate" [searchable]="dataLanesIn?.length>10">
+                      </mtx-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.lane_out' | translate }}</mat-label>
+                      <mtx-select [items]="dataLanesOut" bindLabel="name" bindValue="id" [multiple]="false"
+                        formControlName="lane_out" [notFoundText]="'common.notFound' | translate" [clearable]="true"
+                        [searchable]="dataLanesOut?.length>10">
+                      </mtx-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.ticket' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+
+                      <mtx-select [items]="dataOptionTicket" bindLabel="name" bindValue="servicePlanTypeId"
+                        (change)="getValueTicket($event)" [multiple]="false" formControlName="ticket"
+                        [clearable]="false" [notFoundText]="'common.notFound' | translate"
+                        [searchable]="dataOptionTicket?.length>10">
+                      </mtx-select>
+
+                      <mat-error>{{ 'buyTicket.ticketEr' | translate }} </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.calculation' | translate }}</mat-label>
+                      <mat-select formControlName="calculation" [disabled]="true">
+                        <mat-option *ngFor="let item of dataMethodCharges" [value]="item.code">{{ item.val }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div *ngIf="formInformation.value.calculation == caculator.TINH_BLOCK" fxLayout="row wrap"
+                  fxLayoutGap="20px grid">
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.startTime' | translate }} <span class="required">*</span>
+                      </mat-label>
+                      <input matInput [(ngModel)]="departDate" maskDate (click)="pickerstartcar.open()"
+                        [matDatepicker]="pickerstartcar" formControlName="timestampOutFrom"
+                        (dateInput)="getValueDate($event)" [disabled]="isDisableStart" [min]="minTripDate" />
+                      <mat-datepicker-toggle matSuffix [for]="pickerstartcar"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerstartcar></mat-datepicker>
+                      <mat-error *ngIf="formInformation.get('timestampOutFrom').hasError('matDatepickerMin')">
+                        {{ 'buyTicket.choose_later' | translate }}
+                      </mat-error>
+                      <mat-error *ngIf="formInformation.get('timestampOutFrom').errors?.required">
+                        {{ 'buyTicket.timestampOutFromRequired' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'exchangeHistory.endTime' | translate }}</mat-label>
+                      <input matInput [(ngModel)]="returnDate" maskDate [matDatepicker]="pickerendcar"
+                        formControlName="timestampOutTo" disabled />
+                      <mat-datepicker-toggle matSuffix [for]="pickerendcar"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerendcar></mat-datepicker>
+                      <mat-error *ngIf="formInformation.get('timestampOutTo').hasError('matDatepickerMin')">
+                        {{ 'buyTicket.choose_later' | translate }}
+                      </mat-error>
+                      <mat-error *ngIf="formInformation.get('timestampOutTo').hasError('matDatepickerMax')">
+                        {{ 'buyTicket.choose_early' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div *ngIf="formInformation.value.calculation == caculator.TINH_THUONG" fxLayout="row wrap"
+                  fxLayoutGap="20px grid">
+                  <div fxFlex="50" fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.choose_year' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+                      <mtx-select [items]="listQuarterOfYear" bindLabel="item" bindValue="item"
+                        (change)="getListTimeData($event)" [multiple]="false" formControlName="choose_year"
+                        [notFoundText]="'common.notFound' | translate" [searchable]="listQuarterOfYear?.length>10">
+                      </mtx-select>
+                      <mat-error *ngIf="formInformation.get('choose_year').errors?.required">
+                        {{ 'buyTicket.choose_yearRequired' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="!isHiddenQuarter">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.month' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+                      <mtx-select [items]="listMonthOfYear" [disabled]="disableMonthQuarter" bindLabel="item"
+                        bindValue="item" [multiple]="false" formControlName="month"
+                        [notFoundText]="'common.notFound' | translate" [searchable]="listMonthOfYear?.length>10">
+                      </mtx-select>
+                      <mat-error *ngIf="formInformation.get('month').errors?.required">
+                        {{ 'buyTicket.monthRequired' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxFlex.lt-sm="100" *ngIf="isHiddenQuarter">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ 'buyTicket.quarter' | translate }}
+                        <span class="required">*</span>
+                      </mat-label>
+                      <mtx-select [items]="listQuarter" [disabled]="disableMonthQuarter" bindLabel="item"
+                        bindValue="item" [multiple]="false" formControlName="quarter"
+                        [notFoundText]="'common.notFound' | translate" [searchable]="listQuarter?.length>10">
+                      </mtx-select>
+
+                      <mat-error *ngIf="formInformation.get('quarter').errors?.required">
+                        {{ 'buyTicket.quarterRequired' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+              fxLayoutGap.xs="0" style="margin-right: 8px;">
+              <button mat-raised-button color="primary" (click)="getTicket()" [disabled]="checkValidTiket">
+                {{ 'buyTicket.btn_ticket' | translate }}
+              </button>
+            </div>
+
+            <crm-table [headerTable]="'buyTicket.ticket_list'" [dataSource]="dataBuyTicket" #tableBuyticket
+              [isLoading]="false" [isPaging]="false" [totalRecord]="dataBuyTicket.length"
+              [displayedColumns]="buyTicketColumns" (onPage)="onPageChange($event)" [stickyHeight]="getHeight()">
+              <ng-container *ngFor="let item of columns" [ngSwitch]="item.field">
+                <ng-container matColumnDef="{{ item.field }}" *ngSwitchDefault>
+                  <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+                  <td mat-cell *matCellDef="let row" style="text-align: center;">
+                    {{ row[item.field] }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'orderNumber'">
+                  <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+                  <td mat-cell *matCellDef="let row; let i = dataIndex" style="text-align: center;">
+                    {{ i + 1 }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'option'">
+                  <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+                  <td mat-cell *matCellDef="let row; let i = dataIndex" style="text-align: center;">
+                    <button mat-icon-button class="ui-text-center" (click)="removeItem(row, i)" type="button"
+                      matTooltip="{{ 'buyTicket.deletedTicket' | translate }}">
+                      <mat-icon color="primary">delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'total_money'">
+                  <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+                  <td mat-cell *matCellDef="let row" style="text-align: right;">
+                    {{ row.total_money | formatCurrency }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'start_date'">
+                  <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+                  <td mat-cell *matCellDef="let row" style="text-align: center;">
+                    {{ row.start_date | date: 'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="{{ item.field }}" *ngSwitchCase="'end_date'">
+                  <th mat-header-cell *matHeaderCellDef>{{ item.i18n | translate }}</th>
+                  <td mat-cell *matCellDef="let row" style="text-align: center;">
+                    {{ row.end_date | date: 'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+              </ng-container>
+            </crm-table>
+
+            <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+              <div fxFlex="33.33" fxFlex.lt-sm="100" class=" ">
+                <div class="data-grid-options" style="margin-top: 5%;">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'buyTicket.total_ticket' | translate }}</mat-label>
+                    <input matInput formControlName="total_ticket" [(ngModel)]="dataBuyTicket.length" readonly />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <div class="data-grid-options" style="margin-top: 5%;">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'buyTicket.total_money' | translate }}</mat-label>
+                    <input matInput formControlName="total_money" readonly
+                      [value]="formInformation.get('total_money').value | formatCurrency" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="50" fxFlex.lt-sm="100" class=" ">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>{{ 'buyTicket.pay-charge' | translate }}
+                    <span class="required">*</span>
+                  </mat-label>
+                  <input matInput style="height: 0;" />
+                  <div class="radio-stl">
+                    <mat-radio-group formControlName="etc_charge">
+                      <mat-radio-button value="1" style="margin-right: 10%;" [disabled]="true">
+                        {{ 'buyTicket.cash' | translate }}
+                      </mat-radio-button>
+                      <mat-radio-button value="2" style="margin-right: 10%;">
+                        {{ 'buyTicket.sub_ETC' | translate }}
+                      </mat-radio-button>
+                      <mat-radio-button value="3" [disabled]="true">{{ 'buyTicket.link_conect' | translate }}
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="20px">
+              <button mat-raised-button *ngIf="!show" color="primary" type="submit" (click)="payCharge()"
+                [disabled]="checkValidPayment">
+                {{ 'buyTicket.pay' | translate }}
+              </button>
+              <mat-form-field appearance="outline" style="width: 15%;" *ngIf="show">
+                <mat-label>{{ 'buyTicket.OTP_code' | translate }}</mat-label>
+                <input matInput formControlName="OTP_code" />
+                <mat-icon *ngIf="show" svgIcon="ic_Duyet"
+                  style="position: relative; bottom: 24px; left: 140px; cursor: pointer;">
+                </mat-icon>
+                <mat-icon *ngIf="show" svgIcon="ic_Delete"
+                  style="position: relative; bottom: 24px; left: 140px; cursor: pointer;">
+                </mat-icon>
+              </mat-form-field>
+              <button [ngClass]="{ afterClick: show }" mat-raised-button type="submit" color="primary"
+                (click)="processSearch()" [disabled]="true">
+                {{ 'buyTicket.print_bill' | translate }}
+              </button>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </form>
+    </div>
+  </div>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_CUST_28)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

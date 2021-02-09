@@ -1,0 +1,62 @@
+.mt15 {
+  margin-top: 15px;
+}
+
+.btnRight {
+  float: right;
+  margin-bottom: 10px;
+}
+
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+::ng-deep .fix__disable.mat-radio-button.mat-radio-disabled .mat-radio-label-content {
+  color: black;
+}
+::ng-deep .fix__disable.mat-checkbox-disabled .mat-checkbox-label {
+  color: black;
+}
+.ml-102 {
+  margin-left: 102px;
+}
+.ml-130 {
+  margin-left: 130px;
+}
+
+.radio-stl {
+  position: relative;
+  bottom: 20px;
+}
+.radio-2 {
+  margin-left: 65px;
+}
+
+@media only screen and (max-width: 1250px) {
+  .ml-102 {
+    margin-left: 30px;
+  }
+  .ml-130 {
+    margin-left: 70px;
+  }
+
+}
+.label-control{
+  width: 200px;
+}
+.flex{
+  display: flex;
+}
+.mr-20{
+  margin-right: 20px;
+}

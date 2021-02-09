@@ -1,0 +1,138 @@
+<page-header></page-header>
+<div fxLayout="row wrap" class=" ">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'common.title' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'contract.code' | translate }}</mat-label>
+                <input matInput #contractNo autoFocus="contractNo" placeholder="{{ 'contract.code' | translate }}"
+                  [(ngModel)]="searchModel.contractNo" (keyup.enter)="onSearch()" />
+                <button mat-button *ngIf="searchModel.contractNo" matSuffix mat-icon-button
+                  (click)="searchModel.contractNo = null" class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  'customer-management.vehiclesNotRFIDTable.licensePlates' | translate
+                }}</mat-label>
+                <input matInput placeholder="{{
+                    'customer-management.vehiclesNotRFIDTable.licensePlates' | translate
+                  }}" (keyup.enter)="onSearch()" [(ngModel)]="searchModel.plateNumber" />
+                <button mat-button *ngIf="searchModel.plateNumber" matSuffix mat-icon-button
+                  (click)="searchModel.plateNumber = null" class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'customer.phoneNumber' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'customer.phoneNumber' | translate }}" type="tel"
+                  (keyup.enter)="onSearch()" [(ngModel)]="searchModel.phoneNumber" />
+                <button mat-button *ngIf="searchModel.phoneNumber" matSuffix mat-icon-button
+                  (click)="searchModel.phoneNumber = null" class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100" *ngIf="isAdvSearch">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'customer.attachNumber' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'customer.attachNumber' | translate }}" (keyup.enter)="onSearch()"
+                  [(ngModel)]="searchModel.documentNumber" />
+                <button mat-button *ngIf="searchModel.documentNumber" matSuffix mat-icon-button
+                  (click)="searchModel.documentNumber = null" class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100" *ngIf="isAdvSearch">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'customer.name' | translate }}</mat-label>
+                <input matInput placeholder="{{ 'customer.name' | translate }}" [(ngModel)]="searchModel.custName"
+                  (keyup.enter)="onSearch()" />
+                <button mat-button *ngIf="searchModel.custName" matSuffix mat-icon-button
+                  (click)="searchModel.custName = null" class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100" *ngIf="isAdvSearch">
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  'customer-management.vehiclesHaveRFIDTable.serialNumber' | translate
+                }}</mat-label>
+                <input matInput placeholder="{{
+                    'customer-management.vehiclesHaveRFIDTable.serialNumber' | translate
+                  }}" (keyup.enter)="onSearch()" [(ngModel)]="searchModel.rfidSerial" />
+                <button mat-button *ngIf="searchModel.rfidSerial" matSuffix mat-icon-button
+                  (click)="searchModel.rfidSerial = null" class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100" *ngIf="isAdvSearch">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'buyTicket.register_Date' | translate }}</mat-label>
+                <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+                  <input matStartDate [formControl]="startDateForm" #fromDateId maskDate
+                    placeholder="{{ 'common.fromDate' | translate }}">
+                  <input matEndDate [formControl]="endDateForm" maskDate
+                    placeholder="{{ 'common.endDate' | translate }}" #endDateId>
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value" class="showclearDatePopup"
+                  (click)="startDateForm.setValue(null);endDateForm.setValue(null); $event.stopPropagation()">
+                  <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="startDateForm.hasError('matStartDateInvalid')">
+                  {{ 'customer.err_ResgiterFromDate' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100" [hidden]="!isAdvSearch">
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  'customer-management.vehiclesHaveRFIDTable.cardStatus' | translate
+                }}</mat-label>
+                <mtx-select [items]="statusCardList" bindLabel="label" bindValue="value" [multiple]="false"
+                  appendTo="body" [(ngModel)]="searchModel.activeStatus" [notFoundText]="'common.notFound' | translate"
+                  [searchable]="statusCardList?.length>10">
+                </mtx-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+            fxLayoutGap.xs="0" style="margin-top:10px">
+            <div>
+              <mat-checkbox [(ngModel)]="isAdvSearch">
+                {{ 'common.advanceSearch' | translate | uppercase }}</mat-checkbox>
+              &nbsp;
+              <button mat-raised-button color="primary" style="margin-right: 8px;" type="submit" [attr.disabled]="true"
+                (click)="onSearch()">
+                {{ 'common.button.search' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <info-customer [dataSourceTree]="dataSourceTree" [isClickSearch]="isClickSearch"></info-customer>
+  </div>
+</div>

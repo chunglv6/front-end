@@ -1,0 +1,60 @@
+.font-register-service {
+  font-size: 12pt !important;
+}
+
+.ml-102 {
+  margin-left: 102px;
+}
+
+.ml-130 {
+  margin-left: 130px;
+}
+
+.radio-stl {
+  position: absolute;
+  top: 0px;
+}
+.radio-2 {
+  margin-left: 65px;
+}
+
+@media only screen and (max-width: 1250px) {
+  .ml-102 {
+    margin-left: 30px;
+  }
+
+  //   .ml-103 {
+  //     margin-left: 50px;
+  // }
+
+  .ml-130 {
+    margin-left: 70px;
+  }
+}
+
+.noRecored {
+  text-align: center;
+  padding: 10px;
+  display: block;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-left: 1px solid #eee;
+  font-weight: 700;
+}
+:host::ng-deep {
+  .hack-height-radio.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 70px;
+  }
+  .hack-height-checkbox.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 130px;
+  }
+  .hack-height-checkbox-full.mat-form-field-appearance-outline .mat-form-field-outline {
+    height: 150px;
+  }
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}

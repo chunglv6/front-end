@@ -1,0 +1,536 @@
+<div fxLayout="row wrap" class="  mt-15">
+  <div fxFlex="100" fxFlex.lt-sm="100">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.newVehicle' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="newVehicleRegisterForm" class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.licensePlateType'
+                  | translate}} <span class="required">*</span></mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionVehiclePlateTypes"
+                  bindLabel="value" bindValue="id" formControlName="licensePlateType" [dropdownPosition]="'bottom'"
+                  [searchable]="listOptionVehiclePlateTypes?.length>10" (change)="onSearchVehicle()">
+                </mtx-select>
+                <mat-error *ngIf="newVehicleRegisterForm.get('licensePlateType').errors?.required">
+                  {{'customer-management.errorMessageVehicle.licensePlateType' |
+                  translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.licensePlates'
+                  | translate}} <span class="required">*</span></mat-label>
+                <input matInput #plateNumber (change)="cacheLicensePlates()" placeholder="{{'customer-management.newVehicleForm.placeholder-hint-platenumber'
+                  | translate}}" formControlName="licensePlates"
+                  [value]="newVehicleRegisterForm.value.licensePlates | uppercase" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.licensePlates.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.licensePlates.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-hint>{{'customer-management.newVehicleForm.hint-platenumber'|translate}}</mat-hint>
+                <mat-error *ngIf="newVehicleRegisterForm.get('licensePlates').errors?.required">
+                  {{'customer-management.errorMessageVehicle.licensePlates' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('licensePlates').errors?.pattern">
+                  {{'common.format-plate-number' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('licensePlates').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('licensePlates').errors?.maxlength">
+                  {{'common.validate.maxlength-16' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.vehicleOwner' |
+                  translate}} <span class="required">*</span></mat-label>
+                <input matInput placeholder="{{'customer-management.newVehicleForm.vehicleOwner'
+                  | translate}}" formControlName="vehicleOwner" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.vehicleOwner.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.vehicleOwner.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleOwner').errors?.required">
+                  {{'customer-management.errorMessageVehicle.vehicleOwner' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleOwner').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleOwner').errors?.maxlength">
+                  {{'common.validate.maxlength-255' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.vehicleType' |
+                  translate}} <span class="required">*</span></mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionVehicelType"
+                  bindLabel="value" bindValue="code" formControlName="vehicleType" dropdownPosition="bottom"
+                  [searchable]="listOptionVehicelType?.length>10" (change)="getVehicleGroupType()">
+                </mtx-select>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleType').errors?.required">
+                  {{'customer-management.errorMessageVehicle.vehicleType' |
+                  translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.vehicleWeight'
+                  | translate}}</mat-label>
+                <input matInput type="number" placeholder="{{'customer-management.newVehicleForm.vehicleWeight'
+                  | translate}}" formControlName="vehicleWeight" (change)="getVehicleGroupType()" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.vehicleWeight.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.vehicleWeight.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleWeight').errors?.pattern">
+                  {{'common.wrong-format-weight' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleWeight').errors?.max
+                  &&
+                  !newVehicleRegisterForm.get('vehicleWeight').errors?.pattern">
+                  {{'customer-management.errorMessageVehicle.max' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleWeight').errors?.min">
+                  {{'customer-management.errorMessageVehicle.min' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.merchandiseWeight'
+                  | translate}}</mat-label>
+                <input matInput type="number" placeholder="{{'customer-management.newVehicleForm.merchandiseWeight'
+                  | translate}}" formControlName="merchandiseWeight" (change)="getVehicleGroupType()" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.merchandiseWeight.value" matSuffix
+                  mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.merchandiseWeight.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('merchandiseWeight').errors?.pattern">
+                  {{'common.wrong-format-weight' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('merchandiseWeight').errors?.min">
+                  {{'customer-management.errorMessageVehicle.min' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('merchandiseWeight').errors?.max
+                  &&
+                  !newVehicleRegisterForm.get('merchandiseWeight').errors?.pattern">
+                  {{'customer-management.errorMessageVehicle.max' |
+                  translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.seatsNumber' |
+                  translate}} <span class="required">*</span></mat-label>
+                <input matInput type="number" placeholder="{{'customer-management.newVehicleForm.seatsNumber'
+                  | translate}}" formControlName="seatsNumber" (change)="getVehicleGroupType()" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.merchandiseWeight.value" matSuffix
+                  mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.merchandiseWeight.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seatsNumber').errors?.required">
+                  {{'customer-management.errorMessageVehicle.seatsNumber' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seatsNumber').errors?.pattern">
+                  {{'customer-management.errorMessageVehicle.seatNumberPattern'
+                  |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seatsNumber').errors?.min">
+                  {{'customer-management.errorMessageVehicle.min' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seatsNumber').errors?.max">
+                  {{'customer-management.errorMessageVehicle.seatsNumberMax' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seatsNumber').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.allWeight' |
+                  translate}}</mat-label>
+                <input matInput type="number" placeholder="{{'customer-management.newVehicleForm.allWeight'
+                  | translate}}" formControlName="allWeight" (change)="getVehicleGroupType()" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.allWeight.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.allWeight.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('allWeight').errors?.min">
+                  {{'customer-management.errorMessageVehicle.min' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('allWeight').errors?.pattern">
+                  {{'common.wrong-format-weight' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('allWeight').errors?.max &&
+                  !newVehicleRegisterForm.get('allWeight').errors?.pattern">
+                  {{'customer-management.errorMessageVehicle.max' |
+                  translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.followWeight' |
+                  translate}}</mat-label>
+                <input matInput type="number" placeholder="{{'customer-management.newVehicleForm.followWeight'
+                  | translate}}" formControlName="followWeight" (change)="getVehicleGroupType()" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.followWeight.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.followWeight.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('followWeight').errors?.min">
+                  {{'customer-management.errorMessageVehicle.min' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('followWeight').errors?.pattern">
+                  {{'common.wrong-format-weight' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('followWeight').errors?.max
+                  &&
+                  !newVehicleRegisterForm.get('followWeight').errors?.pattern">
+                  {{'customer-management.errorMessageVehicle.max' |
+                  translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.vehicleNumber'
+                  | translate}}
+                </mat-label>
+                <input matInput placeholder="{{'customer-management.newVehicleForm.vehicleNumber'
+                  | translate}}" formControlName="vehicleNumber" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.vehicleNumber.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.vehicleNumber.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleNumber').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleNumber').errors?.maxlength">
+                  {{'common.validate.maxlength-50' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.framesNumber' |
+                  translate}}</mat-label>
+                <input matInput placeholder="{{'customer-management.newVehicleForm.framesNumber'
+                  | translate}}" formControlName="framesNumber" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.framesNumber.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.framesNumber.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('framesNumber').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehicleNumber').errors?.maxlength">
+                  {{'common.validate.maxlength-50' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.color' |
+                  translate}}</mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionVehicleColours"
+                  bindLabel="value" bindValue="code" formControlName="color" appendTo="body"
+                  [searchable]="listOptionVehicleColours?.length>10">
+                </mtx-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.vehiclesTypeFee'
+                  | translate}} <span class="required">*</span></mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionVehicleTypeFee"
+                  bindLabel="value" bindValue="id" formControlName="vehiclesTypeFee"
+                  [searchable]="listOptionVehicleTypeFee?.length>10" [dropdownPosition]="'top'">
+                </mtx-select>
+                <mat-error *ngIf="newVehicleRegisterForm.get('vehiclesTypeFee').errors?.required">
+                  {{'customer-management.errorMessageVehicle.vehiclesTypeFee'
+                  | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.label' |
+                  translate}}</mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionVehicleLabel"
+                  bindLabel="value" bindValue="code" formControlName="label" [dropdownPosition]="'top'"
+                  [searchable]="listOptionVehicleLabel?.length>10">
+                </mtx-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.vehiclesSeri' |
+                  translate}}</mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionVehicleBrands"
+                  bindLabel="value" bindValue="code" formControlName="vehiclesSeri" [dropdownPosition]="'top'"
+                  [searchable]="listOptionVehicleBrands?.length>10">
+                </mtx-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100" class="staff">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.staff' |
+                  translate}} <span class="required">*</span>
+                </mat-label>
+                <input readonly matInput placeholder="{{'customer-management.newVehicleForm.staff' |
+                  translate}}" formControlName="staff" />
+                <mat-error *ngIf="newVehicleRegisterForm.get('staff').errors?.required">
+                  {{'customer-management.errorMessageVehicle.staff' |
+                  translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.newVehicleForm.seriNumber' |
+                  translate}} <span class="required">*</span></mat-label>
+                <input matInput #serialNumber placeholder="{{'customer-management.newVehicleForm.seriNumber'
+                  | translate}}" formControlName="seriNumber" />
+                <button mat-button *ngIf="newVehicleRegisterForm.controls.seriNumber.value" matSuffix mat-icon-button
+                  (click)="newVehicleRegisterForm.controls.seriNumber.setValue(null); $event.stopPropagation()"
+                  class="showclear" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seriNumber').errors?.required">
+                  {{'customer-management.errorMessageVehicle.seriNumber' |
+                  translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seriNumber').errors?.maxlength">
+                  {{'common.validate.maxlength-50' | translate}}
+                </mat-error>
+                <mat-error *ngIf="newVehicleRegisterForm.get('seriNumber').errors?.pattern">
+                  {{'contractNew.invalid-rfid-pattern' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100" *ngIf="isLoginToken">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'vehicle.promotion_code' |translate}}</mat-label>
+                <input matInput placeholder="{{'vehicle.promotion_code'
+                  | translate}}" formControlName="promotionCode" />
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.lt-sm="100">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.updateProfile' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="updateProfileForm" class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="10px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.updateProfileForm.license' |
+                  translate}}</mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionLicense" bindLabel="value"
+                  bindValue="code" formControlName="license" [searchable]="listOptionLicense?.length>10"
+                  [dropdownPosition]="'bottom'">
+                </mtx-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <button mat-button mat-raised-button color="primary" fxFlex.lt-sm="100"
+                [disabled]="!updateProfileForm.value.license"
+                (click)="chooseFileChange($event)">{{'customer-management.updateProfileForm.btnChooseFile'
+                | translate}}</button>
+            </div>
+          </div>
+        </form>
+        <hr />
+        <div class="row mt-40">
+          <div class="col-sm-12 result-search">
+            <label class="lbl-profile">{{'customer-management.updateProfileForm.resultSearch'
+              | translate}} <span class="orange-color">({{listDataProfile.length}})</span></label>
+          </div>
+        </div>
+        <div class="crm__table">
+          <table mat-table [dataSource]="dataSourceProfile" #tableProfile>
+            <ng-container matColumnDef="stt">
+              <th mat-header-cell *matHeaderCellDef style="width:60px">
+                {{'customer-management.updateProfileTable.stt' | translate}}</th>
+              <td mat-cell *matCellDef="let row; let i= index"
+                style="text-align: center; padding-left: 0px !important;">
+                {{i + 1 + indexPaginator}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="documentType">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.updateProfileTable.documentType' |
+                translate}}</th>
+              <td mat-cell *matCellDef="let row; let i= index">
+                {{row.documentType}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="documentName">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'customer-management.updateProfileTable.documentName' |
+                translate}}</th>
+              <td mat-cell *matCellDef="let row; let i= index">
+                {{row.documentName}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actionDelete">
+              <th mat-header-cell *matHeaderCellDef style="width:100px">
+                {{'common.action' | translate}}</th>
+              <td mat-cell *matCellDef="let row;let i= index" class="ui-text-center" style="padding-right: 0px;">
+                <button mat-icon-button>
+                  <mat-icon svgIcon="ic_xem" matTooltip="{{'change_card.view-profile' | translate}}"
+                    (click)="viewProfile(row)">
+                  </mat-icon>
+                </button>
+                <button mat-icon-button>
+                  <mat-icon svgIcon="ic_Delete" matTooltip="{{'change_card.delete' | translate}}"
+                    (click)="deleteProfile(i)">
+                  </mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns_profile"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns_profile"></tr>
+          </table>
+          <span class="noRecored" *ngIf="listDataProfile.length == 0 ">
+            {{'common.noRecord' |translate}}
+          </span>
+          <mat-paginator [pageSizeOptions]="pageSizeList" [pageSize]="10" [length]="listDataProfile.length"
+            showFirstLastButtons (page)="onPaginateChange($event)">
+          </mat-paginator>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.lt-sm="100">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'vehicle.total_fund' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="updateProfileForm" class="form-field-full">
+          <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <button mat-button fxFlex.lt-sm="100" class="mb-10" mat-raised-button color="primary" (click)="checkFee()"
+                [disabled]="!newVehicleRegisterForm.value.licensePlates || !newVehicleRegisterForm.value.licensePlateType">{{'vehicle.check_fee'
+                |
+                translate}}</button>
+            </div>
+          </div>
+        </form>
+        <div class="crm__table">
+          <table mat-table [dataSource]="dataSourceFee" #tableFee>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>
+                {{'contract.feeType' |
+                translate}}</th>
+              <td mat-cell *matCellDef="let row; let i= index">
+                {{row.name}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>{{'common.total' | translate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fee">
+              <th mat-header-cell *matHeaderCellDef style="text-align: right !important;">
+                {{'contract.cost' |
+                translate}}</th>
+              <td mat-cell *matCellDef="let row; let i= index" class="ui-text-right">
+                {{row.fee |number}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef class="ui-text-right"> {{dataModel.totalFee | number}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsFee"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsFee"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumnsFee"></tr>
+          </table>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div fxLayout="row wrap" fxLayout.xs="column">
+      <div fxFlex="40" fxFlex.lt-sm="100">
+      </div>
+      <div fxFlex="60" fxFlex.lt-sm="100">
+        <div fxLayout="row wrap" fxLayout.xs="column">
+          <div fxFlex="50" fxFlex.lt-sm="100" fxHide.xs>
+          </div>
+          <div fxFlex="50" fxFlex.lt-sm="100" fxLayout.xs="column">
+            <button mat-button ngClass.gt-sm="ml-20 float-right" class="float-right mb-10" mat-raised-button
+              color="primary" fxFlex.lt-sm="100" (click)="onSaveVehicleInfor()" [disabled]="newVehicleRegisterForm.invalid || !dataModel.canSave||
+                updateProfileForm.invalid">{{'common.button.next' | translate}}</button>
+            <button mat-button ngClass.gt-sm="float-right" mat-raised-button color="primary" fxFlex.lt-sm="100"
+              *ngIf="hasPermission(permissionApp.CRM_CUST_04)" (click)="importFileVehicle()">{{'policy.importFile' |
+              translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

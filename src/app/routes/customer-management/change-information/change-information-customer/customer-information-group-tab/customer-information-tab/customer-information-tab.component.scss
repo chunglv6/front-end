@@ -1,0 +1,60 @@
+.mt-25 {
+    margin-top: 25px !important;
+}
+
+.ml-20 {
+    margin-left: 20px !important;
+}
+
+.mr-20 {
+    margin-right: 20px !important;
+}
+
+.group-representative {
+    ::ng-deep .mat-tab-body .mat-tab-body-active {
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+    }
+    
+    ::ng-deep .mat-tab-body-content{
+        overflow: hidden !important;
+    }
+
+    // ::ng-deep .mat-tab-header {
+    //     border-bottom: none;
+    // }
+
+    // ::ng-deep .mat-tab-label-active {
+    //     background-color: transparent;
+    //     color: orange;
+    // }
+
+    // ::ng-deep mat-ink-bar {
+    //     background-color: transparent !important;
+    // }
+}
+
+.documentName,
+.documentNumber,
+.taxNo,
+.customerCode,
+.custType {
+    ::ng-deep .mat-form-field-appearance-outline  {
+        .mat-form-field-outline-gap,
+        .mat-form-field-outline-end,
+        .mat-form-field-outline-start {
+            border-width: 1px !important;
+            color: #e0e0e0;
+        }
+    }
+}
+
+.dobErr {
+    margin-top: -24px !important;
+    margin-left: 10px;
+    font-size: 9pt;
+}
+
+::ng-deep .mat-tab-header {
+    border: none !important;
+}

@@ -1,0 +1,578 @@
+<page-header></page-header>
+<div class="form-field-full">
+  <form [formGroup]="formInformation" class="form-field-full">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'contractAdd.title-search' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.titleAutoComplete' | translate }} <span class="required">*</span></mat-label>
+              <input matInput [matAutocomplete]="auto" formControlName='searchContract' #enter_phone
+                autoFocus="enter_phone" placeholder="{{'buyTicket.code' | translate}}">
+              <button mat-button *ngIf="formInformation.controls.searchContract.value" class="showclear" matSuffix
+                mat-icon-button
+                (click)="formInformation.controls.searchContract.setValue(null); $event.stopPropagation()"
+                type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error>{{ 'contractMerge.contract-or-plate' | translate }} </mat-error>
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+              (optionSelected)="onSelectedContract($event)">
+              <mat-option *ngIf="isLoadingAuto">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-option>
+              <ng-container *ngIf="!isLoadingAuto">
+                <mat-option *ngFor="let state of filteredStates" [value]="state">
+                  <div innerHTML="{{ state?.contractNo | highlight:formInformation.controls.searchContract.value}}">
+                  </div>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.code' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectContract.contractNo" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.signDate' | translate }}</mat-label>
+              <input matInput [(ngModel)]="signDate" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.create' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectContract.signName" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.employee' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectContract.createUser" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.validity-date' | translate }}</mat-label>
+              <input matInput [(ngModel)]="effDate" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.end-validity-date' | translate }}</mat-label>
+              <input matInput [(ngModel)]="expDate" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+<form [formGroup]="formSearch" class="form-field-full">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{'contractAppendix.add-vehicle' | translate | uppercase}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAppendix.sign-employee' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-sign-employee' | translate}}"
+              formControlName="appendixUsername" maxlength="255" />
+            <button mat-button *ngIf="formSearch.controls.appendixUsername.value" class="showclear" matSuffix
+              type="button" mat-icon-button
+              (click)="formSearch.controls.appendixUsername.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('appendixUsername').errors?.required">
+              {{'contractAppendix.valid-sign-employee' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('appendixUsername').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('appendixUsername').errors?.maxlength">
+              {{'common.validate.maxlength-255' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline" class="common-field">
+            <mat-label>{{'contractAppendix.sign-date' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput maskDate placeholder="{{ formatDate }}" [matDatepicker]="picker_sign1"
+              formControlName="appendixDateString" [max]="appendixDateString" #appendixDateStringId
+              (click)="picker_sign1.open()">
+            <mat-datepicker-toggle matSuffix *ngIf="appendixDateStringId.value" class="showclearDatePopup"
+              (click)="formSearch.controls.appendixDateString.setValue(null); $event.stopPropagation()">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="picker_sign1"></mat-datepicker-toggle>
+            <mat-datepicker #picker_sign1></mat-datepicker>
+            <mat-error *ngIf="formSearch.get('appendixDateString').errors?.required">
+              {{'contractAppendix.valid-sign-date' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('appendixDateString').hasError('matDatepickerMax')">
+              {{'common.signDayMax' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('appendixDateString').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.loaibien' | translate}} <span class="required">*</span>
+            </mat-label>
+            <mat-select formControlName="plateType">
+              <ng-container *ngFor="let item of listOptionVehiclePlateTypes">
+                <mat-option [value]="item.id">{{item.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button *ngIf="formSearch.controls.plateType.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop" (click)="formSearch.controls.plateType.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('plateType').errors?.required">
+              {{'contractAppendix.valid-loaibien' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.numberbs' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput #plateNumber placeholder="{{'contractAppendix.enter-numberbs' | translate}}"
+              formControlName="plateNumber" maxlength="16" (keyup)="onSearchVehicle($event)" />
+            <button mat-button *ngIf="formSearch.controls.plateNumber.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.plateNumber.setValue(null); $event.stopPropagation()" type="button">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('plateNumber').errors?.required">
+              {{'contractAppendix.valid-numberbs' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('plateNumber').errors?.pattern">
+              {{'common.format-plate-number' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('plateNumber').errors?.cannotWhiteSpace">
+              {{'common.format-plate-number' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('plateNumber').errors?.maxlength">
+              {{'common.validate.maxlength-16' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.boss-vehicle' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-boss-vehicle' | translate}}" formControlName="owner"
+              maxlength="255" />
+            <button mat-button *ngIf="formSearch.controls.owner.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.owner.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('owner').errors?.required">
+              {{'contractAppendix.valid-boss-vehicle' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('owner').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('owner').errors?.maxlength">
+              {{'common.validate.maxlength-255' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAppendix.type-vehicle' | translate}} <span class="required">*</span>
+            </mat-label>
+            <mtx-select [items]="listOptionVehicelType" bindLabel="value" bindValue="code" [multiple]="false"
+              formControlName="vehicleTypeId" [notFoundText]="'common.notFound' | translate"
+              [searchable]="listOptionVehicelType?.length>10" (change)="getVehicleGroupType()">
+            </mtx-select>
+            <mat-error *ngIf="formSearch.get('vehicleTypeId').errors?.required">
+              {{'contractAppendix.valid-type-vehicle' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.weight' | translate}}
+            </mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-weight' | translate}}" formControlName="netWeight"
+              maxlength="8" type="number" (change)="getVehicleGroupType()" />
+            <button mat-button *ngIf="formSearch.controls.netWeight.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.netWeight.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('netWeight').errors?.pattern">
+              {{'common.wrong-format-weight' |
+              translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('netWeight').errors?.max
+              &&
+              !formSearch.get('netWeight').errors?.pattern">
+              {{'customer-management.errorMessageVehicle.max' |
+              translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('netWeight').errors?.min">
+              {{'customer-management.errorMessageVehicle.min' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.weight-merchandise' | translate}}
+            </mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-weight-merchandise' | translate}}"
+              formControlName="cargoWeight" maxlength="8" type="number" (change)="getVehicleGroupType()" />
+            <button mat-button *ngIf="formSearch.controls.cargoWeight.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.cargoWeight.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+
+            <mat-error *ngIf="formSearch.get('cargoWeight').errors?.pattern">
+              {{'common.wrong-format-weight' |
+              translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('cargoWeight').errors?.min">
+              {{'customer-management.errorMessageVehicle.min' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('cargoWeight').errors?.max
+                  &&
+                  !formSearch.get('cargoWeight').errors?.pattern">
+              {{'customer-management.errorMessageVehicle.max' |
+              translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAppendix.seat' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-seat' | translate}}" max="100"
+              formControlName="seatNumber" min="0" OnlyNumber="true" (change)="getVehicleGroupType()" />
+            <button mat-button *ngIf="formSearch.controls.seatNumber.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.seatNumber.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('seatNumber').errors?.required">
+              {{'contractAppendix.valid-seat' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('seatNumber').errors?.max">
+              {{'customer-management.errorMessageVehicle.seatsNumberMax' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('seatNumber').errors?.pattern">
+              {{'customer-management.errorMessageVehicle.seatNumberPattern' |
+              translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('seatNumber').errors?.min">
+              {{'customer-management.errorMessageVehicle.min' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.weight-all' | translate}}
+            </mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-weight-all' | translate}}"
+              formControlName="grossWeight" maxlength="8" type="number" (change)="getVehicleGroupType()" />
+            <button mat-button *ngIf="formSearch.controls.grossWeight.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.grossWeight.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('grossWeight').errors?.min">
+              {{'customer-management.errorMessageVehicle.min' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('grossWeight').errors?.pattern">
+              {{'common.wrong-format-weight' |
+              translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('grossWeight').errors?.max &&
+              !formSearch.get('grossWeight').errors?.pattern">
+              {{'customer-management.errorMessageVehicle.max' |
+              translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.weight-dragging' | translate}}</mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-weight-dragging' | translate}}"
+              formControlName="pullingWeight" maxlength="8" type="number" (change)="getVehicleGroupType()" />
+            <button mat-button *ngIf="formSearch.controls.pullingWeight.value" class="showclear" matSuffix
+              mat-icon-button (click)="formSearch.controls.pullingWeight.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('pullingWeight').errors?.min">
+              {{'customer-management.errorMessageVehicle.min' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('pullingWeight').errors?.pattern">
+              {{'common.wrong-format-weight' |
+              translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('pullingWeight').errors?.max
+              &&
+              !formSearch.get('pullingWeight').errors?.pattern">
+              {{'customer-management.errorMessageVehicle.max' |
+              translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.type-vehicle-fee' | translate}} <span class="required">*</span>
+            </mat-label>
+            <mat-select formControlName="vehicleGroupId">
+              <ng-container *ngFor="let item of listOptionVehicleTypeFee">
+                <mat-option [value]="item.id">{{item.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button *ngIf="formSearch.controls.vehicleGroupId.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop"
+              (click)="formSearch.controls.vehicleGroupId.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.number-machine' | translate}}</mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-number-machine' | translate}}"
+              formControlName="engineNumber" maxlength="50" min="0" />
+            <button mat-button *ngIf="formSearch.controls.engineNumber.value" class="showclear" matSuffix
+              mat-icon-button (click)="formSearch.controls.engineNumber.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('engineNumber').errors?.maxlength">
+              {{'common.validate.maxlength-50' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('engineNumber').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.number-frame' | translate}}</mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-number-frame' | translate}}"
+              formControlName="chassicNumber" maxlength="50" min="0" />
+            <button mat-button *ngIf="formSearch.controls.chassicNumber.value" class="showclear" matSuffix
+              mat-icon-button (click)="formSearch.controls.chassicNumber.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('chassicNumber').errors?.maxlength">
+              {{'common.validate.maxlength-50' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('chassicNumber').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.color' | translate}}</mat-label>
+            <mat-select formControlName="vehicleColourId">
+              <mat-option>{{'common.default-select' | translate}}</mat-option>
+              <ng-container *ngFor="let item of listOptionVehicleColours">
+                <mat-option [value]="item.code">{{item.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button *ngIf="formSearch.controls.vehicleColourId.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop"
+              (click)="formSearch.controls.vehicleColourId.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.nhanhieu' | translate}}</mat-label>
+            <mtx-select [items]="listOptionVehicleLabel" bindLabel="value" bindValue="code" [multiple]="false"
+              appendTo="body" formControlName="vehicleMarkId" [(ngModel)]="dataModel.vehicleMarkId"
+              [notFoundText]="'common.notFound' | translate" [searchable]="listOptionVehicleLabel?.length>10">
+            </mtx-select>
+
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.dongxe' | translate}}</mat-label>
+            <mat-select formControlName="vehicleBrandId">
+              <mat-option>{{'common.default-select' | translate}}</mat-option>
+              <ng-container *ngFor="let item of listOptionVehicleBrands">
+                <mat-option [value]="item.code">{{item.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button *ngIf="formSearch.controls.vehicleBrandId.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop"
+              (click)="formSearch.controls.vehicleBrandId.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100" class="readonly">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.nvdanthe' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput placeholder="{{'common.default-select' | translate}}" formControlName="createUser"
+              readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field required appearance="outline">
+            <mat-label>{{'contractAppendix.serial-number' | translate}} <span class="required">*</span></mat-label>
+            <input matInput placeholder="{{'contractAppendix.enter-serial-number' | translate}}"
+              formControlName="rfidSerial" #serialNumber>
+            <button mat-button *ngIf="formSearch.controls.rfidSerial.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.rfidSerial.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('rfidSerial').errors?.required">
+              {{'contractAppendix.valid-serial-number' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('rfidSerial').errors?.maxlength">
+              {{'common.validate.maxlength-50' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('rfidSerial').errors?.pattern">
+              {{'contractNew.invalid-rfid-pattern' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <button mat-raised-button color="primary" (click)="fileInput.click()" type="button" style="float: right;"
+          *ngIf="hasPermissionOtherResource(permissionApp.CRM_CUST_04,resourceApp.CUSTOMER)">{{'contractAppendix.import-file'
+          | translate}}
+          <input #fileInput name="profile" (click)="importFileVehicle()" style="display:none;" />
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{'contractAppendix.profile-vehicle-attach' | translate | uppercase}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="row wrap" fxLayoutGap="10px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAppendix.choose-form' | translate}}</mat-label>
+            <mat-select formControlName="documentTypeId" [(ngModel)]="selectedDocument">
+              <mat-option>{{ 'common.default-select' | translate }}</mat-option>
+              <ng-container *ngFor="let item of listOptionLicense">
+                <mat-option [value]="item.id">{{item.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button *ngIf="formSearch.controls.documentTypeId.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop"
+              (click)="formSearch.controls.documentTypeId.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100" ngClass.xs="mb-10">
+          <button mat-raised-button color="primary" fxFlex.lt-sm="100" (click)="chooseFileChange($event)" type="button"
+            [disabled]="!selectedDocument">{{'contractAppendix.choose-file' | translate}}</button>
+        </div>
+      </div>
+      <div class="crm__table">
+        <table mat-table [dataSource]="dataSourceProfile" #tableProfile>
+          <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width:60px;">
+              {{'customer-management.updateProfileTable.stt' | translate}}</th>
+            <td mat-cell *matCellDef="let row; let i= index" style="text-align: center; padding-left: 0px !important;">
+              {{i + 1 + indexPaginator}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="documentType">
+            <th mat-header-cell *matHeaderCellDef>
+              {{'customer-management.updateProfileTable.documentType' |
+              translate}}</th>
+            <td mat-cell *matCellDef="let row; let i= index">
+              {{row.documentType}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="documentName">
+            <th mat-header-cell *matHeaderCellDef>
+              {{'customer-management.updateProfileTable.documentName' |
+              translate}}</th>
+            <td mat-cell *matCellDef="let row; let i= index">
+              {{row.documentName}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actionDelete">
+            <th mat-header-cell *matHeaderCellDef style="width:100px">
+              {{'common.action' | translate}}</th>
+            <td mat-cell *matCellDef="let row;let i= index" class="ui-text-center" style="padding-right: 0px;">
+              <button mat-icon-button>
+                <mat-icon svgIcon="ic_xem" matTooltip="{{'change_card.view-profile' | translate}}"
+                  (click)="viewProfile(row)">
+                </mat-icon>
+              </button>
+              <button mat-icon-button>
+                <mat-icon svgIcon="ic_Delete" matTooltip="{{'change_card.delete' | translate}}"
+                  (click)="deleteProfile(i)">
+                </mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsProfile"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsProfile"></tr>
+        </table>
+        <span class="noRecored" *ngIf="listDataProfile.length == 0 ">
+          {{'common.noRecord' |translate}}
+        </span>
+        <mat-paginator [pageSizeOptions]="pageSizeList" [pageSize]="10" [length]="listDataProfile.length" id="fix-page"
+          showFirstLastButtons (page)="onPaginateChange($event)">
+        </mat-paginator>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+    style="margin-top: 10px;">
+    <button mat-raised-button color="secondary" style="margin-right: 8px;" (click)="resetFormSearch()"
+      ngClass.xs="mb-10" type="button">{{'common.button.reEnter' | translate}}</button>
+    <button mat-raised-button color="primary" style="margin-right: 8px;" (click)="onSaveAppendix()"
+      [disabled]="formSearch.invalid">{{'briefcase.act_KyPhuLuc_HopDong' | translate}}</button>
+  </div>
+</form>

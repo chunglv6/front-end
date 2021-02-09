@@ -1,0 +1,21 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <div class="form-field-full">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="130" fxFlex.lt-sm="100">
+          <common-list [headerTable]="'contract.attachList'" [dataSource]="dataModel.dataSource" [isLoading]="isLoading"
+            [totalRecord]="totalRecord" [isPaging]="true" [columns]="columns" [pageIndex]="pageIndex"
+            (page)="onPageChange($event)">
+            <custom-mat-column columnName="action">
+              <ng-template let-item>
+                <button mat-icon-button color="primary" (click)="downLoadFile(item)">
+                  <mat-icon>get_app</mat-icon>
+                </button>
+              </ng-template>
+            </custom-mat-column>
+          </common-list>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

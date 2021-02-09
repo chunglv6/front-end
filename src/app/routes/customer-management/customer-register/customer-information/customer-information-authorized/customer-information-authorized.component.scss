@@ -1,0 +1,9 @@
+.city,
+.district,
+.ward {
+    ::ng-deep ng-dropdown-panel {
+        ::ng-deep .ng-dropdown-panel-items,  .scroll-host {
+            max-height: 150px !important;
+        }
+    }
+}

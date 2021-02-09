@@ -1,0 +1,27 @@
+.heading .top {
+  top: 0;
+}
+.heading .left {
+  left: 0;
+}
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  height: 40px;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+.example-container {
+  display: block;
+  overflow: auto;
+  border-right: 1px solid #eee;
+}
+.matcard__title--align {
+  text-align: center;
+  font-size: 18px;
+}
+.example-viewport {
+  height: 600px;
+}
+.current-tab {
+  cursor: help !important;
+}

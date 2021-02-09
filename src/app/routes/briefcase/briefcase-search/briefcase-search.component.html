@@ -1,0 +1,242 @@
+<div *ngIf="hasPermission(permissionApp.CRM_PROFILE_01)">
+  <page-header></page-header>
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.lt-sm="100">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ 'briefcase.title' | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="formSearch" class="form-field-full">
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'briefcase.number_contract' | translate }}</mat-label>
+                  <input matInput placeholder="{{ 'briefcase.enter_numContract' | translate }}" #contractNo
+                    autoFocus="contractNo" formControlName="contractNo" (keyup.enter)="onSearch()" />
+                  <button mat-button *ngIf="formSearch.controls.contractNo.value" matSuffix mat-icon-button
+                    class="showclear" type="button"
+                    (click)="formSearch.controls.contractNo.setValue(null); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'briefcase.number_paper' | translate }}</mat-label>
+                  <input matInput placeholder="{{ 'briefcase.enter_numPaper' | translate }}"
+                    formControlName="documentNumber" (keyup.enter)="onSearch()" />
+                  <button mat-button *ngIf="formSearch.controls.documentNumber.value" matSuffix mat-icon-button
+                    class="showclear"
+                    (click)="formSearch.controls.documentNumber.setValue(null); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{
+                    'customer-management.vehiclesNotRFIDTable.licensePlates' | translate
+                  }}</mat-label>
+                  <input matInput placeholder="{{
+                      'customer-management.vehiclesNotRFIDTable.licensePlates' | translate
+                    }}" formControlName="plateNumber" (keyup.enter)="onSearch()" />
+                  <button mat-button *ngIf="formSearch.controls.plateNumber.value" matSuffix mat-icon-button
+                    class="showclear"
+                    (click)="formSearch.controls.plateNumber.setValue(null); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'briefcase.code_custommer' | translate }}</mat-label>
+                  <input matInput placeholder="{{ 'briefcase.enter_codeCustomer' | translate }}"
+                    formControlName="custId" (keyup.enter)="onSearch()" />
+                  <button mat-button *ngIf="formSearch.controls.custId.value" matSuffix mat-icon-button
+                    class="showclear" (click)="formSearch.controls.custId.setValue(null); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <section>
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'briefcase.type_custommer' | translate }}</mat-label>
+                    <mat-select formControlName="custTypeId">
+                      <mat-option [value]="null">{{
+                        'common.default-select' | translate
+                      }}</mat-option>
+                      <ng-container *ngFor="let item of listCustomerType">
+                        <mat-option [value]="item.id">{{ item.value }}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.custTypeId.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.custTypeId.setValue(null); $event.stopPropagation();">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </section>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <section>
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'briefcase.type_impact' | translate }}</mat-label>
+                    <mat-select formControlName="actTypeId">
+                      <mat-option [value]="null">{{
+                        'common.default-select' | translate
+                      }}</mat-option>
+                      <mat-option *ngFor="let typeImpact of typeImpacts" [value]="typeImpact.code">
+                        {{ typeImpact.value }}
+                      </mat-option>
+                    </mat-select>
+                    <button *ngIf="formSearch.controls.actTypeId.value" matSuffix mat-icon-button type="button"
+                      class="btn-clear-drop"
+                      (click)="formSearch.controls.actTypeId.setValue(null); $event.stopPropagation();">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </section>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'action_audit.create' | translate }}
+                    <span class="required">*</span></mat-label>
+                  <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+                    <input matStartDate formControlName="startDate" #fromDateId maskDate
+                      placeholder="{{ 'common.fromDate' | translate }}">
+                    <input matEndDate formControlName="endDate" maskDate
+                      placeholder="{{ 'common.endDate' | translate }}" #endDateId>
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix *ngIf="fromDateId.value || endDateId.value"
+                    class="showclearDatePopup"
+                    (click)="formSearch.controls.startDate.setValue(null);formSearch.controls.endDate.setValue(null); $event.stopPropagation()">
+                    <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                  <mat-error
+                    *ngIf="formSearch.get('startDate').errors?.required && formSearch.get('endDate').errors?.required">
+                    {{ 'briefcase.err-create-date-requied' | translate }}
+                  </mat-error>
+                  <mat-error
+                    *ngIf="formSearch.get('startDate').errors?.required && !formSearch.get('endDate').errors?.required">
+                    {{ 'briefcase.selectStartDate' | translate }}
+                  </mat-error>
+                  <mat-error
+                    *ngIf="!formSearch.get('startDate').errors?.required && formSearch.get('endDate').errors?.required">
+                    {{ 'briefcase.selectEndDate' | translate }}
+                  </mat-error>
+                  <mat-error *ngIf="formSearch.get('startDate').errors?.matStartDateInvalid">
+                    {{ 'customer.err_ResgiterFromDate' | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'briefcase.agency' | translate }} <span class="required">*</span>
+                  </mat-label>
+                  <input matInput placeholder="{{ 'search-information.shop-name' | translate }}"
+                    [matAutocomplete]="auto" formControlName="shop" />
+                  <button mat-button *ngIf="formSearch.controls.shop.value" matSuffix mat-icon-button class="showclear"
+                    (click)="formSearch.controls.shop.setValue(null); $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <mat-error *ngIf="!formSearch.controls.shop.value">
+                    {{ 'briefcase.error_no_shop' | translate }}
+                  </mat-error>
+                  <mat-error *ngIf="formSearch.controls.shop.errors?.cannotWhiteSpace">
+                    {{ 'common.space_error' | translate }}
+                  </mat-error>
+                  <mat-error *ngIf="
+                      formSearch.controls.shop.value && formSearch.controls.shop.errors?.checkObject
+                    ">
+                    {{ 'briefcase.error_no_shop' | translate }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngIf="isLoadingShop">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  </mat-option>
+                  <ng-container *ngIf="!isLoadingShop">
+                    <mat-option *ngFor="let shop of shops" [value]="shop">
+                      <div innerHTML="{{ shop.name | highlight: formSearch.controls.shop.value }}"></div>
+                    </mat-option>
+                  </ng-container>
+                </mat-autocomplete>
+              </div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'briefcase.status' | translate }}</mat-label>
+                  <mat-select formControlName="profileStatus">
+                    <mat-option [value]="null">{{
+                      'common.default-select' | translate
+                    }}</mat-option>
+                    <mat-option *ngFor="let status of statuses" [value]="status.value">
+                      {{ status.label }}
+                    </mat-option>
+                  </mat-select>
+                  <button *ngIf="formSearch.controls.profileStatus.value" matSuffix mat-icon-button type="button"
+                    class="btn-clear-drop"
+                    (click)="formSearch.controls.profileStatus.setValue(null); $event.stopPropagation();">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="20px grid">
+              <div fxFlex="33.33" fxFlex.lt-sm="100"></div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100"></div>
+              <div fxFlex="33.33" fxFlex.lt-sm="100">
+                <button mat-raised-button color="primary" style="margin-right: 8px; float:right" (click)="onSearch()"
+                  [disabled]="formSearch.invalid">
+                  {{ 'briefcase.search' | translate }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-card>
+        <common-list [headerTable]="'briefcase.list_file'" [dataSource]="dataModel.dataSource" [isLoading]="isLoading"
+          [isPaging]="true" [totalRecord]="totalRecord" [columns]="columns" [selectionMode]="selectionMode"
+          (page)="onPageChange($event)" [pageIndex]="pageIndex" [startRecord]="formSearch.controls.startrecord.value">
+          <custom-mat-column columnName="viewFile">
+            <ng-template let-item>
+              <button mat-icon-button color="primary" (click)="viewDetail(item)">
+                <mat-icon class="mat-18">visibility</mat-icon>
+              </button>
+            </ng-template>
+          </custom-mat-column>
+          <custom-mat-column columnName="profileStatus">
+            <ng-template let-item>
+              <span *ngIf="item.profileStatus == statusBriefCase.CHUATIEPNHAN">{{
+                'briefcase.unreception' | translate
+              }}</span>
+              <span *ngIf="item.profileStatus == statusBriefCase.DAPHEDUYET">{{
+                'briefcase.approval' | translate
+              }}</span>
+              <span *ngIf="item.profileStatus == statusBriefCase.BITUCHOI">{{
+                'briefcase.deny' | translate
+              }}</span>
+              <span *ngIf="item.profileStatus == statusBriefCase.BOSUNG">{{
+                'briefcase.additional' | translate
+              }}</span>
+            </ng-template>
+          </custom-mat-column>
+        </common-list>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div *ngIf="!hasPermission(permissionApp.CRM_PROFILE_01)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

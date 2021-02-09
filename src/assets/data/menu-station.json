@@ -1,0 +1,18 @@
+{
+  "menu": [
+    {
+      "route": "customer-management",
+      "name": "customer-management",
+      "type": "sub",
+      "icon": "ic_QlyKhachHang",
+      "children": [
+        {
+          "route": "search",
+          "name": "search-info",
+          "type": "link",
+          "icon": "question_answer"
+        }
+      ]
+    }
+  ]
+}

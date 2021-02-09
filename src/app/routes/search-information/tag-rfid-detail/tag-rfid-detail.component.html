@@ -1,0 +1,95 @@
+<div fxLayout="row wrap" class=" ">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'search-information.detail-rfid' | translate }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="formSearch" class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'customer-management.newVehicleForm.seriNumber' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.codeEpc' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.code-TID' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.type-resource' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.type-card' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.number-block' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.partner' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.producer' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.year-product' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.save-warehouse' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'search-information.date-input' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+            <div fxFlex="33.33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline" class="readonly">
+                <mat-label>{{ 'common.status' | translate }}</mat-label>
+                <input matInput readonly />
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

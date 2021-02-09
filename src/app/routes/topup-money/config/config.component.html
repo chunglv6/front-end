@@ -1,0 +1,62 @@
+<div *ngIf="hasPermission(permissionApp.TOPUP_01)">
+  <page-header></page-header>
+  <div class="form-field-full">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="33.33" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'topup-money.search-account' | translate }}
+          </mat-label>
+          <input matInput placeholder="{{ 'topup-money.placeholder-search-account' | translate }}"
+            [matAutocomplete]="auto" [formControl]="account" />
+          <button mat-button *ngIf="account.value" matSuffix mat-icon-button class="showclear"
+            (click)="clearAccount(); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="selectedMember($event)">
+          <mat-option *ngIf="isLoadingAccount">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </mat-option>
+          <ng-container *ngIf="!isLoadingAccount">
+            <mat-option *ngFor="let acc of listAccount" [value]="acc">
+              <div innerHTML="{{ acc.accountUser | highlight: account.value }}"></div>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </div>
+    </div>
+  </div>
+  <div class="form-field-full">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="100" fxFlex.lt-sm="100">
+        <common-list [headerTable]="'topup-money.title-list-leader'" [dataSource]="dataModel.dataSource"
+          [columns]="columns" [totalRecord]="totalRecord" [isLoading]="isLoading" [isPaging]="true" [showHeader]="true"
+          (page)="onPageChange($event)" [pageIndex]="pageIndex" [startRecord]="searchModel.startrecord">
+          <button style="float: right; margin-bottom: 10px;" mat-raised-button color="primary"
+            (click)="edit(null)">{{'common.button.insert' |
+            translate}}</button>
+          <custom-mat-column columnName="actions">
+            <ng-template let-item>
+              <button mat-icon-button (click)="view(item)">
+                <mat-icon svgIcon="ic_xem" matTooltip="{{'topup-money.tooltip-view-detail' | translate}}">
+                </mat-icon>
+              </button>
+              <button mat-icon-button (click)="edit(item)">
+                <mat-icon svgIcon="ic_edit" matTooltip="{{'common.button.edit' | translate}}">
+                </mat-icon>
+              </button>
+              <button mat-icon-button (click)="delete(item)">
+                <mat-icon svgIcon="ic_Delete" matTooltip="{{'common.button.delete' | translate}}">
+                </mat-icon>
+              </button>
+            </ng-template>
+          </custom-mat-column>
+        </common-list>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!hasPermission(permissionApp.TOPUP_01)">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>

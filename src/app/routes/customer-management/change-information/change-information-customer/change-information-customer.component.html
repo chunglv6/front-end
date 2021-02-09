@@ -1,0 +1,44 @@
+<div fxLayout="row wrap">
+  <div fxFlex="25" fxFlex.lt-sm="100">
+    <mat-card>
+      <mat-card-title class="matcard__title--align">{{ 'customer.list' | translate }}
+        <hr />
+      </mat-card-title>
+      <cdk-virtual-scroll-viewport class="example-viewport" [itemSize]="18 * 10">
+        <crm-tree-component [treeData]="dataModel.dataSourceTree" (selectNode)="selectNode($event)">
+        </crm-tree-component>
+      </cdk-virtual-scroll-viewport>
+    </mat-card>
+  </div>
+  <div fxFlex="75" fxFlex.lt-sm="100">
+    <mat-tab-group animationDuration="0ms" style="width:100%;height: 100%;" class="heading left"
+      (selectedTabChange)="onTabCustomerChange($event)" *ngIf="indexTab == 1">
+      <mat-tab label="{{ 'customer.info' | translate }}">
+        <app-customer-information-tab [node]="selectedNode">
+        </app-customer-information-tab>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-tab-group animationDuration="0ms" style="width:100%;height: 100%;" class="heading left" *ngIf="indexTab == 2"
+      (selectedTabChange)="onTabContractChange($event)">
+      <mat-tab label="{{ 'contract.info' | translate }}">
+        <app-contract-information-tab [node]="selectedNode"></app-contract-information-tab>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.vehicleList' | translate }}">
+        <app-vehicle-list-change-info [node]="selectedNode" *ngIf="dataModel.initVehicleList">
+        </app-vehicle-list-change-info>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.attachList' | translate }}">
+        <app-contract-profile-change-info [node]="selectedNode" *ngIf="dataModel.initAttachList">
+        </app-contract-profile-change-info>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-tab-group animationDuration="0ms" style="width:100%;height: 100%;" class="heading left" *ngIf="indexTab == 3">
+      <mat-tab label="{{ 'vehicle.info' | translate }}">
+        <app-vehicle-information-tab [node]="selectedNode"></app-vehicle-information-tab>
+      </mat-tab>
+      <mat-tab label="{{ 'contract.attachList' | translate }}">
+        <app-profile-attachment-tab [node]="selectedNode"></app-profile-attachment-tab>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

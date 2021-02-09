@@ -1,0 +1,60 @@
+<mat-card>
+  <common-list [dataSource]="dataModel.dataSource" [headerTable]="'briefcase.lst_license'" [isLoading]="isLoading"
+    [isPaging]="true" [totalRecord]="totalRecord" [columns]="columns" (page)="onPageChange($event)">
+    <custom-mat-column columnName="type">
+      <ng-template let-item>
+        <span *ngIf="item.type == typeFile.CHUNGTUGOC">{{
+          'briefcase.document-original' | translate
+        }}</span>
+        <span *ngIf="item.type == typeFile.CHUNGTUTHAYTHE">{{
+          'briefcase.document-change' | translate
+        }}</span>
+      </ng-template>
+    </custom-mat-column>
+    <custom-mat-column columnName="profileExisted">
+      <ng-template let-row>
+        <mat-checkbox [disabled]="!row.profileDTOList[0].contractProfileId" (click)="clickCheckbox(row)"
+          [(ngModel)]="row.profileExisted"></mat-checkbox>
+      </ng-template>
+    </custom-mat-column>
+    <custom-mat-column columnName="profileFake">
+      <ng-template let-item>
+        <mat-checkbox [(ngModel)]="item.profileFake" [disabled]="!item.profileExisted">
+        </mat-checkbox>
+      </ng-template>
+    </custom-mat-column>
+    <custom-mat-column columnName="profileScan">
+      <ng-template let-item>
+        <span *ngFor="let itemProfile of item.profileDTOList">
+          <a (click)="onDownLoadFile(item)" style="cursor: pointer;">{{ itemProfile.fileName }}</a>
+          <br />
+        </span>
+      </ng-template>
+    </custom-mat-column>
+    <custom-mat-column columnName="description">
+      <ng-template let-item>
+        <div class="tablemat">
+          <mat-form-field appearance="outline" style="width:100%;padding: 5px !important;">
+            <input matInput [(ngModel)]="item.description" [disabled]="!item.profileDTOList[0].contractProfileId" />
+            <button mat-button *ngIf="item.description && item.profileDTOList[0].contractProfileId" matSuffix
+              mat-icon-button (click)="item.description = null" class="showclear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </ng-template>
+    </custom-mat-column>
+  </common-list>
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0">
+    <div>
+      <button *ngIf="permissionApp.CRM_PROFILE_02" mat-raised-button (click)="approvalBriefcase()" color="primary"
+        style="margin-right: 8px;">
+        {{ 'briefcase.approve' | translate }}
+      </button>
+      <button mat-raised-button (click)="openDenial()" *ngIf="permissionApp.CRM_PROFILE_02" color="primary"
+        style="margin-right: 8px;">
+        {{ 'briefcase.denial' | translate }}
+      </button>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,395 @@
+<div fxLayout="row wrap" class="  mt-15">
+  <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'customer-management.customer-info' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="customerRegisterForm" class="form-field-full">
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.customerType' | translate}} <span
+                    class="required">*</span></mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionCustomerType"
+                  bindLabel="value" bindValue="code" formControlName="customerType"
+                  [searchable]="listOptionCustomerType?.length>10">
+                </mtx-select>
+                <mat-error *ngIf="customerRegisterForm.get('customerType').errors?.required">
+                  {{'customer-management.errorMessage.customerType' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.numberPhone' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput type="tel" (keypress)="onKeypressNumberPhone($event)"
+                  (keyup.enter)="onKeyupNumberPhone($event)"
+                  placeholder="{{'customer-management.formCustomerRegister.numberPhone' | translate}}"
+                  formControlName="numberPhone" />
+                <button mat-button *ngIf="customerRegisterForm.controls.numberPhone.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.numberPhone.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('numberPhone').errors?.required">
+                  {{'customer-management.errorMessage.numberPhone' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('numberPhone').errors?.pattern">
+                  {{'common.numberPhoneRegex' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('numberPhone').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.email' | translate}}
+                </mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.email' | translate}}"
+                  formControlName="email" />
+                <button mat-button *ngIf="customerRegisterForm.controls.email.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.email.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('email').errors?.pattern">
+                  {{'common.emailRegex' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('email').errors?.maxlength">
+                  {{'common.validate.maxlength-255' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('email').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <!-- personal -->
+          <div fxLayout="row wrap" fxLayoutGap="20px grid" *ngIf="customerTypeId == 1">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.fullName' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.fullName' | translate}}"
+                  formControlName="fullName" />
+                <button mat-button *ngIf="customerRegisterForm.controls.fullName.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.fullName.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('fullName').errors?.required">
+                  {{'customer-management.errorMessage.fullName' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('fullName').errors?.maxlength">
+                  {{'common.validate.maxlength-510' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('fullName').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.dateOfBirth' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="dd/mm/yyyy" maskDate [matDatepicker]="pickerDOB" [max]="currentDate"
+                  formControlName="dateOfBirth" (click)="pickerDOB.open()" #dateOfBirthId>
+                <mat-datepicker-toggle matSuffix *ngIf="dateOfBirthId.value" class="showclearDatePopup"
+                  (click)="customerRegisterForm.controls.dateOfBirth.setValue(null); $event.stopPropagation()">
+                  <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="pickerDOB"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDOB></mat-datepicker>
+                <mat-error *ngIf="customerRegisterForm.get('dateOfBirth').errors?.required">
+                  {{'customer-management.errorMessage.dateOfBirth' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('dateOfBirth').hasError('matDatepickerMax')">
+                  {{'common.dobMax' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('dateOfBirth').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.gender' | translate}}</mat-label>
+                <mtx-select [notFoundText]="'common.notFound' | translate" [items]="listOptionGender" bindLabel="value"
+                  bindValue="code" formControlName="gender" [searchable]="listOptionGender?.length>10">
+                </mtx-select>
+                <mat-error *ngIf="customerRegisterForm.get('gender').errors?.required">
+                  {{'customer-management.errorMessage.gender' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <!-- enterprise -->
+          <div fxLayout="row wrap" fxLayoutGap="20px grid" *ngIf="customerTypeId != 1">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.companyName' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.companyName' | translate}}"
+                  formControlName="companyName" />
+                <button mat-button *ngIf="customerRegisterForm.controls.companyName.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.companyName.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('companyName').errors?.required">
+                  {{'customer-management.errorMessage.companyName' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('companyName').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.taxNo' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput #taxNo placeholder="{{'customer-management.formCustomerRegister.taxNo' | translate}}"
+                  formControlName="taxNo" />
+                <button mat-button *ngIf="customerRegisterForm.controls.taxNo.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.taxNo.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('taxNo').errors?.required">
+                  {{'customer-management.errorMessage.taxNo' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('companyName').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.foundingDate' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="dd/mm/yyyy" maskDate [matDatepicker]="pickerFounding"
+                  formControlName="foundingDate" #foundingDateId (click)="pickerFounding.open()">
+                <mat-datepicker-toggle matSuffix *ngIf="foundingDateId.value" class="showclearDatePopup"
+                  (click)="customerRegisterForm.controls.foundingDate.setValue(null); $event.stopPropagation()">
+                  <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="pickerFounding"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFounding></mat-datepicker>
+                <mat-error *ngIf="customerRegisterForm.get('foundingDate').errors?.required">
+                  {{'customer-management.errorMessage.foundingDate' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('foundingDate').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="16" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.documentType' | translate}} <span
+                    class="required">*</span></mat-label>
+                <mat-select formControlName="documentType">
+                  <ng-container *ngFor="let item of listOptionDocumentType">
+                    <mat-option [value]="item.code">{{item.value}}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <button *ngIf="customerRegisterForm.controls.documentType.value" matSuffix mat-icon-button type="button"
+                  class="btn-clear-drop"
+                  (click)="customerRegisterForm.controls.documentType.setValue(null); $event.stopPropagation()">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('documentType').errors?.required">
+                  {{'customer-management.errorMessage.documentType' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="17" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.documentNumber' | translate}}
+                  <span class="required">*</span>
+                </mat-label>
+                <input matInput #documentNumberRef
+                  placeholder="{{'customer-management.formCustomerRegister.documentNumber' | translate}}"
+                  formControlName="documentNumber" />
+                <button mat-button *ngIf="customerRegisterForm.controls.documentNumber.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.documentNumber.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('documentNumber').errors?.required">
+                  {{'customer-management.errorMessage.documentNumber' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('documentNumber').errors?.maxlength">
+                  {{'common.validate.maxlength-20' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('documentNumber').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.dateRange' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="dd/mm/yyyy" maskDate [matDatepicker]="pickerDateRange" [max]="dateNow"
+                  formControlName="dateRange" #dateRangeId (click)="pickerDateRange.open()">
+                <mat-datepicker-toggle matSuffix *ngIf="dateRangeId.value" class="showclearDatePopup"
+                  (click)="customerRegisterForm.controls.dateRange.setValue(null); $event.stopPropagation()">
+                  <mat-icon matDatepickerToggleIcon>close</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker-toggle matSuffix [for]="pickerDateRange"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDateRange></mat-datepicker>
+                <mat-error *ngIf="customerRegisterForm.get('dateRange').errors?.required">
+                  {{'customer-management.errorMessage.dateRange' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('dateRange').hasError('matDatepickerMax')">
+                  {{'customer-management.errorMessage.dateRangeMax' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('dateRange').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.placeOfIssue' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.placeOfIssue' | translate}}"
+                  formControlName="placeOfIssue" />
+                <button mat-button *ngIf="customerRegisterForm.controls.placeOfIssue.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.companyplaceOfIssueName.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('placeOfIssue').errors?.required">
+                  {{'customer-management.errorMessage.placeOfIssue' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('placeOfIssue').errors?.maxlength">
+                  {{'common.validate.maxlength-255' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('placeOfIssue').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.city' | translate}} <span
+                    class="required">*</span></mat-label>
+                <mtx-select [items]="listOptionCity" bindLabel="value" bindValue="code" [multiple]="false"
+                  formControlName="city" [notFoundText]="'common.notFound' | translate"
+                  [searchable]="listOptionCity?.length>10" [dropdownPosition]="'top'">
+                </mtx-select>
+                <mat-error *ngIf="customerRegisterForm.get('city').errors?.required">
+                  {{'customer-management.errorMessage.city' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.district' | translate}} <span
+                    class="required">*</span></mat-label>
+                <mtx-select [items]="listOptionDistrict" bindLabel="value" bindValue="code" [multiple]="false"
+                  formControlName="district" [notFoundText]="'common.notFound' | translate"
+                  [searchable]="listOptionDistrict?.length>10" [dropdownPosition]="'top'">
+                </mtx-select>
+                <mat-error *ngIf="customerRegisterForm.get('district').errors?.required">
+                  {{'customer-management.errorMessage.district' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="34" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.ward' | translate}} <span
+                    class="required">*</span></mat-label>
+                <mtx-select [items]="listOptionWard" bindLabel="value" bindValue="code" [multiple]="false"
+                  formControlName="ward" [notFoundText]="'common.notFound' | translate"
+                  [searchable]="listOptionWard?.length>10" [dropdownPosition]="'top'">
+                </mtx-select>
+                <mat-error *ngIf="customerRegisterForm.get('ward').errors?.required">
+                  {{'customer-management.errorMessage.ward' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px grid">
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.street' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.street' | translate}}"
+                  formControlName="street" />
+                <button mat-button *ngIf="customerRegisterForm.controls.street.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.street.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('street').errors?.required">
+                  {{'customer-management.errorMessage.street' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('street').errors?.maxlength">
+                  {{'common.validate.maxlength-255' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('street').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33" fxFlex.lt-sm="100">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'customer-management.formCustomerRegister.address' | translate}} <span
+                    class="required">*</span></mat-label>
+                <input matInput placeholder="{{'customer-management.formCustomerRegister.address' | translate}}"
+                  formControlName="address" />
+                <button mat-button *ngIf="customerRegisterForm.controls.address.value" matSuffix mat-icon-button
+                  (click)="customerRegisterForm.controls.address.setValue(null); $event.stopPropagation()"
+                  class="showclear">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-error *ngIf="customerRegisterForm.get('address').errors?.required">
+                  {{'customer-management.errorMessage.address' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('address').errors?.maxlength">
+                  {{'common.validate.maxlength-510' | translate}}
+                </mat-error>
+                <mat-error *ngIf="customerRegisterForm.get('address').errors?.cannotWhiteSpace">
+                  {{'common.space_error' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+        <hr *ngIf="customerTypeId != 1" />
+        <mat-tab-group class="group-representative" *ngIf="customerTypeId != 1">
+          <mat-tab label="{{'customer.representative' | translate | uppercase}}">
+            <app-customer-information-representative #representativeForm *ngIf="dataModel.infoFromVtPost"
+              [infoFromVtPost]="dataModel.infoFromVtPost" (emitValidEnterprise)="validFormEnterprise($event)">
+            </app-customer-information-representative>
+          </mat-tab>
+          <mat-tab label="{{'customer.authorizedPerson' | translate | uppercase}}">
+            <app-customer-information-authorized #authorizedPersonForm *ngIf="dataModel.infoFromVtPost"
+              [infoFromVtPost]="dataModel.infoFromVtPost" (emitValidAuthorizedPerson)="validFormAuthorized($event)">
+            </app-customer-information-authorized>
+          </mat-tab>
+        </mat-tab-group>
+
+        <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="20px">
+          <button mat-button class="" mat-raised-button color="secondary"
+            (click)="resetFormRegister()">{{'common.button.reEnter' | translate}}</button>
+          <button mat-button mat-raised-button color="primary" (click)="onSaveCustomerInfor()"
+            [disabled]="isDisableBtnSave">{{'customer.btn-register' |
+            translate}}</button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

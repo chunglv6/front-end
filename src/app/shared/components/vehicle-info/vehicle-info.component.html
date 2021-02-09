@@ -1,0 +1,189 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'vehicle.info' | translate | uppercase }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="form-field-full readonly">
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="100" fxFlex.lt-sm="100"></div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.vehiclesNotRFIDTable.licensePlates' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.plateNumber" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.vehiclesNotRFIDTable.vehiclesOwner' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.owner" readonly matTooltip="{{ dataModel.owner }}"
+              [matTooltipPosition]="'above'" />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.vehiclesNotRFIDTable.vehiclesType' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.nameType" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.vehicleWeight' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.netWeight" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.merchandiseWeight' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.cargoWeight" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'vehicle.groupTypeVehicleFee' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.nameGroup" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.newVehicleForm.allWeight' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.grossWeight" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.followWeight' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.pullingWeight" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.seatsNumber' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.seatNumber" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.vehicleNumber' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.engineNumber" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.framesNumber' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.chassicNumber" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.newVehicleForm.color' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.color" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.newVehicleForm.label' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.mark" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.newVehicleForm.vehiclesSeri' | translate
+              }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.brand" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'vehicle.colorPlates' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.plateType" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.newVehicleForm.staff' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.createUser" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'customer-management.newVehicleForm.seriNumber' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.rfidSerial" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'customer-management.vehiclesHaveRFIDTable.cardStatus' | translate
+              }}</mat-label>
+            <input matInput *ngIf="!dataModel.activeStatus" [value]="" readonly />
+            <input matInput *ngIf="dataModel.activeStatus == activeStatus.CHUAKICHHOAT"
+              [value]="'common.notActive' | translate" readonly />
+            <input matInput *ngIf="dataModel.activeStatus == activeStatus.HOATDONG"
+              [value]="'common.active' | translate" readonly />
+            <input matInput *ngIf="dataModel.activeStatus == activeStatus.HUY" [value]="'common.cancel' | translate"
+              readonly />
+            <input matInput *ngIf="dataModel.activeStatus == activeStatus.DONG"
+              [value]="'common.button.close' | translate" readonly />
+            <input matInput *ngIf="dataModel.activeStatus == activeStatus.MO" [value]="'common.open' | translate"
+              readonly />
+            <input matInput *ngIf="dataModel.activeStatus == activeStatus.DACHUYENNHUONG"
+              [value]="'common.transfered' | translate" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'EPC' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.epc" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'policy.date_created' | translate }}</mat-label>
+            <input matInput [(ngModel)]="dataModel.createDate" readonly />
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              'vehicle.promotion_code' | translate
+              }}</mat-label>
+            <input matInput [ngModel]="dataModel.promotionCode" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

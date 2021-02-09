@@ -1,0 +1,614 @@
+<page-header></page-header>
+<div class="form-field-full">
+  <form [formGroup]="formInformation" class="form-field-full">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ 'contractAdd.title-search' | translate | uppercase }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contract.titleAutoComplete' | translate }} <span class="required">*</span></mat-label>
+              <input matInput [matAutocomplete]="auto" formControlName='searchContract' #enter_phone
+                autoFocus="enter_phone" placeholder="{{ 'contractSearch.enter_documentType' | translate }}">
+              <button mat-button *ngIf="formInformation.controls.searchContract.value" class="showclear" matSuffix
+                mat-icon-button
+                (click)="formInformation.controls.searchContract.setValue(null); $event.stopPropagation()"
+                type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <mat-error>{{ 'contractMerge.tax-or-phone' | translate }} </mat-error>
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+              (optionSelected)="onSelectedCustomer($event)">
+              <mat-option *ngIf="isLoadingAuto">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </mat-option>
+              <ng-container *ngIf="!isLoadingAuto">
+                <mat-option *ngFor="let state of filteredStates" [value]="state">
+                  <div innerHTML="{{ state?.custName | highlight: formInformation.controls.searchContract.value }}
+                  {{state.documentNumber| highlight: formInformation.controls.searchContract.value }}">
+                  </div>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.type' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.custTypeName" [ngModelOptions]="{standalone: true}"
+                readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CA_NHAN_TRONG_NUOC || CUSTOMER_TYPE_ID.CA_NHAN_NUOC_NGOAI">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.code' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.custId" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CONG_TY_CO_PHAN && CUSTOMER_TYPE_ID.CONG_TY_TNHH
+        && CUSTOMER_TYPE_ID.DOANH_NGHIEP_NHA_NUOC && CUSTOMER_TYPE_ID.DOANH_NGHIEP_TU_NHAN && CUSTOMER_TYPE_ID.CO_QUAN_NHA_NUOC">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.company_code' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.custId" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CA_NHAN_TRONG_NUOC || CUSTOMER_TYPE_ID.CA_NHAN_NUOC_NGOAI">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractNew.first-and-last name' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.custName" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CONG_TY_CO_PHAN && CUSTOMER_TYPE_ID.CONG_TY_TNHH
+        && CUSTOMER_TYPE_ID.DOANH_NGHIEP_NHA_NUOC && CUSTOMER_TYPE_ID.DOANH_NGHIEP_TU_NHAN && CUSTOMER_TYPE_ID.CO_QUAN_NHA_NUOC">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.company_name' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.custName" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CA_NHAN_TRONG_NUOC || CUSTOMER_TYPE_ID.CA_NHAN_NUOC_NGOAI">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.dob' | translate }}</mat-label>
+              <input matInput [(ngModel)]="birthDayDate" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CONG_TY_CO_PHAN && CUSTOMER_TYPE_ID.CONG_TY_TNHH
+        && CUSTOMER_TYPE_ID.DOANH_NGHIEP_NHA_NUOC && CUSTOMER_TYPE_ID.DOANH_NGHIEP_TU_NHAN && CUSTOMER_TYPE_ID.CO_QUAN_NHA_NUOC">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'contractAdd.founding' | translate }}</mat-label>
+              <input matInput [(ngModel)]="birthDayDate" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CA_NHAN_TRONG_NUOC || CUSTOMER_TYPE_ID.CA_NHAN_NUOC_NGOAI">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.gender' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.gender" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100"
+            *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CONG_TY_CO_PHAN && CUSTOMER_TYPE_ID.CONG_TY_TNHH
+        && CUSTOMER_TYPE_ID.DOANH_NGHIEP_NHA_NUOC && CUSTOMER_TYPE_ID.DOANH_NGHIEP_TU_NHAN && CUSTOMER_TYPE_ID.CO_QUAN_NHA_NUOC">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer-management.formCustomerRegister.taxNo' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.taxCode" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.attachNumber' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.documentNumber" [ngModelOptions]="{standalone: true}"
+                readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'briefcase.date_issue' | translate }}</mat-label>
+              <input matInput [(ngModel)]="dateOfIssue" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'briefcase.address_issue' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.placeOfIssue" [ngModelOptions]="{standalone: true}"
+                readonly>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.address' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.areaName" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.phoneNumber' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.phoneNumber" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33.33" fxFlex.lt-sm="100">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'customer.email' | translate }}</mat-label>
+              <input matInput [(ngModel)]="selectedCustomer.email" [ngModelOptions]="{standalone: true}" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+
+<form [formGroup]="formSearch" class="form-field-full">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'contractAdd.title-info-contract' | translate | uppercase }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline" class="common-field">
+            <mat-label>{{'contractAdd.sign-date' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput maskDate placeholder="{{ formatDate }}" [matDatepicker]="fromDateSign"
+              formControlName="signDate" [(ngModel)]="signDate" [max]="maxSignDay" #signDateId
+              (click)="fromDateSign.open()">
+            <mat-datepicker-toggle matSuffix *ngIf="signDateId.value " class="showclearDatePopup"
+              (click)="signDate=null;formSearch.controls.signDate.setValue(null); $event.stopPropagation()">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="fromDateSign"></mat-datepicker-toggle>
+            <mat-datepicker #fromDateSign></mat-datepicker>
+
+            <mat-error *ngIf="formSearch.get('signDate').errors?.required">
+              {{'contractAdd.valid-sign-date' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('signDate').hasError('matDatepickerMax')">
+              {{'common.signDayMax' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('signDate').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100" class="readonly">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.sign-employee' | translate}}
+            </mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-sign-employee' | translate}}" formControlName="signName"
+              [(ngModel)]="dataModel.signName" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline" class="common-field">
+            <mat-label>{{'contractAdd.validity-date' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput maskDate placeholder="{{ formatDate }}" [matDatepicker]="fromDateEff"
+              formControlName="effDate" [(ngModel)]="effDate" [max]="expDate" (click)="fromDateEff.open()" #effDateId>
+            <mat-datepicker-toggle matSuffix *ngIf="effDateId.value " class="showclearDatePopup"
+              (click)="effDate=null;formSearch.controls.effDate.setValue(null); $event.stopPropagation()">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="fromDateEff"></mat-datepicker-toggle>
+            <mat-datepicker #fromDateEff></mat-datepicker>
+
+            <mat-error *ngIf="formSearch.get('effDate').errors?.required">
+              {{'customer-management.errorMessageNewContract.effectiveDate' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('effDate').hasError('matDatepickerMax')">
+              {{'common.effectiveMax' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('effDate').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline" class="common-field">
+            <mat-label>{{'contractAdd.end-validity-date' | translate}}</mat-label>
+            <input matInput maskDate placeholder="{{ formatDate }}" [matDatepicker]="fromDateExp"
+              formControlName="expDate" [min]="effDate" [(ngModel)]="expDate" (click)="fromDateExp.open()" #expDateId>
+            <mat-datepicker-toggle matSuffix *ngIf="expDateId.value " class="showclearDatePopup"
+              (click)="expDate=null;formSearch.controls.expDate.setValue(null); $event.stopPropagation()">
+              <mat-icon matDatepickerToggleIcon>close</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="fromDateExp"></mat-datepicker-toggle>
+            <mat-datepicker #fromDateExp></mat-datepicker>
+            <mat-error *ngIf="formSearch.get('expDate').hasError('matDatepickerMin')">
+              {{'common.expiryMin' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33.33" fxFlex.lt-sm="100" class="readonly">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.employee' | translate}}
+            </mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-employee' | translate}}" formControlName="accountUser"
+              [(ngModel)]="dataModel.accountUser" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <label class="pr-10">{{ 'contract.chargeNotificationAddress' | translate | uppercase }}</label>&nbsp; |
+          &nbsp; <a (click)="onClickCopyCustomerInfor($event)">{{'customer-management.copyFromCustomer' | translate |
+            uppercase }}</a>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100"
+          *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CA_NHAN_TRONG_NUOC && CUSTOMER_TYPE_ID.CA_NHAN_NUOC_NGOAI">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.first-and-last-name' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-first-and-last-name' | translate}}"
+              formControlName="noticeName" [(ngModel)]="dataModel.noticeName" />
+            <button mat-button *ngIf="formSearch.controls.noticeName.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.noticeName.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('noticeName').errors?.required">
+              {{'contractAdd.valid-first-and-last-name' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeName').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeName').errors?.maxlength">
+              {{'common.validate.maxlength-510' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100"
+          *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE_ID.CONG_TY_CO_PHAN && CUSTOMER_TYPE_ID.CONG_TY_TNHH
+        && CUSTOMER_TYPE_ID.DOANH_NGHIEP_NHA_NUOC && CUSTOMER_TYPE_ID.DOANH_NGHIEP_TU_NHAN && CUSTOMER_TYPE_ID.CO_QUAN_NHA_NUOC">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'contractAdd.company_name' | translate }}</mat-label>
+            <input matInput placeholder="{{'contractAdd.enter_company_name' | translate}}" formControlName="noticeName"
+              [(ngModel)]="dataModel.noticeName" />
+            <button mat-button *ngIf="formSearch.controls.noticeName.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.noticeName.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('noticeName').errors?.required">
+              {{'contractAdd.valid_enter_company_name' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeName').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeName').errors?.maxlength">
+              {{'common.validate.maxlength-510' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.province-city' | translate}} <span class="required">*</span>
+            </mat-label>
+            <mtx-select [items]="listOptionCity" bindLabel="value" bindValue="code" [multiple]="false" appendTo="body"
+              [(ngModel)]="dataModel.city" formControlName="city" [notFoundText]="'common.notFound' | translate">
+            </mtx-select>
+            <mat-error *ngIf="formSearch.get('city').errors?.required">
+              {{'contractAdd.valid-province-city' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.district' | translate}} <span class="required">*</span>
+            </mat-label>
+            <mtx-select [items]="listOptionDistrict" bindLabel="value" bindValue="code" [multiple]="false"
+              appendTo="body" [(ngModel)]="dataModel.district" formControlName="district"
+              [notFoundText]="'common.notFound' | translate" [searchable]="listOptionDistrict?.length>10">
+            </mtx-select>
+            <mat-error *ngIf="formSearch.get('district').errors?.required">
+              {{'contractAdd.valid-district' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.wards' | translate}} <span class="required">*</span></mat-label>
+            <mtx-select [items]="listOptionWard" bindLabel="value" bindValue="code" [multiple]="false" appendTo="body"
+              [(ngModel)]="dataModel.noticeAreaCode" formControlName="ward"
+              [notFoundText]="'common.notFound' | translate" [searchable]="listOptionWard?.length>10">
+            </mtx-select>
+            <mat-error *ngIf="formSearch.get('ward').errors?.required">{{'contractAdd.valid-wards' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.house-street-number' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-house-street-number' | translate}}"
+              formControlName="noticeAreaCode" [(ngModel)]="dataModel.noticeStreet" />
+            <button mat-button *ngIf="formSearch.controls.noticeAreaCode.value" class="showclear" matSuffix
+              mat-icon-button (click)="formSearch.controls.noticeAreaCode.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('noticeAreaCode').errors?.required">
+              {{'contractAdd.valid-house-street-number' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeAreaCode').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeAreaCode').errors?.maxlength">
+              {{'common.validate.maxlength-255' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="66.67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.address' | translate}} <span class="required">*</span></mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-address' | translate}}" formControlName="noticeAreaName"
+              [(ngModel)]="dataModel.noticeAreaName" />
+            <button mat-button *ngIf="formSearch.controls.noticeAreaName.value" class="showclear" matSuffix
+              mat-icon-button (click)="formSearch.controls.noticeAreaName.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('noticeAreaName').errors?.required">
+              {{'contractAdd.valid-address' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeAreaName').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeAreaName').errors?.maxlength">
+              {{'common.validate.maxlength-510' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="20px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.phone' | translate}} <span class="required">*</span></mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-phone' | translate}}" formControlName="noticePhoneNumber"
+              [(ngModel)]="dataModel.noticePhoneNumber" type="tel" (keydown)="onKeydownNumberPhone($event)" />
+            <button mat-button *ngIf="formSearch.controls.noticePhoneNumber.value" class="showclear" matSuffix
+              mat-icon-button (click)="formSearch.controls.noticePhoneNumber.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('noticePhoneNumber').errors?.required">
+              {{'contractAdd.valid-phone' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticePhoneNumber').errors?.pattern">
+              {{'common.numberPhoneRegex' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticePhoneNumber').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="66.67" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.email' | translate}}</mat-label>
+            <input matInput placeholder="{{'contractAdd.enter-email' | translate}}" formControlName="noticeEmail"
+              [(ngModel)]="dataModel.noticeEmail" />
+            <button mat-button *ngIf="formSearch.controls.noticeEmail.value" class="showclear" matSuffix mat-icon-button
+              (click)="formSearch.controls.noticeEmail.setValue(null); $event.stopPropagation()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="formSearch.get('noticeEmail').errors?.pattern">
+              {{'common.emailRegex' | translate}}
+            </mat-error>
+            <mat-error *ngIf="formSearch.get('noticeEmail').errors?.cannotWhiteSpace">
+              {{'common.space_error' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{'contractNew.title-register' | translate | uppercase}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="40" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{'customer-management.registerServiceForm.packageRegister' | translate}} <span
+                class="required">*</span>
+            </mat-label>
+            <input matInput formControlName="goicuoc" style="height: 0px;" />
+            <div fxLayout="row wrap" fxLayoutGap="4px grid" class="radio-stl" style="height: 10px;">
+              <mat-radio-group class="font-register-service" [(ngModel)]="dataModel.payCharge"
+                [ngModelOptions]="{standalone: true}">
+                <mat-radio-button value="1">
+                  {{'contractNew.prepay' | translate}}</mat-radio-button>
+                <mat-radio-button class="ml-102" value="2">
+                  {{'contractNew.postpaid' | translate}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="60" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{'customer-management.registerServiceForm.invoiceCycle' | translate}} <span
+                class="required">*</span>
+            </mat-label>
+            <input matInput formControlName="chuky" readonly />
+            <div fxLayout="row wrap" fxLayoutGap="4px grid" class="radio-stl" style="height: 10px;">
+              <mat-radio-group class="font-register-service" [(ngModel)]="dataModel.billCycle"
+                [ngModelOptions]="{standalone: true}">
+                <mat-radio-button value="1">
+                  {{'contractNew.turn' | translate}}</mat-radio-button> &nbsp;&nbsp;
+                <mat-radio-button class="mr-10" value="2"
+                  *ngIf="selectedCustomer.custTypeId == CUSTOMER_TYPE.DOANH_NGHIEP">
+                  {{'contractNew.day' | translate}}
+                </mat-radio-button> &nbsp;&nbsp;
+                <mat-radio-button value="3">
+                  {{'contractNew.month' | translate}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px grid" class="readonly">
+        <div fxFlex="100" fxFlex.lt-sm="100" style="margin-bottom:20px">
+          <mat-form-field appearance="outline" floatLabel="always"
+            [ngClass.xs]="formSearch.get('receiveSMS').value?'hack-height-checkbox':'hack-height-checkbox-full'">
+            <mat-label>{{'contractAdd.receive-notification' | translate}} <span class="required">*</span>
+            </mat-label>
+            <input matInput formControlName="thongbao" readonly />
+            <div fxLayout="row wrap" fxLayoutGap="4px grid" class="radio-stl font-register-service">
+              <mat-checkbox class="mr-10" formControlName="receiveEmail" [(ngModel)]="dataModel.emailNotification">
+                {{'contractNew.email' | translate}}
+              </mat-checkbox>
+              <mat-checkbox class="mr-10" formControlName="receiveNotify" [(ngModel)]="dataModel.pushNotification">
+                {{'contractNew.notification' | translate}}</mat-checkbox>
+              <mat-checkbox class="mr-10" formControlName="receiveSMS" [(ngModel)]="dataModel.smsNotification">
+                {{'contractNew.sms' | translate}}</mat-checkbox>
+              <mat-checkbox formControlName="extendSMS" *ngIf="formSearch.get('receiveSMS').value"
+                [ngModel]="dataModel.extendSMS">
+                {{ 'common.extendSMS' |
+                translate }}</mat-checkbox>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{'contractAdd.profile-vehicle-attach' | translate | uppercase}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayout="row wrap" fxLayoutGap="10px grid">
+        <div fxFlex="33.33" fxFlex.lt-sm="100">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'contractAdd.choose-form' | translate}}</mat-label>
+            <mat-select formControlName="license" [(ngModel)]="selectedDocument">
+              <mat-option>{{ 'common.default-select' | translate }}</mat-option>
+              <ng-container *ngFor="let item of listOptionLicense">
+                <mat-option [value]="item.id">{{item.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button *ngIf="formSearch.controls.license.value" matSuffix mat-icon-button type="button"
+              class="btn-clear-drop" (click)="formSearch.controls.license.setValue(null); $event.stopPropagation();">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33.33" fxFlex.lt-sm="100" ngClass.xs="mb-10">
+          <button fxFlex.lt-sm="100" class="btn-search" mat-button mat-raised-button color="primary"
+            (click)="chooseFileChange($event)" type="button"
+            [disabled]="!selectedDocument">{{'customer-management.updateProfileForm.btnChooseFile' |
+            translate}}</button>
+        </div>
+      </div>
+      <div class="crm__table">
+        <table mat-table [dataSource]="dataSourceProfile" #tableProfile>
+          <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width:60px;">
+              {{'customer-management.updateProfileTable.stt' | translate}}</th>
+            <td mat-cell *matCellDef="let row; let i= index" style="text-align: center; padding-left: 0px !important;">
+              {{i + 1 + indexPaginator}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="documentType">
+            <th mat-header-cell *matHeaderCellDef>
+              {{'customer-management.updateProfileTable.documentType' |
+              translate}}</th>
+            <td mat-cell *matCellDef="let row; let i= index">
+              {{row.documentType}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="documentName">
+            <th mat-header-cell *matHeaderCellDef>
+              {{'customer-management.updateProfileTable.documentName' |
+              translate}}</th>
+            <td mat-cell *matCellDef="let row; let i= index">
+              {{row.documentName}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actionDelete">
+            <th mat-header-cell *matHeaderCellDef style="width:100px">
+              {{'common.action' | translate}}</th>
+            <td mat-cell *matCellDef="let row;let i= index" class="ui-text-center" style="padding-right: 0px;">
+              <button mat-icon-button>
+                <mat-icon svgIcon="ic_xem" matTooltip="{{'change_card.view-profile' | translate}}"
+                  (click)="viewProfile(row)">
+                </mat-icon>
+              </button>
+              <button mat-icon-button>
+                <mat-icon svgIcon="ic_Delete" matTooltip="{{'change_card.delete' | translate}}"
+                  (click)="deleteProfile(i)">
+                </mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns_profile"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns_profile"></tr>
+        </table>
+        <span class="noRecored" *ngIf="listDataProfile.length == 0 ">
+          {{'common.noRecord' |translate}}
+        </span>
+        <mat-paginator [pageSizeOptions]="pageSizeList" [pageSize]="10" [length]="listDataProfile.length"
+          showFirstLastButtons (page)="onPaginateChange($event)">
+        </mat-paginator>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+    style="margin-top: 10px;">
+    <button mat-raised-button color="secondary" style="margin-right: 8px;" ngClass.xs="mb-10"
+      (click)="resetAllForm()">{{'common.button.reEnter' | translate}}</button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSaveContract()" style="margin-right: 8px;"
+      [disabled]="checkValidForm">{{'contract.button-create-new' | translate}}</button>
+  </div>
+</form>

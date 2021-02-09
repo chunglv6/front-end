@@ -1,0 +1,106 @@
+<a class="close" (click)="onClosePopup()">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</a>
+<h2 mat-dialog-title>{{header}}
+</h2>
+
+<div class="form-field-full">
+  <form [formGroup]="formImpact">
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline" class="common-field">
+          <mat-label>{{ 'action_audit.actionType' | translate }} <span class="required">*</span></mat-label>
+          <mtx-select [items]="listActType" bindLabel="name" bindValue="actTypeId" [multiple]="false" appendTo="body"
+            formControlName="actTypeName" [notFoundText]="'common.notFound' | translate"
+            [searchable]="listActType?.length>10">
+          </mtx-select>
+          <mat-error *ngIf="formImpact.get('actTypeName').errors?.required">
+            {{'category.valid-choose-impactName' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.reasonID' | translate }} <span class="required">*</span></mat-label>
+          <input matInput placeholder="{{ 'category.enter-reasonID' | translate }}" formControlName="code" />
+          <button mat-button *ngIf="formImpact.controls.code.value" class="showclear" matSuffix mat-icon-button
+            (click)="formImpact.controls.code.setValue(null); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formImpact.get('code').errors?.required">
+            {{'category.valid-enter-reasonID' | translate}}
+          </mat-error>
+          <mat-error *ngIf="formImpact.get('code').errors?.cannotWhiteSpace">
+            {{'common.space_error' | translate}}
+          </mat-error>
+          <mat-error *ngIf="formImpact.get('code').errors?.maxlength">
+            {{'common.validate.maxlength-255' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.reasonName' | translate }} <span class="required">*</span></mat-label>
+          <input matInput placeholder="{{ 'category.enter-reasonName' | translate }}" formControlName="name" />
+          <button mat-button *ngIf="formImpact.controls.name.value" class="showclear" matSuffix mat-icon-button
+            (click)="formImpact.controls.name.setValue(null); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formImpact.get('name').errors?.required">
+            {{'category.valid-enter-reasonName' | translate}}
+          </mat-error>
+          <mat-error *ngIf="formImpact.get('name').errors?.cannotWhiteSpace">
+            {{'common.space_error' | translate}}
+          </mat-error>
+          <mat-error *ngIf="formImpact.get('name').errors?.maxlength">
+            {{'common.validate.maxlength-255' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.status' | translate }} <span class="required">*</span></mat-label>
+          <mat-select formControlName="status">
+            <ng-container *ngFor="let item of listStatus">
+              <mat-option [value]="item.code">{{item.value}}</mat-option>
+            </ng-container>
+          </mat-select>
+          <button *ngIf="formImpact.controls.status.value" matSuffix mat-icon-button type="button"
+            class="btn-clear-drop" (click)="formImpact.controls.status.setValue(null); $event.stopPropagation();">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formImpact.get('status').errors?.required">
+            {{'category.valid-status' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+      <div fxFlex="100" fxFlex.lt-sm="100">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'category.note' | translate }}</mat-label>
+          <input matInput placeholder="{{ 'category.enter-note' | translate }}" formControlName="description" />
+          <button mat-button *ngIf="formImpact.controls.description.value" class="showclear" matSuffix mat-icon-button
+            (click)="formImpact.controls.description.setValue(null); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formImpact.get('description').errors?.cannotWhiteSpace">
+            {{'common.space_error' | translate}}
+          </mat-error>
+          <mat-error *ngIf="formImpact.get('description').errors?.maxlength">
+            {{'common.validate.maxlength-510' | translate}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px" fxLayoutGap.xs="0"
+    style="margin-right: 8px;">
+    <button mat-raised-button color="secondary"
+      (click)="resetAllForm()">{{'common.button.reEnter' | translate}}</button>
+    <button mat-raised-button color="primary" (click)="onSave()"
+      [disabled]="formImpact.invalid">{{'common.button.save' | translate}}</button>
+  </div>
+</div>

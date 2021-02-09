@@ -1,0 +1,47 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.btn-chooseFile {
+  position: relative;
+  bottom: 20px;
+}
+.fix-radio {
+  position: absolute;
+  left: 10px;
+}
+.readonly-wrapper {
+  cursor: not-allowed;
+}
+
+.readonly-wrapper .readonly-block {
+  pointer-events: none;
+}
+:host ::ng-deep {
+  .mat-select-disabled .mat-select-value {
+    color: #212121;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-label {
+    color: #212121;
+  }
+  .mat-input-element:disabled {
+    color: #212121;
+  }
+  .ng-select.ng-select-disabled .ng-value {
+    color: #212121;
+  }
+  .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+    color: rgba(0, 0, 0, 0.12);
+  }
+  .mat-radio-button.mat-radio-disabled .mat-radio-label-content {
+    color: #212121;
+  }
+}

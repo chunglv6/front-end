@@ -1,0 +1,82 @@
+<div
+  *ngIf="hasPermission(permissionApp.CRM_CUST_11) || hasPermission(permissionApp.CRM_CUST_12)|| hasPermission(permissionApp.CRM_CUST_13) || hasPermission(permissionApp.CRM_CONTRACT_05) ">
+  <page-header></page-header>
+  <div fxLayout="row wrap" class=" ">
+    <div fxFlex="100" fxFlex.lt-sm="100" class=" ">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ 'common.title' | translate | uppercase}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="form-field-full">
+            <form [formGroup]="formSearch">
+              <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{
+                    'change-information-customer.infor_number' | translate
+                  }}</mat-label>
+                    <input matInput placeholder="{{ 'change-information-customer.infor_number' | translate }}"
+                      formControlName="documentNumber" #documentNumber autoFocus="documentNumber" />
+                    <button mat-button *ngIf="formSearch.controls.documentNumber.value" matSuffix mat-icon-button
+                      aria-label="Clear"
+                      (click)="formSearch.controls.documentNumber.setValue(null); $event.stopPropagation()"
+                      class="showclear" type="button">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{
+                    'change-information-customer.license_plates' | translate
+                  }}</mat-label>
+                    <input matInput placeholder="{{ 'change-information-customer.license_plates' | translate }}"
+                      formControlName="plateNumber" />
+                    <button mat-button *ngIf="formSearch.controls.plateNumber.value" matSuffix mat-icon-button
+                      aria-label="Clear"
+                      (click)="formSearch.controls.plateNumber.setValue(null); $event.stopPropagation()"
+                      class="showclear" type="button">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="33.33" fxFlex.lt-sm="100">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'change-information-customer.phone' | translate }}</mat-label>
+                    <input matInput placeholder="{{ 'change-information-customer.phone' | translate }}" type="tel"
+                      formControlName="phoneNumber" />
+                    <button mat-button *ngIf="formSearch.controls.phoneNumber.value" matSuffix mat-icon-button
+                      aria-label="Clear"
+                      (click)="formSearch.controls.phoneNumber.setValue(null); $event.stopPropagation()"
+                      class="showclear" type="button">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="flex-end" fxLayoutGap="10px"
+                fxLayoutGap.xs="0">
+                <div>
+                  <button mat-raised-button color="primary" style="margin-right: 8px;" type="submit"
+                    (click)="processSearchCustomer()">
+                    {{ 'common.button.search' | translate }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <app-change-information-customer [dataSourceTree]="dataSourceTree"></app-change-information-customer>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="!hasPermission(permissionApp.CRM_CUST_11) && !hasPermission(permissionApp.CRM_CUST_12) && !hasPermission(permissionApp.CRM_CUST_13) ">
+  <error-code code="403" [title]="'common.invalid-permission-title'" [message]="'common.invalid-permission'">
+  </error-code>
+</div>
